@@ -30,7 +30,7 @@ import android.widget.Toast;
 
 public class GPSTracker extends Service implements LocationListener {
 
-    private final Context mContext;
+    private  Context mContext;
 
     // flag for GPS status
     boolean isGPSEnabled = false;
@@ -51,7 +51,7 @@ public class GPSTracker extends Service implements LocationListener {
     // The minimum time between updates in milliseconds
     private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 1; // 1 minute
 
-    // Declaring a Location Manager
+    // Declaring a CurrentLocation Manager
     protected LocationManager locationManager;
 
     public GPSTracker(Context context) {
