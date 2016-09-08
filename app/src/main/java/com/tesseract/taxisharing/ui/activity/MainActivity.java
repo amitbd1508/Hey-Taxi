@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
                 .withDrawerWidthDp(200)
                 .addDrawerItems(
                         new PrimaryDrawerItem().withName("Navigation"),
+                        new PrimaryDrawerItem().withName("Amit Ghosh"),
                         new PrimaryDrawerItem().withName("LogOut").withSetSelected(true).withIdentifier(1)
 
                 )
