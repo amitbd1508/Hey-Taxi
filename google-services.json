@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "69749795461",
+    "firebase_url": "https://texisharing.firebaseio.com",
+    "project_id": "texisharing",
+    "storage_bucket": "texisharing.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:69749795461:android:55cf6e82d76cd0f8",
+        "android_client_info": {
+          "package_name": "com.tesseract.taxisharing"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "69749795461-vfeq91qr5oiircgf8tueri48poi0u6pm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBhyZ9Q2YG7DcxDl5wSd1qEwuXJdTz_L4k"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
