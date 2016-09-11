@@ -4,10 +4,10 @@
 
     To get one, follow this link, follow the directions and press "Create" at the end:
 
-    https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend&keyType=CLIENT_SIDE_ANDROID&r=4E:8F:F6:26:46:DD:04:D5:5B:C6:E6:06:DC:17:45:69:3D:89:ED:E5%3Bcom.tesseract.taxisharing.ui.activity
+    https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend&keyType=CLIENT_SIDE_ANDROID&r=E2:4F:94:7F:52:40:00:6C:AA:DE:D9:56:68:9B:BA:C1:20:67:12:BF%3Bcom.tesseract.taxisharing
 
     You can also add your credentials to an existing key, using this line:
-    4E:8F:F6:26:46:DD:04:D5:5B:C6:E6:06:DC:17:45:69:3D:89:ED:E5;com.tesseract.taxisharing.ui.activity
+    E2:4F:94:7F:52:40:00:6C:AA:DE:D9:56:68:9B:BA:C1:20:67:12:BF;com.tesseract.taxisharing
 
     Alternatively, follow the directions here:
     https://developers.google.com/maps/documentation/android/start#get-key
@@ -16,6 +16,6 @@
     string in this file.
     -->
     <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">
-        AIzaSyD8r4F2-yRRkK36-icxQ4BnwBW-GGmwpsI
+        AIzaSyCd7cWAYHfF66LS_lJlfAtyK2ILpv1MG08
     </string>
 </resources>

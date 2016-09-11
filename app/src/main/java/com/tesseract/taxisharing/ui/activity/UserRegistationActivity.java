@@ -28,5 +28,14 @@ public class UserRegistationActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+
+        findViewById(R.id.hudai).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(),MapsActivity.class));
+                finish();
+            }
+        });
     }
 }
