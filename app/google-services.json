@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "69749795461-d6s8qnff423hurupppks218hpbk2hfpp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tesseract.taxisharing",
+            "certificate_hash": "E24F947F5240006CAADED956689BBAC1206712BF"
+          }
+        },
+        {
           "client_id": "69749795461-vfeq91qr5oiircgf8tueri48poi0u6pm.apps.googleusercontent.com",
           "client_type": 3
         }

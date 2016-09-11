@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
                 .addDrawerItems(
                         new PrimaryDrawerItem().withName("Navigation"),
                         new PrimaryDrawerItem().withName("Amit Ghosh"),
+                        new PrimaryDrawerItem().withName("Login").withSetSelected(true).withIdentifier(2),
                         new PrimaryDrawerItem().withName("LogOut").withSetSelected(true).withIdentifier(1)
 
                 )
@@ -41,6 +42,11 @@ public class MainActivity extends AppCompatActivity {
                             startActivity(new Intent(MainActivity.this,MapsActivity.class));
                             Toast.makeText(MainActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
                         }
+                        if (drawerItem.equals(2)) {
+                            startActivity(new Intent(MainActivity.this,LoginActivity.class));
+                            Toast.makeText(MainActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
+                        }
+
 
                         return true;
                     }

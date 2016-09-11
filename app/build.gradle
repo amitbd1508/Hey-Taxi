@@ -31,7 +31,10 @@ dependencies {
     compile 'com.android.support:design:23.4.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.google.android.gms:play-services-maps:9.4.0'
+    compile 'com.google.android.gms:play-services-auth:9.4.0'
+    compile 'com.mcxiaoke.volley:library-aar:1.0.0'
     compile('com.mikepenz:materialdrawer:4.6.0@aar') {
         transitive = true
     }
+    apply plugin: 'com.android.application'
 }
