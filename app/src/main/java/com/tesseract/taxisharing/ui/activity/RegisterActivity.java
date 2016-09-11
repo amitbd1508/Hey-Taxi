@@ -1,13 +1,13 @@
 package com.tesseract.taxisharing.ui.activity;
 
-
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.media.Image;
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,34 +23,45 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.squareup.picasso.Picasso;
 import com.tesseract.taxisharing.R;
+import com.tesseract.taxisharing.model.User;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
+public class RegisterActivity extends AppCompatActivity implements  GoogleApiClient.OnConnectionFailedListener{
 
 
-
-    private static final String TAG = "SignInActivity";
+    private static final String TAG = "RegisterActivity";
     private static final int RC_SIGN_IN = 9001;
 
+    Button signInButton;
     private GoogleApiClient mGoogleApiClient;
     private TextView mStatusTextView;
     private ProgressDialog mProgressDialog;
-    ImageView imageView;
-
+    ImageView userimage;
+    EditText username,password,givenname,usersex;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-
-
+        setContentView(R.layout.activity_register);
         // Views
         mStatusTextView = (TextView) findViewById(R.id.status);
 
-        // Button listeners
-        findViewById(R.id.sign_in_button).setOnClickListener(this);
-        findViewById(R.id.sign_out_button).setOnClickListener(this);
-        findViewById(R.id.disconnect_button).setOnClickListener(this);
 
-        imageView=(ImageView)findViewById(R.id.user_imaage);
+        password= (EditText) findViewById(R.id.password);
+        username= (EditText) findViewById(R.id.username);
+        usersex= (EditText) findViewById(R.id.usersex);
+        givenname= (EditText) findViewById(R.id.name);
+        findViewById(R.id.signin).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(),MapsActivity.class));
+                finish();
+            }
+        });
+
+        // Button listeners
+
+
+
+        userimage=(ImageView)findViewById(R.id.user_imaage);
 
         // [START configure_signin]
         // Configure sign-in to request the user's ID, email address, and basic
@@ -77,16 +88,24 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         // may be displayed when only basic profile is requested. Try adding the
         // Scopes.PLUS_LOGIN scope to the GoogleSignInOptions to see the
         // difference.
-        SignInButton signInButton = (SignInButton) findViewById(R.id.sign_in_button);
-        signInButton.setSize(SignInButton.SIZE_STANDARD);
-        signInButton.setScopes(gso.getScopeArray());
+        signInButton = (Button) findViewById(R.id.google);
+//        signInButton.setSize(SignInButton.SIZE_STANDARD);
+//        signInButton.setScopes(gso.getScopeArray());
+        signInButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onStartMethod();
+                signIn();
+                signInButton.setVisibility(View.GONE);
+            }
+        });
         // [END customize_button]
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
 
+
+    void onStartMethod()
+    {
         OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
         if (opr.isDone()) {
             // If the user's cached credentials are valid, the OptionalPendingResult will be "done"
@@ -108,7 +127,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             });
         }
     }
-
     // [START onActivityResult]
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -117,7 +135,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+
+
             handleSignInResult(result);
+
         }
     }
     // [END onActivityResult]
@@ -128,12 +149,25 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (result.isSuccess()) {
             // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
-            mStatusTextView.setText(getString(R.string.signed_in_fmt, acct.getDisplayName()+acct.getEmail()+acct.getGivenName()+acct.getIdToken()+acct.getId()+acct.getFamilyName()));
+            //mStatusTextView.setText(getString(R.string.signed_in_fmt, acct.getDisplayName()+acct.getEmail()+acct.getGivenName()+acct.getIdToken()+acct.getId()+acct.getFamilyName()));
+
+            User user=new User();
+            user.setGivenName(acct.getGivenName());
+            //user.setImage_link(acct.getPhotoUrl().toString());
+
+            user.setSex("Male");
+
 
             Picasso.with(getApplicationContext())
                     .load(acct.getPhotoUrl())
-                    .into(imageView);
+                    .into(userimage);
+
+
             updateUI(true);
+            username.setText(acct.getEmail());
+            usersex.setText("Male");
+            givenname.setText(acct.getDisplayName());
+
         } else {
             // Signed out, show unauthenticated UI.
             updateUI(false);
@@ -201,17 +235,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private void updateUI(boolean signedIn) {
         if (signedIn) {
-            findViewById(R.id.sign_in_button).setVisibility(View.GONE);
-            findViewById(R.id.sign_out_and_disconnect).setVisibility(View.VISIBLE);
+            findViewById(R.id.google).setVisibility(View.GONE);
+
         } else {
             mStatusTextView.setText(R.string.signed_out);
 
-            findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
-            findViewById(R.id.sign_out_and_disconnect).setVisibility(View.GONE);
+
         }
     }
 
-    @Override
+    /*@Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.sign_in_button:
@@ -224,5 +257,5 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 revokeAccess();
                 break;
         }
-    }
+    }*/
 }

@@ -16,7 +16,7 @@
         android:orientation="vertical">
 
         <ImageView
-            android:id="@+id/profile_pic"
+            android:id="@+id/user_imaage"
             android:layout_width="150dp"
             android:layout_height="100dp"
             android:layout_marginBottom="10dp"
@@ -24,11 +24,20 @@
             android:src="@mipmap/ic_launcher" />
 
         <EditText
+            android:id="@+id/name"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:hint="Given Name "
+            android:gravity="center"
+            android:textColor="@android:color/white"
+            android:textSize="25sp" />
+        <EditText
             android:id="@+id/username"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:hint="Username "
+            android:hint="User Name "
             android:gravity="center"
             android:textColor="@android:color/white"
             android:textSize="25sp" />
@@ -38,6 +47,16 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:hint="Password "
+            android:inputType="textPassword"
+            android:gravity="center"
+            android:textColor="@android:color/white"
+            android:textSize="25sp" />
+        <EditText
+            android:id="@+id/usersex"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:hint="Sex "
             android:gravity="center"
             android:textColor="@android:color/white"
             android:textSize="25sp" />
@@ -71,13 +90,7 @@
         android:layout_weight="1"
         android:background="@color/blue_grey_900">
 
-        <com.google.android.gms.common.SignInButton
-            android:id="@+id/sign_in_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:visibility="visible"
-            tools:visibility="gone" />
+
 
         <LinearLayout
             android:id="@+id/sign_out_and_disconnect"
@@ -87,23 +100,26 @@
             android:orientation="horizontal"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
-            android:visibility="gone"
-            tools:visibility="visible">
+
+            >
 
             <Button
-                android:id="@+id/sign_out_button"
-                android:layout_width="0dp"
+                android:id="@+id/google"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/sign_out"
-                android:theme="@style/ThemeOverlay.MyDarkButton" />
+                android:text="GLogin"
+                android:theme="@style/ThemeOverlay.MyDarkButton"
+
+                 />
+
 
             <Button
-                android:id="@+id/disconnect_button"
-                android:layout_width="0dp"
+                android:id="@+id/signin"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/disconnect"
+                android:text="Sign In"
                 android:theme="@style/ThemeOverlay.MyDarkButton" />
         </LinearLayout>
 

@@ -20,5 +20,13 @@ public class UserRegistationActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        findViewById(R.id.register).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(),RegisterActivity.class));
+                finish();
+            }
+        });
     }
 }
