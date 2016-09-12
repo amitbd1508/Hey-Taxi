@@ -48,3 +48,5 @@ dependencies {
     compile 'com.mcxiaoke.volley:library-aar:1.0.0'
     compile 'com.github.quentin7b:android-location-tracker:3.2'
 }
+
+apply plugin: 'com.google.gms.google-services'

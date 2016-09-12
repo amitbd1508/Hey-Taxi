@@ -11,9 +11,19 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.tesseract.taxisharing.R;
+import com.tesseract.taxisharing.model.UserLocation;
+
+import java.text.DateFormat;
+import java.util.Date;
 
 import fr.quentinklein.slt.LocationTracker;
 import fr.quentinklein.slt.TrackerSettings;
@@ -23,6 +33,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     public Integer count=1;
 
+    FirebaseDatabase db;
+    DatabaseReference ref;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +43,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        db = FirebaseDatabase.getInstance();
+        ref = db.getReference("userlocations");
+        /*UserLocation userLocation=new UserLocation("amit",String.valueOf(20.04),String.valueOf(90.67), DateFormat.getTimeInstance().format(new Date()));
+        ref.push().setValue(userLocation);
+        UserLocation userLocation1=new UserLocation("Sonet",String.valueOf(21.04),String.valueOf(90.67), DateFormat.getTimeInstance().format(new Date()));
+        ref.push().setValue(userLocation);*/
+
 
 
     }
@@ -73,13 +93,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onLocationFound(Location location) {
                 // Do some stuff when a new location has been found.
 
-                mMap.clear();
-                LatLng newlocation = new LatLng(location.getLatitude(), location.getLongitude());
-                mMap.addMarker(new MarkerOptions().position(newlocation).title(count.toString()));
-                count++;
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(newlocation));
-                mMap.animateCamera( CameraUpdateFactory.zoomTo( 20.0f ) );
+                //mMap.clear();
+
                 Toast.makeText(MapsActivity.this,"Location :"+location.describeContents()+location.getSpeed()+"\n"+location.getAltitude()+"\n"+location.getLatitude()+"\n"+location.getLongitude()+"\n"+location.getProvider()+"\n"+location.getAccuracy(), Toast.LENGTH_SHORT).show();
+
+                updateLocation(location);
+                //updateLocationInMap(location);
+                setLocationInMapFromFireBase();
+
             }
 
             @Override
@@ -90,10 +111,78 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         };
         tracker.startListening();
 
+
+    }
+
+    private void setLocationInMapFromFireBase() {
+
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                mMap.clear();
+                //Log.d("location", dataSnapshot.getValue().toString());
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    UserLocation pr = child.getValue(UserLocation.class);
+                    setMarker(pr,pr.getUsername(),17.0f);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void setMarker(UserLocation userLocation,String markerName,float zoom) {
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        LatLng latLng = new LatLng(Double.parseDouble(userLocation.getLatitude()), Double.parseDouble(userLocation.getLongitude()));
+        mMap.addMarker(new MarkerOptions().position(latLng).title(markerName));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        mMap.animateCamera( CameraUpdateFactory.zoomTo( zoom) );
+    }
+
+    private void updateLocationInMap(Location location) {
+        LatLng newlocation = new LatLng(location.getLatitude(), location.getLongitude());
+        mMap.addMarker(new MarkerOptions()
+                        .position(newlocation)
+                        .title(count.toString())
+                        .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher))
+
+                //reference : http://stackoverflow.com/questions/14811579/how-to-create-a-custom-shaped-bitmap-marker-with-android-map-api-v2
+        );
+        count++;
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(newlocation));
         mMap.animateCamera( CameraUpdateFactory.zoomTo( 20.0f ) );
+    }
+
+
+    private void updateLocation(final Location location) {
+
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                //Log.d("location", dataSnapshot.getValue().toString());
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+
+
+                    UserLocation pr = child.getValue(UserLocation.class);
+
+
+
+                    if(pr.getUsername().equals("amit")){
+                        pr.setLatitude(String.valueOf(location.getLatitude()));
+                        pr.setLongitude(String.valueOf(location.getLongitude()));
+                        child.getRef().setValue(pr);
+                        Toast.makeText(getApplicationContext(),"Sucessfully Updated",Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 }
