@@ -1,12 +1,21 @@
 package com.tesseract.taxisharing.ui.activity;
 //https://github.com/akexorcist/Android-GoogleDirectionLibrary
 import android.content.pm.PackageManager;
+import android.location.Geocoder;
 import android.location.Location;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.android.gms.identity.intents.Address;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -22,8 +31,11 @@ import com.google.firebase.database.ValueEventListener;
 import com.tesseract.taxisharing.R;
 import com.tesseract.taxisharing.model.UserLocation;
 
+import java.io.IOException;
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import fr.quentinklein.slt.LocationTracker;
 import fr.quentinklein.slt.TrackerSettings;
@@ -32,6 +44,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
     public Integer count=1;
+
+    String[] values = new String[] {
+            "Android List View",
+            "Empty"
+    };
+    List <String>searchResult;
+    EditText serchLocation;
+    ListView searchList;
+    ArrayAdapter<String> adapter;
+    List<android.location.Address> addressList=null;
 
     FirebaseDatabase db;
     DatabaseReference ref;
@@ -43,6 +65,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        searchResult=new ArrayList<String>();
+        searchResult.add("Empty");
+
+        searchList= (ListView) findViewById(R.id.listView);
+
+
+        serchLocation = (EditText) findViewById(R.id.searchlocation);
+        adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1, android.R.id.text1, searchResult);
+        searchList.setAdapter(adapter);
+
 
         db = FirebaseDatabase.getInstance();
         ref = db.getReference("userlocations");
@@ -68,6 +101,66 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        mMap.getUiSettings().setZoomControlsEnabled(true);
+        mMap.getUiSettings().setZoomGesturesEnabled(true);
+        mMap.getUiSettings().setAllGesturesEnabled(true);
+
+        searchList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+
+                LatLng latLng = new LatLng(addressList.get(position).getLatitude(),addressList.get(position).getLongitude());
+                mMap.addMarker(new MarkerOptions()
+                        .position(latLng)
+                        .title(addressList.get(position).getFeatureName())
+
+                );
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+                mMap.animateCamera( CameraUpdateFactory.zoomTo( 17.0f) );
+                searchList.setVisibility(View.INVISIBLE);
+            }
+        });
+
+        serchLocation.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                searchList.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String location=serchLocation.getText().toString();
+
+                if(location!=null||!location.equals(""))
+                {
+                    Geocoder geocoder=new Geocoder(getApplicationContext());
+                    try {
+                        addressList=geocoder.getFromLocationName(location,10);
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    searchResult.clear();
+                    for(int i=0;i<addressList.size();i++)
+                    {
+                        searchResult.add(addressList.get(i).getFeatureName()+"\n"+addressList.get(i).getCountryName());
+                    }
+                    adapter.notifyDataSetChanged();
+
+                }
+
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                searchList.setVisibility(View.VISIBLE);
+            }
+        });
+
 
         TrackerSettings settings =
                 new TrackerSettings()
@@ -137,7 +230,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private void setMarker(UserLocation userLocation,String markerName,float zoom) {
         // Add a marker in Sydney and move the camera
         LatLng latLng = new LatLng(Double.parseDouble(userLocation.getLatitude()), Double.parseDouble(userLocation.getLongitude()));
-        mMap.addMarker(new MarkerOptions().position(latLng).title(markerName));
+        mMap.addMarker(new MarkerOptions()
+                .position(latLng)
+                .title(markerName)
+                .snippet("Last update"+userLocation.getTime())
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.hamudi))
+        );
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
         mMap.animateCamera( CameraUpdateFactory.zoomTo( zoom) );
     }
@@ -173,6 +271,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     if(pr.getUsername().equals("amit")){
                         pr.setLatitude(String.valueOf(location.getLatitude()));
                         pr.setLongitude(String.valueOf(location.getLongitude()));
+                        pr.setTime(DateFormat.getTimeInstance().format(new Date()));
                         child.getRef().setValue(pr);
                         Toast.makeText(getApplicationContext(),"Sucessfully Updated",Toast.LENGTH_SHORT).show();
                     }
