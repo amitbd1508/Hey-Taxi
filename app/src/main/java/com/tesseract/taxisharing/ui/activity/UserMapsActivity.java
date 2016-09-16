@@ -88,6 +88,8 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
     ArrayAdapter<String> lvAdapter;
     List<Address> addressList = null;
 
+    int count=0;
+
     ImageView ivMenu;
 
     //firebase variable
@@ -322,7 +324,6 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
                 .title(markerName)
                 .snippet("Last update" + userLocation.getTime())
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.taxi_cab)
-
                 ));
 //        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
 //        mMap.animateCamera( CameraUpdateFactory.zoomTo( zoom) );
@@ -338,8 +339,12 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
                 //reference : http://stackoverflow.com/questions/14811579/how-to-create-a-custom-shaped-bitmap-marker-with-android-map-api-v2
         );
 
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(newlocation));
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(ZOOM));
+        if(count==1){
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(newlocation));
+            mMap.animateCamera(CameraUpdateFactory.zoomTo(ZOOM));
+        }
+        count++;
+
     }
 
 

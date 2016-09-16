@@ -126,11 +126,15 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
         // [END customize_button]
     }
 
+    boolean ret=false;
     public boolean registerRequest() {
+
 
         if(isNotEmpty(etFirstName) && isNotEmpty(etLastName) && isNotEmpty(etEamil) && isNotEmpty(etMobile)
                 && isNotEmpty(etNid) && isNotEmpty(etPassword) ){
-            strFullName = etFirstName.getText().toString() + " " + etLastName.getText().toString();
+            strFullName = etFirstName.getText().toString() + "-" + etLastName.getText().toString();
+
+            Log.d(TAG,strFullName);
             strEmai = etEamil.getText().toString();
             strMobile = etMobile.getText().toString();
             if (rgSex.getCheckedRadioButtonId() == R.id.rb_register_sex_male) {
@@ -142,12 +146,23 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
             strPassword = etPassword.getText().toString();
             strImageLink = "https://github.com/mikepenz/MaterialDrawer/blob/develop/app/src/main/res/drawable/profile3.jpg";
 
-            String url = "http://team-tesseract.xyz/taxishare/insert_user.php";
+            String url = "http://team-tesseract.xyz/taxishare/insert_user.php?user_fullname="+strFullName
+                    +"&user_personalid="+strNid
+                    +"&user_password="+strPassword
+                    +"&user_email="+strEmai
+                    +"&user_image_link="+strImageLink
+                    +"&user_sex="+strSex
+                    +"&user_mobile="+strMobile;
+
+            Toast.makeText(RegisterActivity.this, url, Toast.LENGTH_SHORT).show();
+            Log.d(TAG,url);
             StringRequest sr = new StringRequest(Request.Method.POST, url,
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-                            Toast.makeText(RegisterActivity.this, ""+response, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RegisterActivity.this, response, Toast.LENGTH_SHORT).show();
+                            if(response.equals("1")) ret=true ;
+                            else ret = false;
                         }
                     }, new Response.ErrorListener() {
                 @Override
@@ -158,13 +173,7 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
                 @Override
                 protected Map<String, String> getParams() throws AuthFailureError {
                     Map<String, String> map = new HashMap<String, String>();
-                    map.put("user_fullname", strFullName);
-                    map.put("user_personalid", strNid);
-                    map.put("user_password", strPassword);
-                    map.put("user_email", strEmai);
-                    map.put("user_image_link", strImageLink);
-                    map.put("user_sex", strSex);
-                    map.put("user_mobile", strMobile);
+
                     return map;
                 }
             };
@@ -237,8 +246,8 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
                     .load(acct.getPhotoUrl())
                     .into(ivUserImage);
             etEamil.setText(acct.getEmail());
-            etFirstName.setText(acct.getGivenName() + "  " + acct.getFamilyName());
-            etLastName.setText(acct.getIdToken());
+            etFirstName.setText(acct.getGivenName());
+            etLastName.setText(acct.getFamilyName());
 
 
         } else {

@@ -8,12 +8,24 @@ public class UserLocation {
     String latitude;
     String longitude;
     String time;
+    String account_type;
 
-    public UserLocation(String username, String latitude, String longitude, String time) {
+
+    public String getAccount_type() {
+        return account_type;
+    }
+
+    public void setAccount_type(String account_type) {
+        this.account_type = account_type;
+    }
+
+    public UserLocation(String username, String latitude, String longitude, String time, String account_type) {
+
         this.username = username;
         this.latitude = latitude;
         this.longitude = longitude;
         this.time = time;
+        this.account_type = account_type;
     }
 
     public String getUsername() {
