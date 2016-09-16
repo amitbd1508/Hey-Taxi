@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TaxiSharing</string>
+    <string name="app_name">Hay Taxi</string>
     <string name="title_activity_maps">Map</string>
     <string name="signed_in">Signed in</string>
     <string name="signing_in">Signing in…</string>
@@ -41,5 +41,6 @@
          from https://console.developers.google.com/ -->
     <string name="server_client_id">294229320834-1clkivrfvskqjqlueqivvjqc3e1hnvs1.apps.googleusercontent.com</string>
     <string name="signed_in_fmt">Signed in as: %s</string>
+    <string name="title_activity_user_maps">Your Map</string>
 
 </resources>

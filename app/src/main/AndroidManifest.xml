@@ -49,14 +49,9 @@
 
         <activity android:name=".ui.activity.LoginActivity" />
         <activity android:name=".ui.activity.UserRegistationActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".ui.activity.RegisterActivity" />
-        <activity android:name=".ui.activity.LocationTestActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -70,11 +65,13 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".ui.activity.MapsActivity"
-            android:label="@string/title_activity_maps">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.tesseract.taxisharing.ui.activity.UserRegistationActivity" />
+            android:name=".ui.activity.UserMapsActivity"
+            android:label="@string/title_activity_user_maps">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 

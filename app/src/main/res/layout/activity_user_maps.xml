@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.activity.UserMapsActivity">
+
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:map="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.tesseract.taxisharing.ui.activity.UserMapsActivity"
+        tools:layout="@layout/abc_action_bar_title_item" />
+
+
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/etLocationSearchbar"
+        android:hint="Search location"
+        android:background="#ffffff"
+        android:textSize="@dimen/et_text_size"
+        android:layout_margin="8dp"
+        android:textColor="#000000"
+        android:padding="6dp"
+        android:layout_alignTop="@+id/map"
+        android:layout_alignRight="@+id/map"
+        android:layout_alignEnd="@+id/map" />
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/listView"
+        android:visibility="invisible"
+        android:layout_below="@+id/searchlocation"
+        android:layout_alignRight="@+id/searchlocation"
+        android:layout_alignEnd="@+id/searchlocation" />
+
+    <Button
+        android:layout_width="30dp"
+        android:layout_height="40dp"
+        android:id="@+id/btnLocationPin"
+        android:background="@drawable/location_pin"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+
+
+</RelativeLayout>
+

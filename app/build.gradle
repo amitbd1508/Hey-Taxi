@@ -49,4 +49,5 @@ dependencies {
     compile 'com.github.quentin7b:android-location-tracker:3.2'
 }
 
+
 apply plugin: 'com.google.gms.google-services'

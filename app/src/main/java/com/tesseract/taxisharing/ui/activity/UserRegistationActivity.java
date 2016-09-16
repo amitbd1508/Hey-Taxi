@@ -33,7 +33,7 @@ public class UserRegistationActivity extends AppCompatActivity {
         findViewById(R.id.hudai).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(),MapsActivity.class));
+                startActivity(new Intent(getApplicationContext(),UserMapsActivity.class));
                 finish();
             }
         });

@@ -69,7 +69,7 @@ public class RegisterActivity extends AppCompatActivity implements  GoogleApiCli
 
                 //do here login check
 
-                startActivity(new Intent(getApplicationContext(),MapsActivity.class));
+                startActivity(new Intent(getApplicationContext(),UserMapsActivity.class));
                 finish();
             }
         });

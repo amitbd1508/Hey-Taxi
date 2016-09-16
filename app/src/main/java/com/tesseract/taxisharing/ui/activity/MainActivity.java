@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                         if (drawerItem.equals(1)) {
-                            startActivity(new Intent(MainActivity.this,MapsActivity.class));
+                            startActivity(new Intent(MainActivity.this,UserMapsActivity.class));
                             Toast.makeText(MainActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
                         }
                         if (drawerItem.equals(2)) {
