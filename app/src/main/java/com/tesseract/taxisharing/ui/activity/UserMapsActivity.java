@@ -133,12 +133,6 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
                 .addProfiles(
                         new ProfileDrawerItem().withName("Mike Penz").withEmail("mikepenz@gmail.com").withIcon(getResources().getDrawable(R.drawable.profile))
                 )
-                .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
-                    @Override
-                    public boolean onProfileChanged(View view, IProfile profile, boolean currentProfile) {
-                        return false;
-                    }
-                })
                 .build();
 
         final Drawer result = new DrawerBuilder()
