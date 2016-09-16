@@ -8,6 +8,7 @@ package com.tesseract.taxisharing.ui.activity;
 
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -18,6 +19,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -38,6 +40,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.tesseract.taxisharing.R;
 import com.tesseract.taxisharing.model.UserLocation;
 
@@ -106,8 +112,39 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        Drawer();
 
 
+    }
+
+    public void Drawer() {
+        final Drawer result = new DrawerBuilder()
+                .withActivity(this)
+                .withDrawerWidthDp(200)
+                .addDrawerItems(
+                        new PrimaryDrawerItem().withName("Navigation"),
+                        new PrimaryDrawerItem().withName("Amit Ghosh"),
+                        new PrimaryDrawerItem().withName("Login").withSetSelected(true).withIdentifier(2),
+                        new PrimaryDrawerItem().withName("LogOut").withSetSelected(true).withIdentifier(1)
+
+                )
+                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                    @Override
+                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                        if (drawerItem.equals(1)) {
+
+                        }
+                        if (drawerItem.equals(2)) {
+
+                            Toast.makeText(getApplicationContext(), "Clicked", Toast.LENGTH_SHORT).show();
+                        }
+                        return true;
+                    }
+                }).withDrawerGravity(Gravity.LEFT)
+                .build();
+        result.openDrawer();
+        result.closeDrawer();
+        result.isDrawerOpen();
     }
 
 
