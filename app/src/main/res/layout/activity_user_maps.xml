@@ -17,6 +17,9 @@
 
 
     <RelativeLayout
+        android:layout_margin="5dp"
+        android:elevation="4dp"
+        android:background="#ffffff"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignEnd="@+id/map"
