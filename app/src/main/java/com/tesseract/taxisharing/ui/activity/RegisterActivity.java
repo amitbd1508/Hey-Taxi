@@ -88,7 +88,7 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
         rgSex = (RadioGroup) findViewById(R.id.rg_register_sex);
 
 
-        findViewById(R.id.next).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.btn_register_submit).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //do here login check
@@ -143,7 +143,7 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
             strImageLink = "https://github.com/mikepenz/MaterialDrawer/blob/develop/app/src/main/res/drawable/profile3.jpg";
 
             String url = "http://team-tesseract.xyz/taxishare/insert_user.php";
-            StringRequest sr = new StringRequest(Request.Method.GET, url,
+            StringRequest sr = new StringRequest(Request.Method.POST, url,
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {

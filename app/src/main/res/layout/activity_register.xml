@@ -150,32 +150,11 @@
             android:inputType="textPassword" />
 
         <Button
+            android:layout_marginTop="10dp"
             android:id="@+id/btn_register_submit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="SUBMIT" />
-
     </LinearLayout>
-
-    <RelativeLayout
-        android:id="@+id/next_layout"
-
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true">
-
-        <Button
-            android:id="@+id/next"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_margin="7dp"
-            android:background="#6200ea"
-            android:text="Next"
-            android:textColor="#ffffff"
-            android:textSize="15sp" />
-
-    </RelativeLayout>
-
 
 </RelativeLayout>
