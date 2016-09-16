@@ -6,7 +6,6 @@ package com.tesseract.taxisharing.ui.activity;
 *
 * */
 
-
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -46,6 +45,7 @@ import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.tesseract.taxisharing.R;
 import com.tesseract.taxisharing.model.UserLocation;
+import com.tesseract.taxisharing.util.App;
 
 import java.io.IOException;
 import java.text.DateFormat;
@@ -337,12 +337,12 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
                     UserLocation pr = child.getValue(UserLocation.class);
 
 
-                    if (pr.getUsername().equals("Sonet")) {
+                    if (pr.getUsername().equals(App.CURRENT_USER)) {
                         pr.setLatitude(String.valueOf(location.getLatitude()));
                         pr.setLongitude(String.valueOf(location.getLongitude()));
                         pr.setTime(DateFormat.getTimeInstance().format(new Date()));
                         child.getRef().setValue(pr);
-                        Toast.makeText(getApplicationContext(), "Sucessfully Updated", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplicationContext(), "Sucessfully Updated", Toast.LENGTH_SHORT).show();
                     }
                 }
             }

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="2">
+
+            <LinearLayout
+                android:id="@+id/layout_sign_in_gplus"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:background="@android:color/holo_red_dark"
+                android:orientation="vertical"></LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_sign_in_fb"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1"
+                android:background="@android:color/holo_blue_dark"
+                android:orientation="vertical"></LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:weightSum="2">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1"
+                android:background="#c5324151" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="OR" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1"
+                android:background="#c5324151" />
+        </LinearLayout>
+
+
+        <EditText
+            android:id="@+id/et_sign_in_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="email@example.com" />
+
+        <EditText
+            android:id="@+id/et_sign_in_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Password"
+            android:inputType="textPassword" />
+
+        <Button
+            android:id="@+id/btn_sign_in"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sign in" />
+
+        <TextView
+            android:id="@+id/tv_sign_in_forgot_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Forgot Password ?"
+            android:textAllCaps="true"
+            android:textAlignment="center"
+            android:textColor="@android:color/holo_blue_dark" />
+    </LinearLayout>
+</ScrollView>
