@@ -147,7 +147,7 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-
+                            Toast.makeText(RegisterActivity.this, ""+response, Toast.LENGTH_SHORT).show();
                         }
                     }, new Response.ErrorListener() {
                 @Override
