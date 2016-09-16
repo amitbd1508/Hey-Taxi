@@ -365,7 +365,7 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
     }
 
     private void startTracking() {
-        if (tracker != null)
+        if (tracker != null) {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 // TODO: Consider calling
                 //    ActivityCompat#requestPermissions
@@ -375,7 +375,9 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
                 // to handle the case where the user grants the permission. See the documentation
                 // for ActivityCompat#requestPermissions for more details.
                 return;
-            }tracker.startListening();
+            }
+            tracker.startListening();
+        }
     }
 
     private void stopTracking() {
