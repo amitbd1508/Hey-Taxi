@@ -152,7 +152,7 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
                     }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-
+                    Toast.makeText(RegisterActivity.this, ""+error, Toast.LENGTH_SHORT).show();
                 }
             }) {
                 @Override
