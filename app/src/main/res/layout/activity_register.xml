@@ -7,139 +7,175 @@
     tools:context=".ui.activity.LoginActivity">
 
     <LinearLayout
+        android:id="@+id/login_group"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/login_group"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:orientation="horizontal" >
+        android:orientation="horizontal">
 
         <com.google.android.gms.common.SignInButton
             android:id="@+id/google_login"
             android:layout_width="match_parent"
-            android:layout_weight="1"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
         <com.google.android.gms.common.SignInButton
             android:id="@+id/facebook_login"
             android:layout_width="match_parent"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
-            />
+            android:layout_weight="1" />
 
 
         <!--<com.facebook.widget.LoginButton-->
-            <!--android:id="@+id/authButton"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_weight="1"-->
-            <!--android:layout_height="wrap_content" -->
-            <!--/>-->
+        <!--android:id="@+id/authButton"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_weight="1"-->
+        <!--android:layout_height="wrap_content" -->
+        <!--/>-->
 
     </LinearLayout>
+
     <LinearLayout
+        android:id="@+id/registation_group"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="3"
-        android:id="@+id/registation_group"
-        android:background="#ffffff"
         android:layout_below="@+id/login_group"
+        android:background="#ffffff"
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/user_imaage"
-            android:layout_width="150dp"
-            android:layout_height="100dp"
-            android:layout_marginBottom="@dimen/reg_margin_bottom"
-            android:contentDescription="@string/desc_google_icon"
-            android:src="@mipmap/ic_launcher" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:weightSum="2">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1"
+                android:background="#c5324151" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="OR" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1"
+                android:background="#c5324151" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/iv_register_profile_pic"
+                android:layout_width="60dp"
+                android:layout_height="60dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="2">
+
+            <EditText
+                android:id="@+id/et_register_first_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:hint="First name" />
+
+            <EditText
+                android:id="@+id/et_register_last_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1"
+                android:hint="Last name" />
+        </LinearLayout>
 
         <EditText
-            android:id="@+id/fullname"
-            android:layout_width="200dp"
+            android:id="@+id/et_register_email"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/reg_margin_bottom"
-            android:hint="Full Name "
-            android:gravity="center"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/reg_text_size" />
+            android:hint="email@example.com" />
+
+        <RadioGroup
+            android:id="@+id/rg_register_sex"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RadioButton
+                android:id="@+id/rb_register_sex_male"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Male" />
+
+            <RadioButton
+                android:id="@+id/rb_register_sex_female"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Female" />
+        </RadioGroup>
+
         <EditText
-            android:id="@+id/username"
-            android:layout_width="200dp"
+            android:id="@+id/et_register_mobile"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/reg_margin_bottom"
-            android:hint="User Name "
-            android:gravity="center"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/reg_text_size" />
+            android:hint="mobile"
+            android:inputType="number" />
+
         <EditText
-            android:id="@+id/password"
-            android:layout_width="200dp"
+            android:id="@+id/et_register_nid"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/reg_margin_bottom"
-            android:hint="Password "
-            android:inputType="textPassword"
-            android:gravity="center"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/reg_text_size" />
+            android:hint="national id"
+            android:inputType="number" />
+
         <EditText
-            android:id="@+id/email"
-            android:layout_width="200dp"
+            android:id="@+id/et_register_password"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/reg_margin_bottom"
-            android:hint="Email "
-            android:gravity="center"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/reg_text_size" />
-        <EditText
-            android:id="@+id/phone"
-            android:layout_width="200dp"
+            android:hint="Password"
+            android:inputType="textPassword" />
+
+        <Button
+            android:id="@+id/btn_register_submit"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/reg_margin_bottom"
-            android:hint="Mobile Number "
-            android:inputType="textPassword"
-            android:gravity="center"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/reg_text_size" />
-        <EditText
-            android:id="@+id/usersex"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/reg_margin_bottom"
-            android:hint="Sex "
-            android:gravity="center"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/reg_text_size" />
-        <EditText
-            android:id="@+id/userpersonalid"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/reg_margin_bottom"
-            android:hint="NID / Passport No "
-            android:gravity="center"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/reg_text_size" />
+            android:text="SUBMIT" />
+
     </LinearLayout>
 
     <RelativeLayout
-        android:layout_width="match_parent"
-
         android:id="@+id/next_layout"
-        android:layout_alignParentBottom="true"
-        android:layout_height="wrap_content">
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
         <Button
+            android:id="@+id/next"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/next"
-            android:text="Next"
-            android:layout_margin="7dp"
-            android:textSize="15sp"
             android:layout_centerHorizontal="true"
+            android:layout_margin="7dp"
+            android:background="#6200ea"
+            android:text="Next"
             android:textColor="#ffffff"
-            android:background="#6200ea"/>
+            android:textSize="15sp" />
 
     </RelativeLayout>
-
-
 
 
 </RelativeLayout>

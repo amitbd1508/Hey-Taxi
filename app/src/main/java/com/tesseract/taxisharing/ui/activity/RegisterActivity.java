@@ -9,9 +9,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -25,19 +33,35 @@ import com.squareup.picasso.Picasso;
 import com.tesseract.taxisharing.R;
 import com.tesseract.taxisharing.model.User;
 
-public class RegisterActivity extends AppCompatActivity implements  GoogleApiClient.OnConnectionFailedListener{
+import java.util.HashMap;
+import java.util.Map;
+
+public class RegisterActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
 
     private static final String TAG = "RegisterActivity";
     private static final int RC_SIGN_IN = 9001;
 
     //view declaretion
-    View btnGoogleSignIn,btnFacebookSignIn;
-    EditText etUsername,etPassword,etFullname,etSex,etPhone,etEmail;
+    View btnGoogleSignIn, btnFacebookSignIn;
     ImageView ivUserImage;
-
     User user;
 
+    EditText etFirstName;
+    EditText etLastName;
+    EditText etEamil;
+    EditText etMobile;
+    EditText etPassword;
+    EditText etNid;
+    RadioGroup rgSex;
+
+    String strFullName;
+    String strEmai;
+    String strMobile;
+    String strSex;
+    String strNid;
+    String strPassword;
+    String strImageLink;
 
 
     private GoogleApiClient mGoogleApiClient;
@@ -52,25 +76,29 @@ public class RegisterActivity extends AppCompatActivity implements  GoogleApiCli
         //view initialization
         btnGoogleSignIn = (View) findViewById(R.id.google_login);
         btnFacebookSignIn = (View) findViewById(R.id.facebook_login);
-        etPassword= (EditText) findViewById(R.id.password);
-        etUsername= (EditText) findViewById(R.id.username);
-        etSex= (EditText) findViewById(R.id.usersex);
-        etFullname= (EditText) findViewById(R.id.fullname);
-        etEmail= (EditText) findViewById(R.id.email);
-        etPhone= (EditText) findViewById(R.id.phone);
-        ivUserImage=(ImageView)findViewById(R.id.user_imaage);
 
+
+        etFirstName = (EditText) findViewById(R.id.et_register_first_name);
+        etLastName = (EditText) findViewById(R.id.et_register_last_name);
+        etEamil = (EditText) findViewById(R.id.et_register_email);
+        etMobile = (EditText) findViewById(R.id.et_register_mobile);
+        etPassword = (EditText) findViewById(R.id.et_register_password);
+        etNid = (EditText) findViewById(R.id.et_register_nid);
+        ivUserImage = (ImageView) findViewById(R.id.iv_register_profile_pic);
+        rgSex = (RadioGroup) findViewById(R.id.rg_register_sex);
 
 
         findViewById(R.id.next).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
                 //do here login check
-
-                startActivity(new Intent(getApplicationContext(),UserMapsActivity.class));
-                finish();
+                if(registerRequest()){
+                    startActivity(new Intent(getApplicationContext(), UserMapsActivity.class));
+                    finish();
+                }
+                else {
+                    Toast.makeText(RegisterActivity.this, "Fill All fields", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -98,10 +126,59 @@ public class RegisterActivity extends AppCompatActivity implements  GoogleApiCli
         // [END customize_button]
     }
 
+    public boolean registerRequest() {
+
+        if(isNotEmpty(etFirstName) && isNotEmpty(etLastName) && isNotEmpty(etEamil) && isNotEmpty(etMobile)
+                && isNotEmpty(etNid) && isNotEmpty(etPassword) ){
+            strFullName = etFirstName.getText().toString() + " " + etLastName.getText().toString();
+            strEmai = etEamil.getText().toString();
+            strMobile = etMobile.getText().toString();
+            if (rgSex.getCheckedRadioButtonId() == R.id.rb_register_sex_male) {
+                strSex = "Male";
+            } else if (rgSex.getCheckedRadioButtonId() == R.id.rb_register_sex_female) {
+                strSex = "Female";
+            }
+            strNid = etNid.getText().toString();
+            strPassword = etPassword.getText().toString();
+            strImageLink = "https://github.com/mikepenz/MaterialDrawer/blob/develop/app/src/main/res/drawable/profile3.jpg";
+
+            String url = "http://team-tesseract.xyz/taxishare/insert_user.php";
+            StringRequest sr = new StringRequest(Request.Method.GET, url,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                }
+            }) {
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String> map = new HashMap<String, String>();
+                    map.put("user_fullname", strFullName);
+                    map.put("user_personalid", strNid);
+                    map.put("user_password", strPassword);
+                    map.put("user_email", strEmai);
+                    map.put("user_image_link", strImageLink);
+                    map.put("user_sex", strSex);
+                    map.put("user_mobile", strMobile);
+                    return map;
+                }
+            };
+
+            RequestQueue rq = Volley.newRequestQueue(this);
+            rq.add(sr);
+
+            return true;
+        }
+            return false;
+    }
 
 
-    void onStartMethod()
-    {
+    void onStartMethod() {
         OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
         if (opr.isDone()) {
             // If the user's cached credentials are valid, the OptionalPendingResult will be "done"
@@ -123,6 +200,7 @@ public class RegisterActivity extends AppCompatActivity implements  GoogleApiCli
             });
         }
     }
+
     // [START onActivityResult]
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -147,8 +225,8 @@ public class RegisterActivity extends AppCompatActivity implements  GoogleApiCli
             GoogleSignInAccount acct = result.getSignInAccount();
             //mStatusTextView.setText(getString(R.string.signed_in_fmt, acct.getDisplayName()+acct.getEmail()+acct.getGivenName()+acct.getIdToken()+acct.getId()+acct.getFamilyName()));
 
-            user=new User();
-            user.setFullname(acct.getGivenName()+"  "+acct.getFamilyName());
+            user = new User();
+            user.setFullname(acct.getGivenName() + "  " + acct.getFamilyName());
             //user.setImage_link(acct.getPhotoUrl().toString()); //error
             user.setSex("Male");
             user.setEmail(acct.getEmail());
@@ -158,10 +236,9 @@ public class RegisterActivity extends AppCompatActivity implements  GoogleApiCli
             Picasso.with(getApplicationContext())
                     .load(acct.getPhotoUrl())
                     .into(ivUserImage);
-            etEmail.setText(acct.getEmail());
-            etFullname.setText(acct.getGivenName()+"  "+acct.getFamilyName());
-            etUsername.setText(acct.getIdToken());
-
+            etEamil.setText(acct.getEmail());
+            etFirstName.setText(acct.getGivenName() + "  " + acct.getFamilyName());
+            etLastName.setText(acct.getIdToken());
 
 
         } else {
@@ -231,7 +308,11 @@ public class RegisterActivity extends AppCompatActivity implements  GoogleApiCli
             mProgressDialog.hide();
         }
     }
+    private boolean isNotEmpty(EditText etText) {
+        if (etText.getText().toString().trim().length() > 0)
+            return true;
 
-
+        return false;
+    }
 
 }
