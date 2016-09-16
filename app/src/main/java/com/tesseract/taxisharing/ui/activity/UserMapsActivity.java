@@ -39,10 +39,14 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.mikepenz.materialdrawer.AccountHeader;
+import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import com.tesseract.taxisharing.R;
 import com.tesseract.taxisharing.model.UserLocation;
 import com.tesseract.taxisharing.util.App;
@@ -118,26 +122,50 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
     }
 
     public void Drawer() {
+
+        AccountHeader headerResult = new AccountHeaderBuilder()
+                .withActivity(this)
+                .withHeaderBackground(R.drawable.header)
+                .addProfiles(
+                        new ProfileDrawerItem().withName("Mike Penz").withEmail("mikepenz@gmail.com").withIcon(getResources().getDrawable(R.drawable.profile))
+                )
+                .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
+                    @Override
+                    public boolean onProfileChanged(View view, IProfile profile, boolean currentProfile) {
+                        return false;
+                    }
+                })
+                .build();
+
         final Drawer result = new DrawerBuilder()
                 .withActivity(this)
-                .withDrawerWidthDp(200)
+                .withDrawerWidthDp(250)
+                .withAccountHeader(headerResult)
                 .addDrawerItems(
-                        new PrimaryDrawerItem().withName("Navigation"),
-                        new PrimaryDrawerItem().withName("Amit Ghosh"),
-                        new PrimaryDrawerItem().withName("Login").withSetSelected(true).withIdentifier(2),
-                        new PrimaryDrawerItem().withName("LogOut").withSetSelected(true).withIdentifier(1)
+                        new PrimaryDrawerItem().withName("payment").withSetSelected(true).withIdentifier(1),
+                        new PrimaryDrawerItem().withName("mCredit").withSetSelected(true).withIdentifier(2),
+                        new PrimaryDrawerItem().withName("Lost and found").withSetSelected(true).withIdentifier(3),
+                        new PrimaryDrawerItem().withName("settings").withSetSelected(true).withIdentifier(4)
+
 
                 )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                        if (drawerItem.equals(1)) {
+                        if (drawerItem.equals(0)) {
 
-                        }
-                        if (drawerItem.equals(2)) {
+                        } else if (drawerItem.equals(1)) {
+                            startActivity(new Intent(UserMapsActivity.this, ActivityPayment.class));
+                        } else if (drawerItem.equals(2)) {
+                            startActivity(new Intent(UserMapsActivity.this, ActivityCredit.class));
 
-                            Toast.makeText(getApplicationContext(), "Clicked", Toast.LENGTH_SHORT).show();
+                        } else if (drawerItem.equals(3)) {
+                            startActivity(new Intent(UserMapsActivity.this, ActivityLostAndFount.class));
+
+                        } else if (drawerItem.equals(4)) {
+                            startActivity(new Intent(UserMapsActivity.this, ActivitySettings.class));
                         }
+
                         return true;
                     }
                 }).withDrawerGravity(Gravity.LEFT)
@@ -315,7 +343,7 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
                 //Log.d("location", dataSnapshot.getValue().toString());
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     UserLocation pr = child.getValue(UserLocation.class);
-                    setMarker(pr,pr.getUsername(),ZOOM);
+                    setMarker(pr, pr.getUsername(), ZOOM);
                 }
             }
 
@@ -325,6 +353,7 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
             }
         });
     }
+
     private void updateLocation(final Location location) {
 
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -375,11 +404,12 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
                 // to handle the case where the user grants the permission. See the documentation
                 // for ActivityCompat#requestPermissions for more details.
                 return;
-            }tracker.startListening();
+            }
+        tracker.startListening();
     }
 
     private void stopTracking() {
-        if(tracker!=null)
+        if (tracker != null)
             tracker.stopListening();
     }
 
