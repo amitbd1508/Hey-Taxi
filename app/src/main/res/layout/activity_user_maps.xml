@@ -16,37 +16,53 @@
         tools:layout="@layout/abc_action_bar_title_item" />
 
 
-
-    <EditText
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/etLocationSearchbar"
-        android:hint="Search location"
-        android:background="#ffffff"
-        android:textSize="@dimen/et_text_size"
-        android:layout_margin="8dp"
-        android:textColor="#000000"
-        android:padding="6dp"
-        android:layout_alignTop="@+id/map"
+        android:layout_alignEnd="@+id/map"
         android:layout_alignRight="@+id/map"
-        android:layout_alignEnd="@+id/map" />
+        android:layout_alignTop="@+id/map"
+        android:padding="5dp">
+
+        <ImageView
+            android:id="@+id/iv_map_drawer"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:background="@android:color/transparent"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_menu" />
+
+        <EditText
+            android:id="@+id/etLocationSearchbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_toRightOf="@id/iv_map_drawer"
+            android:background="#ffffff"
+            android:hint="Search location"
+            android:padding="6dp"
+            android:textColor="#000000"
+            android:textSize="@dimen/et_text_size" />
+    </RelativeLayout>
+
 
     <ListView
+        android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/listView"
-        android:visibility="invisible"
-        android:layout_below="@+id/searchlocation"
+        android:layout_alignEnd="@+id/searchlocation"
         android:layout_alignRight="@+id/searchlocation"
-        android:layout_alignEnd="@+id/searchlocation" />
+        android:layout_below="@+id/searchlocation"
+        android:visibility="invisible" />
 
     <Button
+        android:id="@+id/btnLocationPin"
         android:layout_width="30dp"
         android:layout_height="40dp"
-        android:id="@+id/btnLocationPin"
-        android:background="@drawable/location_pin"
+        android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:background="@drawable/location_pin" />
 
 
 </RelativeLayout>

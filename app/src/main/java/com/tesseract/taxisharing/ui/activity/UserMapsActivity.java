@@ -24,6 +24,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -87,6 +88,8 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
     ArrayAdapter<String> lvAdapter;
     List<Address> addressList = null;
 
+    ImageView ivMenu;
+
     //firebase variable
     FirebaseDatabase db;
     DatabaseReference ref;
@@ -100,6 +103,7 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
         btnLocationPin = (Button) findViewById(R.id.btnLocationPin);
         etSearchLocation = (EditText) findViewById(R.id.etLocationSearchbar);
         lvSearchList = (ListView) findViewById(R.id.listView);
+        ivMenu = (ImageView) findViewById(R.id.iv_map_drawer);
 
 
         //initalize variable
@@ -173,6 +177,17 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
         result.openDrawer();
         result.closeDrawer();
         result.isDrawerOpen();
+
+        ivMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (result.isDrawerOpen()) {
+                    result.closeDrawer();
+                } else {
+                    result.openDrawer();
+                }
+            }
+        });
     }
 
 
