@@ -4,31 +4,33 @@ package com.tesseract.taxisharing.model;
  * Created by BlackFlag on 9/11/2016.
  */
 public class User {
-    private String givenName;
+    private String fullname;
     private String username;
     private String password;
-    private String userID;
+    private String phone;
     private String sex;
     private String image_link;
-
-    public User(String givenName, String username, String password, String userID, String sex, String image_link) {
-        this.givenName = givenName;
-        this.username = username;
-        this.password = password;
-        this.userID = userID;
-        this.sex = sex;
-        this.image_link = image_link;
-    }
+    private String email;
 
     public User() {
     }
 
-    public String getGivenName() {
-        return givenName;
+    public User(String fullname, String username, String password, String phone, String sex, String image_link, String email) {
+        this.fullname = fullname;
+        this.username = username;
+        this.password = password;
+        this.phone = phone;
+        this.sex = sex;
+        this.image_link = image_link;
+        this.email = email;
     }
 
-    public void setGivenName(String givenName) {
-        this.givenName = givenName;
+    public String getFullname() {
+        return fullname;
+    }
+
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
     }
 
     public String getUsername() {
@@ -47,12 +49,12 @@ public class User {
         this.password = password;
     }
 
-    public String getUserID() {
-        return userID;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setUserID(String userID) {
-        this.userID = userID;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getSex() {
@@ -69,5 +71,13 @@ public class User {
 
     public void setImage_link(String image_link) {
         this.image_link = image_link;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

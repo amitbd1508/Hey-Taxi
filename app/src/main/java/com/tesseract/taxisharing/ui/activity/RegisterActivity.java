@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -30,72 +31,68 @@ public class RegisterActivity extends AppCompatActivity implements  GoogleApiCli
     private static final String TAG = "RegisterActivity";
     private static final int RC_SIGN_IN = 9001;
 
-    Button signInButton;
+    //view declaretion
+    View btnGoogleSignIn,btnFacebookSignIn;
+    EditText etUsername,etPassword,etFullname,etSex,etPhone,etEmail;
+    ImageView ivUserImage;
+
+    User user;
+
+
+
     private GoogleApiClient mGoogleApiClient;
     private TextView mStatusTextView;
     private ProgressDialog mProgressDialog;
-    ImageView userimage;
-    EditText username,password,givenname,usersex;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        // Views
-        mStatusTextView = (TextView) findViewById(R.id.status);
+        //view initialization
+        btnGoogleSignIn = (View) findViewById(R.id.google_login);
+        btnFacebookSignIn = (View) findViewById(R.id.facebook_login);
+        etPassword= (EditText) findViewById(R.id.password);
+        etUsername= (EditText) findViewById(R.id.username);
+        etSex= (EditText) findViewById(R.id.usersex);
+        etFullname= (EditText) findViewById(R.id.fullname);
+        etEmail= (EditText) findViewById(R.id.email);
+        etPhone= (EditText) findViewById(R.id.phone);
+        ivUserImage=(ImageView)findViewById(R.id.user_imaage);
 
 
-        password= (EditText) findViewById(R.id.password);
-        username= (EditText) findViewById(R.id.username);
-        usersex= (EditText) findViewById(R.id.usersex);
-        givenname= (EditText) findViewById(R.id.name);
-        findViewById(R.id.signin).setOnClickListener(new View.OnClickListener() {
+
+        findViewById(R.id.next).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
+                //do here login check
+
                 startActivity(new Intent(getApplicationContext(),MapsActivity.class));
                 finish();
             }
         });
 
-        // Button listeners
 
-
-
-        userimage=(ImageView)findViewById(R.id.user_imaage);
-
-        // [START configure_signin]
-        // Configure sign-in to request the user's ID, email address, and basic
-        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
+        //google signin formalitis
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
-        // [END configure_signin]
-
-        // [START build_client]
-        // Build a GoogleApiClient with access to the Google Sign-In API and the
-        // options specified by gso.
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
-        // [END build_client]
 
-        // [START customize_button]
-        // Customize sign-in button. The sign-in button can be displayed in
-        // multiple sizes and color schemes. It can also be contextually
-        // rendered based on the requested scopes. For example. a red button may
-        // be displayed when Google+ scopes are requested, but a white button
-        // may be displayed when only basic profile is requested. Try adding the
-        // Scopes.PLUS_LOGIN scope to the GoogleSignInOptions to see the
-        // difference.
-        signInButton = (Button) findViewById(R.id.google);
-//        signInButton.setSize(SignInButton.SIZE_STANDARD);
-//        signInButton.setScopes(gso.getScopeArray());
-        signInButton.setOnClickListener(new View.OnClickListener() {
+
+        //click to fill all info
+        btnGoogleSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onStartMethod();
                 signIn();
-                signInButton.setVisibility(View.GONE);
+                btnGoogleSignIn.setEnabled(false);
+                //btnGoogleSignIn.setVisibility(View.GONE);
             }
         });
         // [END customize_button]
@@ -150,28 +147,30 @@ public class RegisterActivity extends AppCompatActivity implements  GoogleApiCli
             GoogleSignInAccount acct = result.getSignInAccount();
             //mStatusTextView.setText(getString(R.string.signed_in_fmt, acct.getDisplayName()+acct.getEmail()+acct.getGivenName()+acct.getIdToken()+acct.getId()+acct.getFamilyName()));
 
-            User user=new User();
-            user.setGivenName(acct.getGivenName());
-            //user.setImage_link(acct.getPhotoUrl().toString());
-
+            user=new User();
+            user.setFullname(acct.getGivenName()+"  "+acct.getFamilyName());
+            //user.setImage_link(acct.getPhotoUrl().toString()); //error
             user.setSex("Male");
+            user.setEmail(acct.getEmail());
+            user.setUsername(acct.getId());
 
 
             Picasso.with(getApplicationContext())
                     .load(acct.getPhotoUrl())
-                    .into(userimage);
+                    .into(ivUserImage);
+            etEmail.setText(acct.getEmail());
+            etFullname.setText(acct.getGivenName()+"  "+acct.getFamilyName());
+            etUsername.setText(acct.getIdToken());
 
 
-            updateUI(true);
-            username.setText(acct.getEmail());
-            usersex.setText("Male");
-            givenname.setText(acct.getDisplayName());
 
         } else {
             // Signed out, show unauthenticated UI.
-            updateUI(false);
+            //we are not imliment signin otion
         }
     }
+
+
     // [END handleSignInResult]
 
     // [START signIn]
@@ -188,7 +187,7 @@ public class RegisterActivity extends AppCompatActivity implements  GoogleApiCli
                     @Override
                     public void onResult(Status status) {
                         // [START_EXCLUDE]
-                        updateUI(false);
+
                         // [END_EXCLUDE]
                     }
                 });
@@ -202,7 +201,7 @@ public class RegisterActivity extends AppCompatActivity implements  GoogleApiCli
                     @Override
                     public void onResult(Status status) {
                         // [START_EXCLUDE]
-                        updateUI(false);
+
                         // [END_EXCLUDE]
                     }
                 });
@@ -213,6 +212,7 @@ public class RegisterActivity extends AppCompatActivity implements  GoogleApiCli
     public void onConnectionFailed(ConnectionResult connectionResult) {
         // An unresolvable error has occurred and Google APIs (including Sign-In) will not
         // be available.
+        Toast.makeText(RegisterActivity.this, "Failed to fetch info from google", Toast.LENGTH_SHORT).show();
         Log.d(TAG, "onConnectionFailed:" + connectionResult);
     }
 
@@ -232,29 +232,6 @@ public class RegisterActivity extends AppCompatActivity implements  GoogleApiCli
         }
     }
 
-    private void updateUI(boolean signedIn) {
-        if (signedIn) {
-            findViewById(R.id.google).setVisibility(View.GONE);
-
-        } else {
-            mStatusTextView.setText(R.string.signed_out);
 
 
-        }
-    }
-
-    /*@Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.sign_in_button:
-                signIn();
-                break;
-            case R.id.sign_out_button:
-                signOut();
-                break;
-            case R.id.disconnect_button:
-                revokeAccess();
-                break;
-        }
-    }*/
 }

@@ -43,12 +43,11 @@ import fr.quentinklein.slt.TrackerSettings;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    LocationTracker tracker;
+
     public Integer count=1;
 
-    String[] values = new String[] {
-            "Android List View",
-            "Empty"
-    };
+
     List <String>searchResult;
     EditText serchLocation;
     ListView searchList;
@@ -79,10 +78,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         db = FirebaseDatabase.getInstance();
         ref = db.getReference("userlocations");
-        /*UserLocation userLocation=new UserLocation("amit",String.valueOf(20.04),String.valueOf(90.67), DateFormat.getTimeInstance().format(new Date()));
-        ref.push().setValue(userLocation);
-        UserLocation userLocation1=new UserLocation("Sonet",String.valueOf(21.04),String.valueOf(90.67), DateFormat.getTimeInstance().format(new Date()));
-        ref.push().setValue(userLocation);*/
+//        UserLocation userLocation=new UserLocation("Akash",String.valueOf(23.754567),String.valueOf(90.367898), DateFormat.getTimeInstance().format(new Date()));
+//        ref.push().setValue(userLocation);
+//        UserLocation userLocation1=new UserLocation("Prottoy",String.valueOf(21.04),String.valueOf(90.67), DateFormat.getTimeInstance().format(new Date()));
+//        ref.push().setValue(userLocation);
 
 
 
@@ -180,7 +179,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
-        LocationTracker tracker = new LocationTracker(this, settings) {
+        tracker = new LocationTracker(this, settings) {
 
             @Override
             public void onLocationFound(Location location) {
@@ -234,10 +233,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .position(latLng)
                 .title(markerName)
                 .snippet("Last update"+userLocation.getTime())
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.hamudi))
+
         );
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        mMap.animateCamera( CameraUpdateFactory.zoomTo( zoom) );
+//        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+//        mMap.animateCamera( CameraUpdateFactory.zoomTo( zoom) );
     }
 
     private void updateLocationInMap(Location location) {
@@ -268,7 +267,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
 
-                    if(pr.getUsername().equals("amit")){
+                    if(pr.getUsername().equals("Sonet")){
                         pr.setLatitude(String.valueOf(location.getLatitude()));
                         pr.setLongitude(String.valueOf(location.getLongitude()));
                         pr.setTime(DateFormat.getTimeInstance().format(new Date()));
@@ -283,5 +282,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             }
         });
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(tracker!=null)
+            tracker.stopListening();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(tracker!=null)
+            tracker.stopListening();
     }
 }
