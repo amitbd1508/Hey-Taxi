@@ -134,8 +134,6 @@
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/searchlocation"
-        android:layout_alignRight="@+id/searchlocation"
         android:layout_below="@+id/layout_search"
         android:visibility="invisible" />
 

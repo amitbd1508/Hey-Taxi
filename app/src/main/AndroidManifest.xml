@@ -86,7 +86,6 @@
         <activity android:name=".ui.activity.ActivityPayment" />
         <activity android:name=".ui.activity.ActivityCredit" />
         <activity android:name=".ui.activity.ActivityLostAndFount" />
-        <activity android:name=".ui.activity.TestRequestActivity"></activity>
     </application>
 
 </manifest>
