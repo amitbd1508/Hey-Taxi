@@ -49,6 +49,57 @@
             android:textColor="#000000"
             android:textSize="@dimen/et_text_size" />
     </RelativeLayout>
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/layout_source_destination"
+        android:layout_below="@+id/layout_search"
+        app:cardElevation="5dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20dp"
+                    android:id="@+id/tvFrom"
+                    android:text="From: Dhaka"/>
+                <android.support.v4.widget.Space
+                    android:layout_width="80dp"
+                    android:layout_height="match_parent" />
+
+                <TextView
+                    android:id="@+id/tvTo"
+                    android:text="To: Khulna"
+                    android:textSize="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#c9c9c9"
+                >
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/btnRequest"
+                    android:text="Request" />
+            </LinearLayout>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
 
 
     <ListView
@@ -74,6 +125,7 @@
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/layout_response_from_driver"
         android:layout_alignParentBottom="true"
         app:cardElevation="5dp">
 
@@ -81,26 +133,41 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:id="@+id/layout_driver_request"
             android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sonet"
+                    android:id="@+id/tvDriverName"
+                    android:textSize="14sp"/>
 
                 <ImageView
                     android:id="@+id/iv_user_maps_driver_image"
                     android:layout_width="60dp"
+                    android:src="@drawable/man"
                     android:layout_height="60dp" />
 
                 <android.support.v4.widget.Space
-                    android:layout_width="80dp"
+                    android:layout_width="40dp"
                     android:layout_height="match_parent" />
 
                 <ImageView
                     android:id="@+id/iv_user_maps_car_image"
                     android:layout_width="60dp"
+                    android:src="@drawable/taxi_cab"
                     android:layout_height="60dp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Maruti Suju"
+                    android:textSize="14sp"
+                    android:id="@+id/tvCarName"/>
             </LinearLayout>
 
             <LinearLayout
@@ -111,9 +178,10 @@
                 android:elevation="4dp"
                 android:padding="5dp">
 
-                <TextView
+                <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:id="@+id/btnDriverContacat"
                     android:text="Contact" />
             </LinearLayout>
 

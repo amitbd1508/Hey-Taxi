@@ -35,6 +35,7 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.squareup.picasso.Picasso;
 import com.tesseract.taxisharing.R;
+import com.tesseract.taxisharing.util.App;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -77,11 +78,11 @@ public class LoginActivity extends AppCompatActivity {
 
                     SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                     SharedPreferences.Editor editor = preferences.edit();
-                    editor.putString("heyTaxiUserLogIn", "Yes");
-                    editor.putString("heyTaxiUserEmail", strEmail);
-                    editor.putString("heyTaxiUserFName", strFullName);
-                    editor.putString("heyTaxiUserSex", strSex);
-                    editor.putString("heyTaxiUserImage", strImage);
+                    editor.putString(App.heyTaxiUserLogIn, "Yes");
+                    editor.putString(App.heyTaxiUserEmail, strEmail);
+                    editor.putString(App.heyTaxiUserFName, strFullName);
+                    editor.putString(App.heyTaxiUserSex, strSex);
+                    editor.putString(App.heyTaxiUserImage, strImage);
                     editor.commit();
 
                     startActivity(new Intent(getApplicationContext(), UserMapsActivity.class));

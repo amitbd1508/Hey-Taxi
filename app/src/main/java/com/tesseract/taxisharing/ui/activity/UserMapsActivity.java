@@ -17,6 +17,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -28,7 +29,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -52,6 +55,7 @@ import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import com.tesseract.taxisharing.R;
+import com.tesseract.taxisharing.model.TaxiRequest;
 import com.tesseract.taxisharing.model.UserLocation;
 import com.tesseract.taxisharing.util.App;
 
@@ -60,6 +64,7 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import fr.quentinklein.slt.LocationTracker;
 import fr.quentinklein.slt.TrackerSettings;
@@ -88,6 +93,14 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
     List<String> searchResult;
     EditText etSearchLocation;
     ListView lvSearchList;
+    CardView layout_source_destination;
+    TextView tvForm,tvTo;
+    Button sendRequst;
+
+    CardView layout_response_from_driver;
+    TextView tvDriverName,tvCarName;
+    Button contactDriver;
+
     ArrayAdapter<String> lvAdapter;
     List<Address> addressList = null;
 
@@ -99,11 +112,20 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
     FirebaseDatabase db;
     DatabaseReference ref;
 
+    FirebaseDatabase reqdb;
+    DatabaseReference reqref;
+
+
     String strEmail;
     String strFullName;
     String strSex;
     String strRating;
     String strImage;
+
+    static double currentLatitude=21.0,currentLongitude=90.0;
+    static double destinationLatitude=21.0,destinationLongitude=90.0;
+
+
 
 
     @Override
@@ -115,6 +137,22 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
         etSearchLocation = (EditText) findViewById(R.id.etLocationSearchbar);
         lvSearchList = (ListView) findViewById(R.id.listView);
         ivMenu = (ImageView) findViewById(R.id.iv_map_drawer);
+        sendRequst= (Button) findViewById(R.id.btnRequest);
+        tvForm= (TextView) findViewById(R.id.tvFrom);
+        tvTo= (TextView) findViewById(R.id.tvTo);
+
+
+
+        layout_source_destination= (CardView) findViewById(R.id.layout_source_destination);
+        layout_source_destination.setVisibility(View.INVISIBLE);
+
+        tvCarName= (TextView) findViewById(R.id.tvCarName);
+        tvDriverName= (TextView) findViewById(R.id.tvDriverName);
+        contactDriver= (Button) findViewById(R.id.btnDriverContacat);
+        layout_response_from_driver= (CardView) findViewById(R.id.layout_response_from_driver);
+        layout_source_destination.setVisibility(View.INVISIBLE);
+
+
 
         getDatafromSharedPreferences();
 
@@ -127,6 +165,8 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
         lvSearchList.setAdapter(lvAdapter);
         db = FirebaseDatabase.getInstance();
         ref = db.getReference("userlocations");   //i saved in userlocations
+        reqdb = FirebaseDatabase.getInstance();
+        reqref = reqdb.getReference("taxirequest");
 
 
         //code here
@@ -224,6 +264,75 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
 
 
         //Listener
+        contactDriver.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(UserMapsActivity.this, "Contact Driver clicked", Toast.LENGTH_SHORT).show();
+            }
+        });
+        reqref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    TaxiRequest pr = child.getValue(TaxiRequest.class);
+                    if(pr.getEmail().equals("amitbd1508@gmail.com")&& pr.getStatus().equals(App.TAXI_DRIVER_REQUST))
+                    {
+                        //getdata from driver database and set
+                        tvCarName.setText("Alion Premio");
+                        tvDriverName.setText(pr.getDriverEmail());
+                        layout_response_from_driver.setVisibility(View.VISIBLE);
+
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        sendRequst.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TaxiRequest taxiRequest=new TaxiRequest();
+                taxiRequest.setName("Amit");
+                taxiRequest.setStatus(App.TAXI_REQUST_YES);
+                taxiRequest.setEmail("amitbd1508@gmail.com");
+                taxiRequest.setSourceLatitude(String.valueOf(currentLatitude));
+                taxiRequest.setSourceLongitude(String.valueOf(currentLongitude));
+                taxiRequest.setDestinationLatitude(String.valueOf(destinationLatitude));
+                taxiRequest.setDestinationLongitude(String.valueOf(destinationLongitude));
+                taxiRequest.setTime(DateFormat.getTimeInstance().format(new Date()));
+                reqref.push().setValue(taxiRequest);
+                // prgressbar start  sonet you will impliment a progress bar
+
+            }
+        });
+        mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+            @Override
+            public void onMapLongClick(LatLng latLng) {
+
+                destinationLatitude=latLng.latitude;
+                destinationLongitude=latLng.longitude;
+                Address address=getAddressFromLatLog(new LatLng(currentLatitude,currentLongitude));
+                String source=address.getFeatureName()+","+address.getSubLocality();
+                tvForm.setText(source);
+
+                address=getAddressFromLatLog(latLng);
+                String destination=address.getFeatureName()+","+address.getSubLocality();
+                tvTo.setText(destination);
+                layout_source_destination.setVisibility(View.VISIBLE);
+
+
+            }
+        });
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                layout_source_destination.setVisibility(View.INVISIBLE);
+            }
+        });
         lvSearchList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -321,6 +430,8 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
 
                 Log.d(TAG, "Location :" + location.describeContents() + location.getSpeed() + "\n" + location.getAltitude() + "\n" + location.getLatitude() + "\n" + location.getLongitude() + "\n" + location.getProvider() + "\n" + location.getAccuracy());
 
+                currentLatitude=location.getLatitude();
+                currentLongitude=location.getLongitude();
                 updateLocation(location);
                 updateLocationInMap(location);
                 setLocationInMapFromFireBase();
@@ -446,6 +557,20 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
             tracker.stopListening();
     }
 
+    Address getAddressFromLatLog(LatLng latLng)
+    {
+        Geocoder geocoder;
+        List<Address> addresses = null;
+        geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
+
+        try {
+            addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return addresses.get(0);
+    }
 
     @Override
     protected void onStop() {
