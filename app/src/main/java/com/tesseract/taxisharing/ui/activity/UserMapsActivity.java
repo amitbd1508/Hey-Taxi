@@ -8,10 +8,12 @@ package com.tesseract.taxisharing.ui.activity;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -97,6 +99,12 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
     FirebaseDatabase db;
     DatabaseReference ref;
 
+    String strEmail;
+    String strFullName;
+    String strSex;
+    String strRating;
+    String strImage;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,6 +116,7 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
         lvSearchList = (ListView) findViewById(R.id.listView);
         ivMenu = (ImageView) findViewById(R.id.iv_map_drawer);
 
+        getDatafromSharedPreferences();
 
         //initalize variable
         searchResult = new ArrayList<String>();
@@ -130,13 +139,22 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
 
     }
 
+    private void getDatafromSharedPreferences() {
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        strEmail = preferences.getString("heyTaxiUserEmail", "No");
+        strFullName = preferences.getString("heyTaxiUserFName", "No");
+        strSex = preferences.getString("heyTaxiUserSex", "No");
+        strImage = preferences.getString("heyTaxiUserImage", "No");
+    }
+
     public void Drawer() {
 
         AccountHeader headerResult = new AccountHeaderBuilder()
                 .withActivity(this)
                 .withHeaderBackground(R.drawable.header)
                 .addProfiles(
-                        new ProfileDrawerItem().withName("Mike Penz").withEmail("mikepenz@gmail.com").
+                        new ProfileDrawerItem().withName(strFullName).withEmail(strEmail).
                                 withIcon(getResources().getDrawable(R.drawable.hamudi))
                 )
                 .build();
@@ -150,7 +168,6 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
                         new PrimaryDrawerItem().withName("mCredit").withSetSelected(true).withIdentifier(2),
                         new PrimaryDrawerItem().withName("Lost and found").withSetSelected(true).withIdentifier(3),
                         new PrimaryDrawerItem().withName("settings").withSetSelected(true).withIdentifier(4)
-
 
                 )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
