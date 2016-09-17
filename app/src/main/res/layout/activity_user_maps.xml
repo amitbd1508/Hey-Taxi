@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -49,55 +50,81 @@
             android:textColor="#000000"
             android:textSize="@dimen/et_text_size" />
     </RelativeLayout>
+
     <android.support.v7.widget.CardView
+        android:id="@+id/layout_source_destination"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/layout_source_destination"
         android:layout_below="@+id/layout_search"
+        android:layout_margin="10dp"
         app:cardElevation="5dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-
             android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center">
+                android:gravity="center"
+                android:orientation="vertical">
+
                 <TextView
+                    android:id="@+id/tvFrom"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="20dp"
-                    android:id="@+id/tvFrom"
-                    android:text="From: Dhaka"/>
+                    android:lines="1"
+                    android:text="From: Dhaka"
+                    android:textSize="20dp" />
+
                 <android.support.v4.widget.Space
                     android:layout_width="80dp"
                     android:layout_height="match_parent" />
 
                 <TextView
                     android:id="@+id/tvTo"
-                    android:text="To: Khulna"
-                    android:textSize="20dp"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:lines="1"
+                    android:text="To: Khulna"
+                    android:textSize="20dp" />
             </LinearLayout>
 
             <LinearLayout
-
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#c9c9c9"
-                >
+                android:padding="10dp">
 
-                <Button
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/btnRequest"
-                    android:text="Request" />
+                    android:text="Person : " />
+
+                <com.appyvet.rangebar.RangeBar
+                    android:id="@+id/rangebar"
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    custom:tickEnd="4"
+                    custom:tickInterval="1"
+                    custom:tickStart="1" />
             </LinearLayout>
+
+            <CheckBox
+                android:id="@+id/cb_user_map_person"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Share Ride" />
+
+
+            <Button
+                android:id="@+id/btnRequest"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Request" />
         </LinearLayout>
     </android.support.v7.widget.CardView>
 
@@ -123,90 +150,89 @@
         android:src="@drawable/location_pin" />
 
     <android.support.v7.widget.CardView
+        android:id="@+id/layout_response_from_driver"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/layout_response_from_driver"
         android:layout_alignParentBottom="true"
+        android:layout_margin="5dp"
         app:cardElevation="5dp">
 
         <LinearLayout
+            android:id="@+id/layout_driver_request"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:id="@+id/layout_driver_request"
             android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Sonet"
-                    android:id="@+id/tvDriverName"
-                    android:textSize="14sp"/>
+                android:gravity="center"
+                android:padding="10dp">
 
                 <ImageView
                     android:id="@+id/iv_user_maps_driver_image"
-                    android:layout_width="60dp"
-                    android:src="@drawable/man"
-                    android:layout_height="60dp" />
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/man" />
+
+                <TextView
+                    android:id="@+id/tvDriverName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sonet"
+                    android:textSize="14sp" />
 
                 <android.support.v4.widget.Space
-                    android:layout_width="40dp"
+                    android:layout_width="60dp"
                     android:layout_height="match_parent" />
 
                 <ImageView
                     android:id="@+id/iv_user_maps_car_image"
-                    android:layout_width="60dp"
-                    android:src="@drawable/taxi_cab"
-                    android:layout_height="60dp" />
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/taxi_cab" />
+
                 <TextView
+                    android:id="@+id/tvCarName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
                     android:text="Maruti Suju"
-                    android:textSize="14sp"
-                    android:id="@+id/tvCarName"/>
+                    android:textSize="14sp" />
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/layout_user_maps_contact"
+            <Button
+                android:id="@+id/btnDriverContacat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="#c9c9c9"
-                android:elevation="4dp"
-                android:padding="5dp">
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/btnDriverContacat"
-                    android:text="Contact" />
-            </LinearLayout>
+                android:text="Contact" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:weightSum="3">
+                android:weightSum="2">
 
-                <ImageButton
-                    android:id="@+id/ib_user_maps_share"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1" />
-
-                <ImageButton
-                    android:id="@+id/ib_user_maps_op2"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1" />
 
                 <ImageButton
                     android:id="@+id/ib_user_maps_op3"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:src="@android:drawable/ic_menu_share"
+                    android:tint="#0288d1" />
+
+                <ImageButton
+                    android:id="@+id/ib_user_maps_op2"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:src="@android:drawable/ic_menu_close_clear_cancel"
+                    android:tint="#d50000" />
+
+
             </LinearLayout>
         </LinearLayout>
     </android.support.v7.widget.CardView>

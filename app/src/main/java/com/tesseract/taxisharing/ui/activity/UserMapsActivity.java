@@ -7,7 +7,9 @@ package com.tesseract.taxisharing.ui.activity;
 * */
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -29,6 +31,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -38,6 +41,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.appyvet.rangebar.RangeBar;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -113,11 +117,11 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
     EditText etSearchLocation;
     ListView lvSearchList;
     CardView layout_source_destination;
-    TextView tvForm,tvTo;
+    TextView tvForm, tvTo;
     Button sendRequst;
 
     CardView layout_response_from_driver;
-    TextView tvDriverName,tvCarName;
+    TextView tvDriverName, tvCarName;
     Button contactDriver;
 
     ArrayAdapter<String> lvAdapter;
@@ -145,18 +149,19 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
     String strRating;
     String strImage;
 
-    static double currentLatitude=21.0,currentLongitude=90.0;
-    static double destinationLatitude=21.0,destinationLongitude=90.0;
+    RangeBar rbPerson;
+    CheckBox cbShareRide;
 
-
-
-
-
+    static double currentLatitude = 21.0, currentLongitude = 90.0;
+    static double destinationLatitude = 21.0, destinationLongitude = 90.0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_maps);
+
+        rbPerson = (RangeBar) findViewById(R.id.rangebar);
+        cbShareRide = (CheckBox) findViewById(R.id.cb_user_map_person);
         //initalize view
         initializeview();
         firebaseInitialization();
@@ -165,7 +170,6 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
         lvAdapter = new ArrayAdapter<String>(this,
                 R.layout.item_search, R.id.tv_search_text, searchResult);
         lvSearchList.setAdapter(lvAdapter);
-
 
 
         //code here
@@ -177,7 +181,6 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
 
 
     }
-
 
 
     private void getDatafromSharedPreferences() {
@@ -208,7 +211,7 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
                         new PrimaryDrawerItem().withName("Payment").withSetSelected(true).withIdentifier(1),
                         new PrimaryDrawerItem().withName("mCredit").withSetSelected(true).withIdentifier(2),
                         new PrimaryDrawerItem().withName("Lost and found").withSetSelected(true).withIdentifier(3),
-                        new PrimaryDrawerItem().withName("settings").withSetSelected(true).withIdentifier(4)
+                        new PrimaryDrawerItem().withName("Profile settings").withSetSelected(true).withIdentifier(4)
 
                 )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
@@ -268,8 +271,25 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
         contactDriver.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(UserMapsActivity.this, "Contact Driver clicked", Toast.LENGTH_SHORT).show();
+
+                final CharSequence[] items = {"Call Driver", "Chat"};
+                AlertDialog.Builder builder = new AlertDialog.Builder(UserMapsActivity.this);
+                builder.setTitle("Contact!");
+                builder.setCancelable(true);
+                builder.setItems(items, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int item) {
+
+                        if (items[item].equals("Call Driver")) {
+
+                        } else if (items[item].equals("Chat")) {
+
+                        }
+                    }
+                });
+                builder.show();
             }
+
         });
 
         driverref.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -280,12 +300,10 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     DriverLocation pr = child.getValue(DriverLocation.class);
                     mMap.addMarker(new MarkerOptions()
-                            .position(new LatLng(Double.parseDouble(pr.getLatitude()),Double.parseDouble(pr.getLongitude())))
+                            .position(new LatLng(Double.parseDouble(pr.getLatitude()), Double.parseDouble(pr.getLongitude())))
                             .title(pr.getName())
                             .icon(BitmapDescriptorFactory.fromResource(R.drawable.taxi_cab)
                             ));
-
-
 
 
                 }
@@ -304,12 +322,10 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     DriverLocation pr = child.getValue(DriverLocation.class);
                     mMap.addMarker(new MarkerOptions()
-                            .position(new LatLng(Double.parseDouble(pr.getLatitude()),Double.parseDouble(pr.getLongitude())))
+                            .position(new LatLng(Double.parseDouble(pr.getLatitude()), Double.parseDouble(pr.getLongitude())))
                             .title(pr.getName())
                             .icon(BitmapDescriptorFactory.fromResource(R.drawable.taxi_cab)
                             ));
-
-
 
 
                 }
@@ -326,8 +342,7 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     TaxiRequest pr = child.getValue(TaxiRequest.class);
-                    if(pr.getEmail().equals(strEmail)&& pr.getStatus().equals(App.TAXI_DRIVER_REQUST))
-                    {
+                    if (pr.getEmail().equals(strEmail) && pr.getStatus().equals(App.TAXI_DRIVER_REQUST)) {
                         progressDialog.dismiss();
                         //getdata from driver database and set
                         tvCarName.setText("Alion Premio");
@@ -348,7 +363,7 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
         sendRequst.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TaxiRequest taxiRequest=new TaxiRequest();
+                TaxiRequest taxiRequest = new TaxiRequest();
                 taxiRequest.setName(strFullName);
                 taxiRequest.setStatus(App.TAXI_REQUST_YES);
                 taxiRequest.setEmail(strEmail);
@@ -361,7 +376,7 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
                 // prgressbar start  sonet you will impliment a progress bar
 
 
-                String url = getDirectionsUrl(new LatLng(currentLatitude,currentLongitude), new LatLng(destinationLatitude,destinationLongitude));
+                String url = getDirectionsUrl(new LatLng(currentLatitude, currentLongitude), new LatLng(destinationLatitude, destinationLongitude));
 
                 DownloadTask downloadTask = new DownloadTask();
 
@@ -379,17 +394,17 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
             @Override
             public void onMapLongClick(LatLng latLng) {
 
-                destinationLatitude=latLng.latitude;
-                destinationLongitude=latLng.longitude;
-                Address address=getAddressFromLatLog(new LatLng(currentLatitude,currentLongitude));
-                String source=address.getFeatureName()+","+address.getSubLocality();
+                destinationLatitude = latLng.latitude;
+                destinationLongitude = latLng.longitude;
+                Address address = getAddressFromLatLog(new LatLng(currentLatitude, currentLongitude));
+                String source = address.getFeatureName() + "," + address.getSubLocality();
                 tvForm.setText(source);
 
-                address=getAddressFromLatLog(latLng);
-                String destination=address.getFeatureName()+","+address.getSubLocality();
+                address = getAddressFromLatLog(latLng);
+                String destination = address.getFeatureName() + "," + address.getSubLocality();
                 tvTo.setText(destination);
                 layout_source_destination.setVisibility(View.VISIBLE);
-                LatLng mlatLng = new LatLng(destinationLatitude,destinationLongitude);
+                LatLng mlatLng = new LatLng(destinationLatitude, destinationLongitude);
                 mMap.addMarker(new MarkerOptions()
                         .position(mlatLng)
                         .title(tvTo.getText().toString())
@@ -502,8 +517,8 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
 
                 Log.d(TAG, "Location :" + location.describeContents() + location.getSpeed() + "\n" + location.getAltitude() + "\n" + location.getLatitude() + "\n" + location.getLongitude() + "\n" + location.getProvider() + "\n" + location.getAccuracy());
 
-                currentLatitude=location.getLatitude();
-                currentLongitude=location.getLongitude();
+                currentLatitude = location.getLatitude();
+                currentLongitude = location.getLongitude();
                 updateLocation(location);
                 updateLocationInMap(location);
                 //setLocationInMapFromFireBase();
@@ -517,7 +532,6 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
             }
         };
     }
-
 
 
     private void updateLocationInMap(Location location) {
@@ -583,7 +597,7 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
                         child.getRef().setValue(pr);
 
                     }
-                    Log.d(TAG, pr.getEmail()+"="+strEmail);
+                    Log.d(TAG, pr.getEmail() + "=" + strEmail);
 
                 }
             }
@@ -629,8 +643,7 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
             tracker.stopListening();
     }
 
-    Address getAddressFromLatLog(LatLng latLng)
-    {
+    Address getAddressFromLatLog(LatLng latLng) {
         Geocoder geocoder;
         List<Address> addresses = null;
         geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
@@ -659,7 +672,7 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
 
     //draw path code
 
-    private class DownloadTask extends AsyncTask<String, Void, String>{
+    private class DownloadTask extends AsyncTask<String, Void, String> {
 
         // Downloading data in non-ui thread
         @Override
@@ -668,11 +681,11 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
             // For storing data from web service
             String data = "";
 
-            try{
+            try {
                 // Fetching the data from web service
                 data = downloadUrl(url[0]);
-            }catch(Exception e){
-                Log.d("Background Task",e.toString());
+            } catch (Exception e) {
+                Log.d("Background Task", e.toString());
             }
             return data;
         }
@@ -692,8 +705,10 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
     }
 
 
-    /** A class to parse the Google Places in JSON format */
-    private class ParserTask extends AsyncTask<String, Integer, List<List<HashMap<String,String>>> >{
+    /**
+     * A class to parse the Google Places in JSON format
+     */
+    private class ParserTask extends AsyncTask<String, Integer, List<List<HashMap<String, String>>>> {
 
         // Parsing the data in non-ui thread
         @Override
@@ -702,13 +717,13 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
             JSONObject jObject;
             List<List<HashMap<String, String>>> routes = null;
 
-            try{
+            try {
                 jObject = new JSONObject(jsonData[0]);
                 DirectionsJSONParser parser = new DirectionsJSONParser();
 
                 // Starts parsing data
                 routes = parser.parse(jObject);
-            }catch(Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             return routes;
@@ -722,7 +737,7 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
             MarkerOptions markerOptions = new MarkerOptions();
 
             // Traversing through all the routes
-            for(int i=0;i<result.size();i++){
+            for (int i = 0; i < result.size(); i++) {
                 points = new ArrayList<LatLng>();
                 lineOptions = new PolylineOptions();
 
@@ -730,8 +745,8 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
                 List<HashMap<String, String>> path = result.get(i);
 
                 // Fetching all the points in i-th route
-                for(int j=0;j<path.size();j++){
-                    HashMap<String,String> point = path.get(j);
+                for (int j = 0; j < path.size(); j++) {
+                    HashMap<String, String> point = path.get(j);
 
                     double lat = Double.parseDouble(point.get("lat"));
                     double lng = Double.parseDouble(point.get("lng"));
@@ -753,41 +768,39 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
     }
 
 
-
-
-
-
-    private String getDirectionsUrl(LatLng origin,LatLng dest){
+    private String getDirectionsUrl(LatLng origin, LatLng dest) {
 
         // Origin of route
-        String str_origin = "origin="+origin.latitude+","+origin.longitude;
+        String str_origin = "origin=" + origin.latitude + "," + origin.longitude;
 
         // Destination of route
-        String str_dest = "destination="+dest.latitude+","+dest.longitude;
+        String str_dest = "destination=" + dest.latitude + "," + dest.longitude;
 
 
         // Sensor enabled
         String sensor = "sensor=false";
 
         // Building the parameters to the web service
-        String parameters = str_origin+"&"+str_dest+"&"+sensor;
+        String parameters = str_origin + "&" + str_dest + "&" + sensor;
 
         // Output format
         String output = "json";
 
         // Building the url to the web service
-        String url = "https://maps.googleapis.com/maps/api/directions/"+output+"?"+parameters;
+        String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters;
 
 
         return url;
     }
 
-    /** A method to download json data from url */
-    private String downloadUrl(String strUrl) throws IOException{
+    /**
+     * A method to download json data from url
+     */
+    private String downloadUrl(String strUrl) throws IOException {
         String data = "";
         InputStream iStream = null;
         HttpURLConnection urlConnection = null;
-        try{
+        try {
             URL url = new URL(strUrl);
 
             // Creating an http connection to communicate with url
@@ -801,10 +814,10 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
 
             BufferedReader br = new BufferedReader(new InputStreamReader(iStream));
 
-            StringBuffer sb  = new StringBuffer();
+            StringBuffer sb = new StringBuffer();
 
             String line = "";
-            while( ( line = br.readLine())  != null){
+            while ((line = br.readLine()) != null) {
                 sb.append(line);
             }
 
@@ -812,9 +825,9 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
 
             br.close();
 
-        }catch(Exception e){
-            Log.d("Exception while downloading url", e.toString());
-        }finally{
+        } catch (Exception e) {
+            Log.d("Exception while ", e.toString());
+        } finally {
             iStream.close();
             urlConnection.disconnect();
         }
@@ -835,21 +848,19 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
         etSearchLocation = (EditText) findViewById(R.id.etLocationSearchbar);
         lvSearchList = (ListView) findViewById(R.id.listView);
         ivMenu = (ImageView) findViewById(R.id.iv_map_drawer);
-        sendRequst= (Button) findViewById(R.id.btnRequest);
-        tvForm= (TextView) findViewById(R.id.tvFrom);
-        tvTo= (TextView) findViewById(R.id.tvTo);
+        sendRequst = (Button) findViewById(R.id.btnRequest);
+        tvForm = (TextView) findViewById(R.id.tvFrom);
+        tvTo = (TextView) findViewById(R.id.tvTo);
 
 
-
-        layout_source_destination= (CardView) findViewById(R.id.layout_source_destination);
+        layout_source_destination = (CardView) findViewById(R.id.layout_source_destination);
         layout_source_destination.setVisibility(View.INVISIBLE);
 
-        tvCarName= (TextView) findViewById(R.id.tvCarName);
-        tvDriverName= (TextView) findViewById(R.id.tvDriverName);
-        contactDriver= (Button) findViewById(R.id.btnDriverContacat);
-        layout_response_from_driver= (CardView) findViewById(R.id.layout_response_from_driver);
+        tvCarName = (TextView) findViewById(R.id.tvCarName);
+        tvDriverName = (TextView) findViewById(R.id.tvDriverName);
+        contactDriver = (Button) findViewById(R.id.btnDriverContacat);
+        layout_response_from_driver = (CardView) findViewById(R.id.layout_response_from_driver);
         layout_response_from_driver.setVisibility(View.INVISIBLE);
-
 
 
         getDatafromSharedPreferences();
