@@ -67,6 +67,7 @@ import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import com.tesseract.taxisharing.R;
 import com.tesseract.taxisharing.model.DriverLocation;
 import com.tesseract.taxisharing.model.TaxiRequest;
+import com.tesseract.taxisharing.model.TripHistory;
 import com.tesseract.taxisharing.model.UserLocation;
 import com.tesseract.taxisharing.ui.dependency.DirectionsJSONParser;
 import com.tesseract.taxisharing.ui.dependency.JSONParser;
@@ -103,7 +104,6 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
 
     public static int MY_PERMISSIONS_ACCESS_COARSE_LOCATION = 100;
 
-
     //declare view
     ImageButton btnLocationPin;
 
@@ -119,6 +119,7 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
     CardView layout_source_destination;
     TextView tvForm, tvTo;
     Button sendRequst;
+    Button btnConfirm;
 
     CardView layout_response_from_driver;
     TextView tvDriverName, tvCarName;
@@ -146,12 +147,12 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
     String strEmail;
     String strFullName;
     String strSex;
-    String strRating;
+    String strDriverEmail;
     String strImage;
-
+    String source;
     RangeBar rbPerson;
     CheckBox cbShareRide;
-
+    String destination;
     static double currentLatitude = 21.0, currentLongitude = 90.0;
     static double destinationLatitude = 21.0, destinationLongitude = 90.0;
 
@@ -170,6 +171,30 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
         lvAdapter = new ArrayAdapter<String>(this,
                 R.layout.item_search, R.id.tv_search_text, searchResult);
         lvSearchList.setAdapter(lvAdapter);
+        btnConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // save driver data and go to payment
+                TripHistory.getInstance().strFrom = source;
+                TripHistory.getInstance().strTo = destination;
+                TripHistory.getInstance().strPerson = rbPerson.getLeftPinValue() + "";
+                TripHistory.getInstance().strPersonEmail = strEmail;
+                TripHistory.getInstance().strDriver = destination;
+                TripHistory.getInstance().strDriverEmail = strDriverEmail;
+                TripHistory.getInstance().strCarName = "Alian Primo";
+                TripHistory.getInstance().strTime = App.dateTimeNow();
+                TripHistory.getInstance().strUserName = strFullName;
+                if (cbShareRide.isChecked()) {
+                    TripHistory.getInstance().strShare = "yes";
+                } else {
+                    TripHistory.getInstance().strShare = "no";
+                }
+
+
+                startActivity(new Intent(getApplicationContext(), ActivityPayment.class));
+
+            }
+        });
 
 
         //code here
@@ -343,11 +368,12 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     TaxiRequest pr = child.getValue(TaxiRequest.class);
                     if (pr.getEmail().equals(strEmail) && pr.getStatus().equals(App.TAXI_DRIVER_REQUST)) {
-                        if(progressDialog!=null)
+                        if (progressDialog != null)
                             progressDialog.dismiss();
                         //getdata from driver database and set
                         tvCarName.setText("Alion Premio");
                         tvDriverName.setText(pr.getDriverEmail());
+                        strDriverEmail = pr.getDriverEmail();
                         layout_response_from_driver.setVisibility(View.VISIBLE);
                         layout_source_destination.setVisibility(View.GONE);
 
@@ -398,11 +424,11 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
                 destinationLatitude = latLng.latitude;
                 destinationLongitude = latLng.longitude;
                 Address address = getAddressFromLatLog(new LatLng(currentLatitude, currentLongitude));
-                String source = address.getFeatureName() + "," + address.getSubLocality();
+                source = address.getFeatureName() + "," + address.getSubLocality();
                 tvForm.setText(source);
 
                 address = getAddressFromLatLog(latLng);
-                String destination = address.getFeatureName() + "," + address.getSubLocality();
+                destination = address.getFeatureName() + "," + address.getSubLocality();
                 tvTo.setText(destination);
                 layout_source_destination.setVisibility(View.VISIBLE);
                 LatLng mlatLng = new LatLng(destinationLatitude, destinationLongitude);
@@ -851,6 +877,7 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
         lvSearchList = (ListView) findViewById(R.id.listView);
         ivMenu = (ImageView) findViewById(R.id.iv_map_drawer);
         sendRequst = (Button) findViewById(R.id.btnRequest);
+        btnConfirm = (Button) findViewById(R.id.btnDriverConfirm);
         tvForm = (TextView) findViewById(R.id.tvFrom);
         tvTo = (TextView) findViewById(R.id.tvTo);
 

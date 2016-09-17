@@ -109,6 +109,7 @@
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     custom:tickEnd="4"
+                    custom:rangeBar="false"
                     custom:tickInterval="1"
                     custom:tickStart="1" />
             </LinearLayout>
@@ -153,7 +154,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_margin="5dp"
-        android:visibility="gone"
+        android:visibility="visible"
         app:cardElevation="5dp">
 
         <LinearLayout
@@ -201,11 +202,27 @@
                     android:textSize="14sp" />
             </LinearLayout>
 
-            <Button
-                android:id="@+id/btnDriverContacat"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Contact" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:weightSum="2">
+
+                <Button
+                    android:id="@+id/btnDriverContacat"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Contact" />
+
+                <Button
+                    android:id="@+id/btnDriverConfirm"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Confirm" />
+
+            </LinearLayout>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
