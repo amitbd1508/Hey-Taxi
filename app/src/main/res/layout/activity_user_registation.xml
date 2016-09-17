@@ -3,53 +3,59 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.tesseract.taxisharing.ui.activity.UserRegistationActivity">
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_first_back" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin">
+
         <Button
+            android:id="@+id/login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:background="#6200ea"
-            android:text="Login"
             android:layout_weight="1"
+            android:background="#1e88e5"
+            android:padding="10dp"
+            android:text="Login"
             android:textColor="#ffffff"
-            android:textSize="25sp"
-            android:id="@+id/login"
-            />
+            android:textSize="25sp" />
+
         <Space
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1.5"/>
+            android:layout_weight="1.5" />
+
         <Button
+            android:id="@+id/register"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"
             android:layout_weight="1"
-            android:background="#6200ea"
+            android:background="#1e88e5"
+            android:padding="10dp"
             android:text="Register"
             android:textColor="#ffffff"
-            android:textSize="25sp"
-            android:id="@+id/register"
-            />
+            android:textSize="25sp" />
 
     </LinearLayout>
 
     <Button
+        android:id="@+id/hudai"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="hudai"
-        android:id="@+id/hudai"
-        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:text="Test" />
 </RelativeLayout>

@@ -24,6 +24,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -74,7 +75,7 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
 
 
     //declare view
-    Button btnLocationPin;
+    ImageButton btnLocationPin;
 
     //declare variable
     private GoogleMap mMap;
@@ -88,7 +89,7 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
     ArrayAdapter<String> lvAdapter;
     List<Address> addressList = null;
 
-    int count=0;
+    int count = 0;
 
     ImageView ivMenu;
 
@@ -102,7 +103,7 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_maps);
         //initalize view
-        btnLocationPin = (Button) findViewById(R.id.btnLocationPin);
+        btnLocationPin = (ImageButton) findViewById(R.id.btnLocationPin);
         etSearchLocation = (EditText) findViewById(R.id.etLocationSearchbar);
         lvSearchList = (ListView) findViewById(R.id.listView);
         ivMenu = (ImageView) findViewById(R.id.iv_map_drawer);
@@ -110,8 +111,10 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
 
         //initalize variable
         searchResult = new ArrayList<String>();
+
+        // made change 9/17
         lvAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, android.R.id.text1, searchResult);
+                R.layout.item_search, R.id.tv_search_text, searchResult);
         lvSearchList.setAdapter(lvAdapter);
         db = FirebaseDatabase.getInstance();
         ref = db.getReference("userlocations");   //i saved in userlocations
@@ -133,7 +136,8 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
                 .withActivity(this)
                 .withHeaderBackground(R.drawable.header)
                 .addProfiles(
-                        new ProfileDrawerItem().withName("Mike Penz").withEmail("mikepenz@gmail.com").withIcon(getResources().getDrawable(R.drawable.profile))
+                        new ProfileDrawerItem().withName("Mike Penz").withEmail("mikepenz@gmail.com").
+                                withIcon(getResources().getDrawable(R.drawable.hamudi))
                 )
                 .build();
 
@@ -142,7 +146,7 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
                 .withDrawerWidthDp(250)
                 .withAccountHeader(headerResult)
                 .addDrawerItems(
-                        new PrimaryDrawerItem().withName("payment").withSetSelected(true).withIdentifier(1),
+                        new PrimaryDrawerItem().withName("Payment").withSetSelected(true).withIdentifier(1),
                         new PrimaryDrawerItem().withName("mCredit").withSetSelected(true).withIdentifier(2),
                         new PrimaryDrawerItem().withName("Lost and found").withSetSelected(true).withIdentifier(3),
                         new PrimaryDrawerItem().withName("settings").withSetSelected(true).withIdentifier(4)
@@ -207,7 +211,6 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-
                 LatLng latLng = new LatLng(addressList.get(position).getLatitude(), addressList.get(position).getLongitude());
                 mMap.addMarker(new MarkerOptions()
                         .position(latLng)
@@ -252,7 +255,6 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
 
             @Override
             public void afterTextChanged(Editable s) {
-
                 lvSearchList.setVisibility(View.VISIBLE);
             }
         });
@@ -339,7 +341,7 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
                 //reference : http://stackoverflow.com/questions/14811579/how-to-create-a-custom-shaped-bitmap-marker-with-android-map-api-v2
         );
 
-        if(count==1){
+        if (count == 1) {
             mMap.moveCamera(CameraUpdateFactory.newLatLng(newlocation));
             mMap.animateCamera(CameraUpdateFactory.zoomTo(ZOOM));
         }
@@ -439,7 +441,5 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
         super.onPause();
         stopTracking();
     }
-
-
     //methods and other work
 }

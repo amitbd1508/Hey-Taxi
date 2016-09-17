@@ -7,7 +7,6 @@
     tools:context=".ui.activity.UserMapsActivity">
 
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:map="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
@@ -18,6 +17,7 @@
 
 
     <RelativeLayout
+        android:id="@+id/layout_search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignEnd="@+id/map"
@@ -52,21 +52,24 @@
 
 
     <ListView
+
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignEnd="@+id/searchlocation"
         android:layout_alignRight="@+id/searchlocation"
-        android:layout_below="@+id/searchlocation"
+        android:layout_below="@+id/layout_search"
         android:visibility="invisible" />
 
-    <Button
+    <ImageButton
         android:id="@+id/btnLocationPin"
-        android:layout_width="30dp"
+        android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:background="@drawable/location_pin" />
+        android:background="@android:color/transparent"
+        android:scaleType="centerInside"
+        android:src="@drawable/location_pin" />
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
@@ -99,37 +102,43 @@
                     android:layout_width="60dp"
                     android:layout_height="60dp" />
             </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/layout_user_maps_contact"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:background="#c9c9c9"
                 android:elevation="4dp"
-                android:padding="5dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:padding="5dp">
+
                 <TextView
-                    android:text="Contact"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:text="Contact" />
             </LinearLayout>
+
             <LinearLayout
-                android:weightSum="3"
                 android:layout_width="match_parent"
-                android:layout_height="40dp">
+                android:layout_height="40dp"
+                android:weightSum="3">
+
                 <ImageButton
                     android:id="@+id/ib_user_maps_share"
-                    android:layout_weight="1"
                     android:layout_width="0dp"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
                 <ImageButton
                     android:id="@+id/ib_user_maps_op2"
-                    android:layout_weight="1"
                     android:layout_width="0dp"
-                    android:layout_height="match_parent" />
-                 <ImageButton
-                     android:id="@+id/ib_user_maps_op3"
-                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
+                <ImageButton
+                    android:id="@+id/ib_user_maps_op3"
                     android:layout_width="0dp"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
             </LinearLayout>
         </LinearLayout>
     </android.support.v7.widget.CardView>
