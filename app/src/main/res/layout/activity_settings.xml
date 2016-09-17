@@ -44,6 +44,9 @@
         android:id="@+id/et_settings_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:drawableLeft="@android:drawable/ic_dialog_email"
+        android:drawablePadding="10dp"
+        android:drawableTint="#80deea"
         android:editable="false"
         android:hint="email@example.com" />
 
@@ -51,6 +54,9 @@
         android:id="@+id/et_settings_mobile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:drawableLeft="@android:drawable/ic_menu_call"
+        android:drawablePadding="10dp"
+        android:drawableTint="#80deea"
         android:hint="mobile"
         android:inputType="number" />
 

@@ -2,6 +2,8 @@ package com.tesseract.taxisharing.ui.activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -101,9 +103,9 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
             @Override
             public void onClick(View v) {
                 //do here login check
-                if(registerRequest()){
+                if (registerRequest()) {
 
-                    UserLocation userLication=new UserLocation();
+                    UserLocation userLication = new UserLocation();
                     userLication.setTime(App.dateTimeNow());
                     userLication.setEmail(strEmai);
                     userLication.setLatitude(App.dLat);
@@ -112,10 +114,12 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
                     userLication.setSex(strSex);
                     //firebase user creation
                     ref.push().setValue(userLication);
+
+                    // store to share preference
+                    saveUserData();
                     startActivity(new Intent(getApplicationContext(), UserMapsActivity.class));
                     finish();
-                }
-                else {
+                } else {
                     Toast.makeText(RegisterActivity.this, "Fill All fields", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -145,15 +149,16 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
         // [END customize_button]
     }
 
-    boolean ret=false;
+    boolean ret = false;
+
     public boolean registerRequest() {
 
 
-        if(isNotEmpty(etFirstName) && isNotEmpty(etLastName) && isNotEmpty(etEamil) && isNotEmpty(etMobile)
-                && isNotEmpty(etNid) && isNotEmpty(etPassword) ){
+        if (isNotEmpty(etFirstName) && isNotEmpty(etLastName) && isNotEmpty(etEamil) && isNotEmpty(etMobile)
+                && isNotEmpty(etNid) && isNotEmpty(etPassword)) {
             strFullName = etFirstName.getText().toString() + "-" + etLastName.getText().toString();
 
-            Log.d(TAG,strFullName);
+            Log.d(TAG, strFullName);
             strEmai = etEamil.getText().toString();
             strMobile = etMobile.getText().toString();
             if (rgSex.getCheckedRadioButtonId() == R.id.rb_register_sex_male) {
@@ -165,28 +170,28 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
             strPassword = etPassword.getText().toString();
             strImageLink = "https://github.com/mikepenz/MaterialDrawer/blob/develop/app/src/main/res/drawable/profile3.jpg";
 
-            String url = "http://team-tesseract.xyz/taxishare/insert_user.php?user_fullname="+strFullName
-                    +"&user_personalid="+strNid
-                    +"&user_password="+strPassword
-                    +"&user_email="+strEmai
-                    +"&user_image_link="+strImageLink
-                    +"&user_sex="+strSex
-                    +"&user_mobile="+strMobile;
+            String url = "http://team-tesseract.xyz/taxishare/insert_user.php?user_fullname=" + strFullName
+                    + "&user_personalid=" + strNid
+                    + "&user_password=" + strPassword
+                    + "&user_email=" + strEmai
+                    + "&user_image_link=" + strImageLink
+                    + "&user_sex=" + strSex
+                    + "&user_mobile=" + strMobile;
 
             Toast.makeText(RegisterActivity.this, url, Toast.LENGTH_SHORT).show();
-            Log.d(TAG,url);
+            Log.d(TAG, url);
             StringRequest sr = new StringRequest(Request.Method.POST, url,
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
                             Toast.makeText(RegisterActivity.this, response, Toast.LENGTH_SHORT).show();
-                            if(response.equals("1")) ret=true ;
+                            if (response.equals("1")) ret = true;
                             else ret = false;
                         }
                     }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(RegisterActivity.this, ""+error, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, "" + error, Toast.LENGTH_SHORT).show();
                 }
             }) {
                 @Override
@@ -202,9 +207,19 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
 
             return true;
         }
-            return false;
+        return false;
     }
 
+    public void saveUserData() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(App.heyTaxiUserLogIn, "Yes");
+        editor.putString(App.heyTaxiUserEmail, strEmai);
+        editor.putString(App.heyTaxiUserFName, strFullName);
+        editor.putString(App.heyTaxiUserSex, strSex);
+        editor.putString(App.heyTaxiUserImage, strImageLink);
+        editor.commit();
+    }
 
     void onStartMethod() {
         OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
@@ -336,10 +351,10 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
             mProgressDialog.hide();
         }
     }
+
     private boolean isNotEmpty(EditText etText) {
         if (etText.getText().toString().trim().length() > 0)
             return true;
-
         return false;
     }
 

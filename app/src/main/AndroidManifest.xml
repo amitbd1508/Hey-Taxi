@@ -9,15 +9,13 @@
     -->
 
 
-
-
-
     <permission
         android:name="com.tesseract.taxisharing.permission.MAPS_RECEIVE"
         android:protectionLevel="signature" />
+
     <uses-permission android:name="com.tesseract.taxisharing.permission.MAPS_RECEIVE" />
 
-    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES"/>
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -59,7 +57,10 @@
             android:value="@integer/google_play_services_version" />
 
         <activity android:name=".ui.activity.LoginActivity" />
-        <activity android:name=".ui.activity.UserRegistationActivity">
+
+        <activity
+            android:theme="@style/AppThemeNoActionBar"
+            android:name=".ui.activity.UserRegistationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -82,10 +83,20 @@
         <activity
             android:name=".ui.activity.UserMapsActivity"
             android:label="@string/title_activity_user_maps" />
-        <activity android:name=".ui.activity.ActivitySettings" />
-        <activity android:name=".ui.activity.ActivityPayment" />
-        <activity android:name=".ui.activity.ActivityCredit" />
-        <activity android:name=".ui.activity.ActivityLostAndFount" />
+        <activity
+            android:name=".ui.activity.ActivitySettings"
+            android:label="Profile Settings" />
+        <activity
+            android:name=".ui.activity.ActivityPayment"
+            android:label="Payment" />
+
+        <activity
+            android:name=".ui.activity.ActivityCredit"
+            android:label="mCredit" />
+
+        <activity
+            android:name=".ui.activity.ActivityLostAndFount"
+            android:label="Lost And Found" />
     </application>
 
 </manifest>

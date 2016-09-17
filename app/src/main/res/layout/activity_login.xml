@@ -25,6 +25,8 @@
 
 
             <EditText
+                android:drawableTint="#2089e5"
+                android:drawableLeft="@android:drawable/ic_dialog_email"
                 android:padding="10dp"
                 android:background="#e2ffffff"
                 android:id="@+id/etEmail"
@@ -36,6 +38,8 @@
                 android:textSize="25sp" />
 
             <EditText
+                android:drawableTint="#2089e5"
+                android:drawableLeft="@android:drawable/ic_lock_idle_lock"
                 android:padding="10dp"
                 android:background="#e2ffffff"
                 android:id="@+id/etPassword"

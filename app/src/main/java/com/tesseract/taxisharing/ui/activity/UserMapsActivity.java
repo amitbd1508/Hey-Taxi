@@ -208,10 +208,10 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
                 .withDrawerWidthDp(250)
                 .withAccountHeader(headerResult)
                 .addDrawerItems(
-                        new PrimaryDrawerItem().withName("Payment").withSetSelected(true).withIdentifier(1),
-                        new PrimaryDrawerItem().withName("mCredit").withSetSelected(true).withIdentifier(2),
-                        new PrimaryDrawerItem().withName("Lost and found").withSetSelected(true).withIdentifier(3),
-                        new PrimaryDrawerItem().withName("Profile settings").withSetSelected(true).withIdentifier(4)
+                        new PrimaryDrawerItem().withName("Payment").withIdentifier(1),
+                        new PrimaryDrawerItem().withName("mCredit").withIdentifier(2),
+                        new PrimaryDrawerItem().withName("Profile settings").withIdentifier(4),
+                        new PrimaryDrawerItem().withName("Lost and found").withIdentifier(3)
 
                 )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
