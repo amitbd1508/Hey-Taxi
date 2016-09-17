@@ -8,15 +8,24 @@ public class UserLocation {
     String latitude;
     String longitude;
     String time;
-    String account_type;
+    String email;
 
-
-    public String getAccount_type() {
-        return account_type;
+    public String getSex() {
+        return sex;
     }
 
-    public void setAccount_type(String account_type) {
-        this.account_type = account_type;
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    String sex;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public UserLocation(String username, String latitude, String longitude, String time, String account_type) {
@@ -25,7 +34,7 @@ public class UserLocation {
         this.latitude = latitude;
         this.longitude = longitude;
         this.time = time;
-        this.account_type = account_type;
+
     }
 
     public String getUsername() {

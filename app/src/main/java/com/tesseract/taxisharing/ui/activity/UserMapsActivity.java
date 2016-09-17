@@ -61,6 +61,7 @@ import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import com.tesseract.taxisharing.R;
+import com.tesseract.taxisharing.model.DriverLocation;
 import com.tesseract.taxisharing.model.TaxiRequest;
 import com.tesseract.taxisharing.model.UserLocation;
 import com.tesseract.taxisharing.ui.dependency.DirectionsJSONParser;
@@ -130,6 +131,9 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
     FirebaseDatabase db;
     DatabaseReference ref;
 
+    FirebaseDatabase driverdb;
+    DatabaseReference driverref;
+
     FirebaseDatabase reqdb;
     DatabaseReference reqref;
     ProgressDialog progressDialog;
@@ -147,45 +151,21 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
 
 
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_maps);
         //initalize view
-        btnLocationPin = (ImageButton) findViewById(R.id.btnLocationPin);
-        etSearchLocation = (EditText) findViewById(R.id.etLocationSearchbar);
-        lvSearchList = (ListView) findViewById(R.id.listView);
-        ivMenu = (ImageView) findViewById(R.id.iv_map_drawer);
-        sendRequst= (Button) findViewById(R.id.btnRequest);
-        tvForm= (TextView) findViewById(R.id.tvFrom);
-        tvTo= (TextView) findViewById(R.id.tvTo);
-
-
-
-        layout_source_destination= (CardView) findViewById(R.id.layout_source_destination);
-        layout_source_destination.setVisibility(View.INVISIBLE);
-
-        tvCarName= (TextView) findViewById(R.id.tvCarName);
-        tvDriverName= (TextView) findViewById(R.id.tvDriverName);
-        contactDriver= (Button) findViewById(R.id.btnDriverContacat);
-        layout_response_from_driver= (CardView) findViewById(R.id.layout_response_from_driver);
-        layout_response_from_driver.setVisibility(View.INVISIBLE);
-
-
-
-        getDatafromSharedPreferences();
-
-        //initalize variable
-        searchResult = new ArrayList<String>();
+        initializeview();
+        firebaseInitialization();
 
         // made change 9/17
         lvAdapter = new ArrayAdapter<String>(this,
                 R.layout.item_search, R.id.tv_search_text, searchResult);
         lvSearchList.setAdapter(lvAdapter);
-        db = FirebaseDatabase.getInstance();
-        ref = db.getReference("userlocations");   //i saved in userlocations
-        reqdb = FirebaseDatabase.getInstance();
-        reqref = reqdb.getReference("taxirequest");
+
 
 
         //code here
@@ -198,13 +178,15 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
 
     }
 
+
+
     private void getDatafromSharedPreferences() {
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        strEmail = preferences.getString("heyTaxiUserEmail", "No");
-        strFullName = preferences.getString("heyTaxiUserFName", "No");
-        strSex = preferences.getString("heyTaxiUserSex", "No");
-        strImage = preferences.getString("heyTaxiUserImage", "No");
+        strEmail = preferences.getString(App.heyTaxiUserEmail, "No");
+        strFullName = preferences.getString(App.heyTaxiUserFName, "No");
+        strSex = preferences.getString(App.heyTaxiUserSex, "No");
+        strImage = preferences.getString(App.heyTaxiUserImage, "No");
     }
 
     public void Drawer() {
@@ -289,19 +271,69 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
                 Toast.makeText(UserMapsActivity.this, "Contact Driver clicked", Toast.LENGTH_SHORT).show();
             }
         });
+
+        driverref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                mMap.clear();
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    DriverLocation pr = child.getValue(DriverLocation.class);
+                    mMap.addMarker(new MarkerOptions()
+                            .position(new LatLng(Double.parseDouble(pr.getLatitude()),Double.parseDouble(pr.getLongitude())))
+                            .title(pr.getName())
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.taxi_cab)
+                            ));
+
+
+
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        driverref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                mMap.clear();
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    DriverLocation pr = child.getValue(DriverLocation.class);
+                    mMap.addMarker(new MarkerOptions()
+                            .position(new LatLng(Double.parseDouble(pr.getLatitude()),Double.parseDouble(pr.getLongitude())))
+                            .title(pr.getName())
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.taxi_cab)
+                            ));
+
+
+
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
         reqref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     TaxiRequest pr = child.getValue(TaxiRequest.class);
-                    if(pr.getEmail().equals("amitbd1508@gmail.com")&& pr.getStatus().equals(App.TAXI_DRIVER_REQUST))
+                    if(pr.getEmail().equals(strEmail)&& pr.getStatus().equals(App.TAXI_DRIVER_REQUST))
                     {
                         progressDialog.dismiss();
                         //getdata from driver database and set
                         tvCarName.setText("Alion Premio");
                         tvDriverName.setText(pr.getDriverEmail());
                         layout_response_from_driver.setVisibility(View.VISIBLE);
-                        layout_source_destination.setVisibility(View.INVISIBLE);
+                        layout_source_destination.setVisibility(View.GONE);
 
                     }
                 }
@@ -317,9 +349,9 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
             @Override
             public void onClick(View v) {
                 TaxiRequest taxiRequest=new TaxiRequest();
-                taxiRequest.setName("Amit");
+                taxiRequest.setName(strFullName);
                 taxiRequest.setStatus(App.TAXI_REQUST_YES);
-                taxiRequest.setEmail("amitbd1508@gmail.com");
+                taxiRequest.setEmail(strEmail);
                 taxiRequest.setSourceLatitude(String.valueOf(currentLatitude));
                 taxiRequest.setSourceLongitude(String.valueOf(currentLongitude));
                 taxiRequest.setDestinationLatitude(String.valueOf(destinationLatitude));
@@ -474,7 +506,7 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
                 currentLongitude=location.getLongitude();
                 updateLocation(location);
                 updateLocationInMap(location);
-                setLocationInMapFromFireBase();
+                //setLocationInMapFromFireBase();
 
             }
 
@@ -486,18 +518,7 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
         };
     }
 
-    private void setMarker(UserLocation userLocation, String markerName, float zoom) {
-        // Add a marker in Sydney and move the camera
-        LatLng latLng = new LatLng(Double.parseDouble(userLocation.getLatitude()), Double.parseDouble(userLocation.getLongitude()));
-        mMap.addMarker(new MarkerOptions()
-                .position(latLng)
-                .title(markerName)
-                .snippet("Last update" + userLocation.getTime())
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.taxi_cab)
-                ));
-//        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-//        mMap.animateCamera( CameraUpdateFactory.zoomTo( zoom) );
-    }
+
 
     private void updateLocationInMap(Location location) {
         LatLng newlocation = new LatLng(location.getLatitude(), location.getLongitude());
@@ -509,7 +530,7 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
                 //reference : http://stackoverflow.com/questions/14811579/how-to-create-a-custom-shaped-bitmap-marker-with-android-map-api-v2
         );
 
-        if (count == 1) {
+        if (count <= 2) {
             mMap.moveCamera(CameraUpdateFactory.newLatLng(newlocation));
             mMap.animateCamera(CameraUpdateFactory.zoomTo(ZOOM));
         }
@@ -518,17 +539,24 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
     }
 
 
-    private void setLocationInMapFromFireBase() {
+    /*private void setLocationInMapFromFireBase() {
 
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+        driverref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                mMap.clear();
+
                 //Log.d("location", dataSnapshot.getValue().toString());
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
-                    UserLocation pr = child.getValue(UserLocation.class);
-                    setMarker(pr, pr.getUsername(), ZOOM);
+                    DriverLocation pr = child.getValue(DriverLocation.class);
+                    LatLng latLng = new LatLng(Double.parseDouble(pr.getLatitude()), Double.parseDouble(pr.getLongitude()));
+                    mMap.addMarker(new MarkerOptions()
+                            .position(latLng)
+                            .title(markerName)
+                            .snippet("Last update" + userLocation.getTime())
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.taxi_cab)
+                            ));
                 }
+                mMap.clear();
             }
 
             @Override
@@ -536,7 +564,7 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
 
             }
         });
-    }
+    }*/
 
     private void updateLocation(final Location location) {
 
@@ -545,18 +573,18 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
             public void onDataChange(DataSnapshot dataSnapshot) {
                 //Log.d("location", dataSnapshot.getValue().toString());
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
-
-
                     UserLocation pr = child.getValue(UserLocation.class);
 
 
-                    if (pr.getUsername().equals(App.CURRENT_USER)) {
+                    if (pr.getEmail().equals(strEmail)) {
                         pr.setLatitude(String.valueOf(location.getLatitude()));
                         pr.setLongitude(String.valueOf(location.getLongitude()));
                         pr.setTime(DateFormat.getTimeInstance().format(new Date()));
                         child.getRef().setValue(pr);
-                        //Toast.makeText(getApplicationContext(), "Sucessfully Updated", Toast.LENGTH_SHORT).show();
+
                     }
+                    Log.d(TAG, pr.getEmail()+"="+strEmail);
+
                 }
             }
 
@@ -578,7 +606,9 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
     }
 
     private void startTracking() {
-        if (tracker != null)
+        if (tracker != null) {
+
+
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 // TODO: Consider calling
                 //    ActivityCompat#requestPermissions
@@ -589,7 +619,9 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
                 // for ActivityCompat#requestPermissions for more details.
                 return;
             }
-        tracker.startListening();
+            tracker.startListening();
+        }
+
     }
 
     private void stopTracking() {
@@ -788,117 +820,42 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
         }
         return data;
     }
-    //asinktask class
-    /*
-    private class ConnectAsyncTask extends AsyncTask<Void, Void, String> {
-        private ProgressDialog progressDialog;
-        String url;
-        ConnectAsyncTask(String urlPass){
-            url = urlPass;
-        }
-        @Override
-        protected void onPreExecute() {
-            // TODO Auto-generated method stub
-            super.onPreExecute();
-            progressDialog = new ProgressDialog(UserMapsActivity.this);
-            progressDialog.setMessage("Fetching route, Please wait...");
-            progressDialog.setIndeterminate(true);
-            progressDialog.show();
-        }
-        @Override
-        protected String doInBackground(Void... params) {
-            JSONParser jParser = new JSONParser();
-            String json = jParser.getJSONFromUrl(url);
-            return json;
-        }
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-            progressDialog.hide();
-            if(result!=null){
-                drawPath(result);
-            }
-        }
-        public void drawPath(String  result) {
 
-            try {
-                //Tranform the string into a json object
-                final JSONObject json = new JSONObject(result);
-                JSONArray routeArray = json.getJSONArray("routes");
-                JSONObject routes = routeArray.getJSONObject(0);
-                JSONObject overviewPolylines = routes.getJSONObject("overview_polyline");
-                String encodedString = overviewPolylines.getString("points");
-                List<LatLng> list = decodePoly(encodedString);
-                Polyline line = mMap.addPolyline(new PolylineOptions()
-                        .addAll(list)
-                        .width(12)
-                        .color(Color.parseColor("#05b1fb"))//Google maps blue color
-                        .geodesic(true)
-                );
-           *//*
-           for(int z = 0; z<list.size()-1;z++){
-                LatLng src= list.get(z);
-                LatLng dest= list.get(z+1);
-                Polyline line = mMap.addPolyline(new PolylineOptions()
-                .add(new LatLng(src.latitude, src.longitude), new LatLng(dest.latitude,   dest.longitude))
-                .width(2)
-                .color(Color.BLUE).geodesic(true));
-            }
-           *//*
-            }
-            catch (JSONException e) {
-
-            }
-        }
-        private List<LatLng> decodePoly(String encoded) {
-
-            List<LatLng> poly = new ArrayList<LatLng>();
-            int index = 0, len = encoded.length();
-            int lat = 0, lng = 0;
-
-            while (index < len) {
-                int b, shift = 0, result = 0;
-                do {
-                    b = encoded.charAt(index++) - 63;
-                    result |= (b & 0x1f) << shift;
-                    shift += 5;
-                } while (b >= 0x20);
-                int dlat = ((result & 1) != 0 ? ~(result >> 1) : (result >> 1));
-                lat += dlat;
-
-                shift = 0;
-                result = 0;
-                do {
-                    b = encoded.charAt(index++) - 63;
-                    result |= (b & 0x1f) << shift;
-                    shift += 5;
-                } while (b >= 0x20);
-                int dlng = ((result & 1) != 0 ? ~(result >> 1) : (result >> 1));
-                lng += dlng;
-
-                LatLng p = new LatLng( (((double) lat / 1E5)),
-                        (((double) lng / 1E5) ));
-                poly.add(p);
-            }
-
-            return poly;
-        }
+    private void firebaseInitialization() {
+        db = FirebaseDatabase.getInstance();
+        ref = db.getReference(App.userlocations);   //i saved in userlocations
+        reqdb = FirebaseDatabase.getInstance();
+        reqref = reqdb.getReference(App.taxirequest);
+        driverdb = FirebaseDatabase.getInstance();
+        driverref = driverdb.getReference(App.taxidriverlocation);
     }
-    public String makeURL (double sourcelat, double sourcelog, double destlat, double destlog ){
-        StringBuilder urlString = new StringBuilder();
-        urlString.append("http://maps.googleapis.com/maps/api/directions/json");
-        urlString.append("?origin=");// from
-        urlString.append(Double.toString(sourcelat));
-        urlString.append(",");
-        urlString
-                .append(Double.toString( sourcelog));
-        urlString.append("&destination=");// to
-        urlString
-                .append(Double.toString( destlat));
-        urlString.append(",");
-        urlString.append(Double.toString( destlog));
-        urlString.append("&sensor=false&mode=driving&alternatives=true");
-        urlString.append("&key=AIzaSyCd7cWAYHfF66LS_lJlfAtyK2ILpv1MG08");
-        return urlString.toString();
-    }*/
+
+    private void initializeview() {
+        btnLocationPin = (ImageButton) findViewById(R.id.btnLocationPin);
+        etSearchLocation = (EditText) findViewById(R.id.etLocationSearchbar);
+        lvSearchList = (ListView) findViewById(R.id.listView);
+        ivMenu = (ImageView) findViewById(R.id.iv_map_drawer);
+        sendRequst= (Button) findViewById(R.id.btnRequest);
+        tvForm= (TextView) findViewById(R.id.tvFrom);
+        tvTo= (TextView) findViewById(R.id.tvTo);
+
+
+
+        layout_source_destination= (CardView) findViewById(R.id.layout_source_destination);
+        layout_source_destination.setVisibility(View.INVISIBLE);
+
+        tvCarName= (TextView) findViewById(R.id.tvCarName);
+        tvDriverName= (TextView) findViewById(R.id.tvDriverName);
+        contactDriver= (Button) findViewById(R.id.btnDriverContacat);
+        layout_response_from_driver= (CardView) findViewById(R.id.layout_response_from_driver);
+        layout_response_from_driver.setVisibility(View.INVISIBLE);
+
+
+
+        getDatafromSharedPreferences();
+
+        //initalize variable
+        searchResult = new ArrayList<String>();
+
+    }
 }

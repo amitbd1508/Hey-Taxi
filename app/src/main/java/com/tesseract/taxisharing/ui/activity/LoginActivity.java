@@ -107,6 +107,8 @@ public class LoginActivity extends AppCompatActivity {
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
+                            if (response != null) ret = true;
+                            else ret = false;
                             Toast.makeText(LoginActivity.this, response, Toast.LENGTH_SHORT).show();
                             try {
                                 JSONArray jsonArray = new JSONArray(response);
@@ -116,16 +118,16 @@ public class LoginActivity extends AppCompatActivity {
                                 strSex = jsonObject.getString("user_sex");
                                 strImage = jsonObject.getString("user_image_link");
                             } catch (JSONException e) {
-                                e.printStackTrace();
+                                ret=false;
                             }
 
-                            if (response != null) ret = true;
-                            else ret = false;
+
                         }
                     }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     Toast.makeText(LoginActivity.this, "" + error, Toast.LENGTH_SHORT).show();
+                    ret=false;
                 }
             }) {
                 @Override

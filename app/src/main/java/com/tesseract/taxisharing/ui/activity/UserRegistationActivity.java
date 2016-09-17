@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.tesseract.taxisharing.R;
+import com.tesseract.taxisharing.util.App;
 
 public class UserRegistationActivity extends AppCompatActivity {
 
@@ -17,9 +18,9 @@ public class UserRegistationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_registation);
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        String name = preferences.getString("heyTaxiUserLogIn", "No");
+        String name = preferences.getString(App.heyTaxiUserLogIn, "No");
         if(name.equals("Yes")){
-            startActivity(new Intent(getApplicationContext(),LoginActivity.class));
+            startActivity(new Intent(getApplicationContext(),UserMapsActivity.class));
             finish();
         }
 

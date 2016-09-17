@@ -29,9 +29,13 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 import com.tesseract.taxisharing.R;
 import com.tesseract.taxisharing.model.User;
+import com.tesseract.taxisharing.model.UserLocation;
+import com.tesseract.taxisharing.util.App;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -68,11 +72,16 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
     private TextView mStatusTextView;
     private ProgressDialog mProgressDialog;
 
+    FirebaseDatabase db;
+    DatabaseReference ref;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+        db = FirebaseDatabase.getInstance();
+        ref = db.getReference(App.userlocations);
         //view initialization
         btnGoogleSignIn = (View) findViewById(R.id.google_login);
         btnFacebookSignIn = (View) findViewById(R.id.facebook_login);
@@ -93,6 +102,16 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
             public void onClick(View v) {
                 //do here login check
                 if(registerRequest()){
+
+                    UserLocation userLication=new UserLocation();
+                    userLication.setTime(App.dateTimeNow());
+                    userLication.setEmail(strEmai);
+                    userLication.setLatitude(App.dLat);
+                    userLication.setLongitude(App.dlon);
+                    userLication.setUsername(strFullName);
+                    userLication.setSex(strSex);
+                    //firebase user creation
+                    ref.push().setValue(userLication);
                     startActivity(new Intent(getApplicationContext(), UserMapsActivity.class));
                     finish();
                 }

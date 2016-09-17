@@ -1,5 +1,8 @@
 package com.tesseract.taxisharing.util;
 
+import java.text.DateFormat;
+import java.util.Date;
+
 /**
  * Created by BlackFlag on 9/16/2016.
  */
@@ -18,6 +21,21 @@ public class App {
     public final static String heyTaxiUserSex="heyTaxiUserSex";
     public final static String heyTaxiUserImage="heyTaxiUserImage";
     public final static String TAXI_DRIVER_REQUST="driver_say_yes";
+
+
+    public final static String userlocations="userlocations";
+    public final static String taxirequest="taxirequest";
+    public final static String taxidriverlocation="taxidriverlocation";
+
+
+
+    public final static String dLat="21.0";
+    public final static String dlon="90.0";
+
+    public static String dateTimeNow()
+    {
+        return DateFormat.getTimeInstance().format(new Date());
+    }
 
 
 
