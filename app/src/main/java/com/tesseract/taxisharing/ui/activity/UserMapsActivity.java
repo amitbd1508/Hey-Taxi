@@ -343,7 +343,8 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     TaxiRequest pr = child.getValue(TaxiRequest.class);
                     if (pr.getEmail().equals(strEmail) && pr.getStatus().equals(App.TAXI_DRIVER_REQUST)) {
-                        progressDialog.dismiss();
+                        if(progressDialog!=null)
+                            progressDialog.dismiss();
                         //getdata from driver database and set
                         tvCarName.setText("Alion Premio");
                         tvDriverName.setText(pr.getDriverEmail());
@@ -418,6 +419,7 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
             @Override
             public void onMapClick(LatLng latLng) {
                 layout_source_destination.setVisibility(View.INVISIBLE);
+                layout_response_from_driver.setVisibility(View.GONE);
             }
         });
         lvSearchList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -757,8 +759,8 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
 
                 // Adding all the points in the route to LineOptions
                 lineOptions.addAll(points);
-                lineOptions.width(2);
-                lineOptions.color(Color.RED);
+                lineOptions.width(5);
+                lineOptions.color(Color.BLUE);
 
             }
 
@@ -860,7 +862,7 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
         tvDriverName = (TextView) findViewById(R.id.tvDriverName);
         contactDriver = (Button) findViewById(R.id.btnDriverContacat);
         layout_response_from_driver = (CardView) findViewById(R.id.layout_response_from_driver);
-        layout_response_from_driver.setVisibility(View.INVISIBLE);
+        layout_response_from_driver.setVisibility(View.GONE);
 
 
         getDatafromSharedPreferences();
