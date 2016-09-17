@@ -9,4 +9,36 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.tesseract.taxisharing.ui.activity.ActivityCredit">
 
+    <ImageView
+        android:id="@+id/iv_mCredit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/ic_coins" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/iv_mCredit"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:text="mCREDIT"
+        android:textColor="#66bb6a"
+        android:textSize="20sp"
+        android:typeface="serif" />
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:padding="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:textSize="15sp"
+                android:text="My Credit Point: 40"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
 </RelativeLayout>
