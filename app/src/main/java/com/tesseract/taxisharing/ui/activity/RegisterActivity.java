@@ -215,7 +215,7 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString(App.heyTaxiUserLogIn, "Yes");
-        editor.putString(App.heyTaxiUserEmail, strEmai);
+        editor.putString(App.TAXI_DRIVER_REQUST, strEmai);
         editor.commit();
     }
 

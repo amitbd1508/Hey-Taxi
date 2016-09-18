@@ -424,10 +424,10 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
                         if (progressDialog != null)
                             progressDialog.dismiss();
                         //getdata from driver database and set
-                        tvCarName.setText("Alion Premio");
-                        tvDriverName.setText(pr.getDriverEmail());
+                        tvCarName.setText(pr.getCarName());
+                        tvDriverName.setText(pr.getDriverName());
                         strDriverEmail = pr.getDriverEmail();
-                        strDriverName = pr.getName();
+                        strDriverName = pr.getDriverName();
                         layout_response_from_driver.setVisibility(View.VISIBLE);
                         layout_source_destination.setVisibility(View.GONE);
                         Log.d(TAG,"requst recived");
@@ -479,6 +479,13 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
                 taxiRequest.setDestinationLatitude(String.valueOf(destinationLatitude));
                 taxiRequest.setDestinationLongitude(String.valueOf(destinationLongitude));
                 taxiRequest.setTime(DateFormat.getTimeInstance().format(new Date()));
+                if(cbShareRide.isChecked())
+                    taxiRequest.setShare("Yes");
+                else
+                    taxiRequest.setShare("No");
+                taxiRequest.setPerson(rbPerson.getRightPinValue());
+                Log.e("RightPin",rbPerson.getRightPinValue());
+
                 reqref.push().setValue(taxiRequest);
                 // prgressbar start  sonet you will impliment a progress bar
 
@@ -506,11 +513,11 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
                 destinationLongitude = latLng.longitude;
                 Address address = getAddressFromLatLog(new LatLng(currentLatitude, currentLongitude));
                 source = address.getFeatureName() + "," + address.getSubLocality();
-                tvForm.setText(source);
+                tvForm.setText("From :"+source);
 
                 address = getAddressFromLatLog(latLng);
                 destination = address.getFeatureName() + "," + address.getSubLocality();
-                tvTo.setText(destination);
+                tvTo.setText("To :"+destination);
                 layout_source_destination.setVisibility(View.VISIBLE);
                 LatLng mlatLng = new LatLng(destinationLatitude, destinationLongitude);
                 mMap.addMarker(new MarkerOptions()
@@ -689,7 +696,7 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
                 .setUseGPS(true)
                 .setUseNetwork(true)
                 .setUsePassive(true)
-                .setTimeBetweenUpdates(5000)
+                .setTimeBetweenUpdates(4000)
                 .setMetersBetweenUpdates(1);
     }
 

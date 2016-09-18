@@ -56,7 +56,6 @@ public class ActivitySettings extends AppCompatActivity implements ITaskDoneList
 
                         try {
                             JSONArray jsonArray = new JSONArray(response);
-
                             JSONObject jsonObject = jsonArray.getJSONObject(0);
                             user.username=jsonObject.getString("user_fullname");
                             user.image_link=jsonObject.getString("user_image_link");

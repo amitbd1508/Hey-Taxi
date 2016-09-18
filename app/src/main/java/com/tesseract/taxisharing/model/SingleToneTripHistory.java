@@ -6,16 +6,16 @@ package com.tesseract.taxisharing.model;
 public class SingleToneTripHistory {
 
     public static SingleToneTripHistory mInstance = null;
-    public String strFrom = " ";
-    public String strTo = " ";
-    public String strTime = " ";
-    public String strShare = " ";
-    public String strPerson = " ";
-    public String strPersonEmail = " ";
-    public String strDriver = " ";
-    public String strDriverEmail = " ";
-    public String strCarName = " ";
-    public String strUserName = " ";
+    public String strFrom = "";
+    public String strTo = "";
+    public String strTime = "";
+    public String strShare = "";
+    public String strPerson = "";
+    public String strPersonEmail = "";
+    public String strDriver = "";
+    public String strDriverEmail = "";
+    public String strCarName = "";
+    public String strUserName = "";
 
     protected SingleToneTripHistory() {
     }

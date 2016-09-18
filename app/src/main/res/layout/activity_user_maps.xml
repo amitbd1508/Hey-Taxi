@@ -76,20 +76,22 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:lines="1"
-                    android:text="From: Dhaka"
-                    android:textSize="20dp" />
 
-                <android.support.v4.widget.Space
-                    android:layout_width="80dp"
-                    android:layout_height="match_parent" />
+                    android:textColor="#000000"
+                    android:textAlignment="center"
+                    android:text="From: Dhaka"
+                    android:textSize="17dp" />
+
 
                 <TextView
                     android:id="@+id/tvTo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:lines="1"
+                    android:textColor="#000000"
+                    android:textAlignment="center"
                     android:text="To: Khulna"
-                    android:textSize="20dp" />
+                    android:textSize="17dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -99,13 +101,14 @@
 
                 <TextView
                     android:layout_width="wrap_content"
+                    android:layout_marginTop="15dp"
                     android:layout_height="wrap_content"
                     android:text="Person : " />
 
                 <com.appyvet.rangebar.RangeBar
                     android:id="@+id/rangebar"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="65dp"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     custom:tickEnd="4"
@@ -124,6 +127,10 @@
             <Button
                 android:id="@+id/btnRequest"
                 android:layout_width="match_parent"
+                android:background="#6200ea"
+                android:textColor="#ffffff"
+                android:textSize="20dp"
+                android:textStyle="bold"
                 android:layout_height="wrap_content"
                 android:text="Request" />
         </LinearLayout>

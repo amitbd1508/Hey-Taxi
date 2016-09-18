@@ -13,7 +13,8 @@
 
     <EditText
         android:padding="10dp"
-        android:hint="time"
+        android:hint="Title"
+        android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
@@ -25,6 +26,7 @@
         android:layout_height="wrap_content" />
     <EditText
         android:padding="10dp"
+        android:id="@+id/description"
         android:elevation="6dp"
         android:layout_width="match_parent"
         android:layout_height="250dp" />
@@ -32,5 +34,9 @@
     <Button
         android:text="submit"
         android:layout_width="match_parent"
+        android:background="#1a237e"
+        android:textStyle="bold"
+        android:textSize="25sp"
+        android:textColor="#ffffff"
         android:layout_height="wrap_content" />
 </LinearLayout>

@@ -13,6 +13,42 @@ public class TaxiRequest {
     String status;
     String time;
     String driverEmail;
+    String share;
+    String person;
+    String driverName;
+    String carName;
+
+    public String getCarName() {
+        return carName;
+    }
+
+    public void setCarName(String carName) {
+        this.carName = carName;
+    }
+
+    public String getDriverName() {
+        return driverName;
+    }
+
+    public void setDriverName(String driverName) {
+        this.driverName = driverName;
+    }
+
+    public String getShare() {
+        return share;
+    }
+
+    public void setShare(String share) {
+        this.share = share;
+    }
+
+    public String getPerson() {
+        return person;
+    }
+
+    public void setPerson(String person) {
+        this.person = person;
+    }
 
     public String getDriverEmail() {
         return driverEmail;
