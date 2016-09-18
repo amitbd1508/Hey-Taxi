@@ -1,6 +1,7 @@
 package com.tesseract.taxisharing.ui.activity;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -28,7 +29,7 @@ import com.tesseract.taxisharing.ui.dependency.ITaskDoneListener;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ActivityPayment extends AppCompatActivity implements ITaskDoneListener{
+public class ActivityPayment extends AppCompatActivity implements ITaskDoneListener {
 
     ITaskDoneListener iTaskDoneListener;
     View layoutMCash;
@@ -38,6 +39,7 @@ public class ActivityPayment extends AppCompatActivity implements ITaskDoneListe
     TextView tvTo;
     TextView tvDriverName;
     TextView tvCarName;
+    private ProgressDialog progress;
 
     public String strFrom = " ";
     public String strTo = " ";
@@ -54,8 +56,14 @@ public class ActivityPayment extends AppCompatActivity implements ITaskDoneListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment);
-        iTaskDoneListener=this;
+        iTaskDoneListener = this;
         getPaymentData();
+
+        progress = new ProgressDialog(this);
+        progress.setMessage("Loading Data ..");
+        progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progress.setIndeterminate(true);
+
         layoutMCash = findViewById(R.id.layout_mcash_payment);
         cardViewTripDetails = (CardView) findViewById(R.id.layout_source_destination_payment);
 
@@ -123,6 +131,7 @@ public class ActivityPayment extends AppCompatActivity implements ITaskDoneListe
             public void onClick(View v) {
                 if (isNotEmpty(popEtAmount)) {
                     requestPayment(popEtAmount.getText().toString());
+                    progress.show();
                 }
             }
         });
@@ -153,8 +162,8 @@ public class ActivityPayment extends AppCompatActivity implements ITaskDoneListe
                 + "&user_name=" + strUserName;
 
 
-        url=url.replaceAll(" ","%20");
-        Log.d("*****",url);
+        url = url.replaceAll(" ", "%20");
+        Log.d("*****", url);
 
 
         StringRequest sr = new StringRequest(Request.Method.POST, url,
@@ -162,7 +171,7 @@ public class ActivityPayment extends AppCompatActivity implements ITaskDoneListe
                     @Override
                     public void onResponse(String response) {
                         Toast.makeText(ActivityPayment.this, response, Toast.LENGTH_SHORT).show();
-                        Log.d("*****",response);
+                        Log.d("*****", response);
 
                         if (response.equals("0")) ret = false;
                         else iTaskDoneListener.taskDone(true);
@@ -172,7 +181,7 @@ public class ActivityPayment extends AppCompatActivity implements ITaskDoneListe
             public void onErrorResponse(VolleyError error) {
 
                 Toast.makeText(ActivityPayment.this, "EEEEEEEEEEEEEEEEEEEEEEEEE", Toast.LENGTH_SHORT).show();
-                ret=false;
+                ret = false;
             }
         }) {
             @Override
@@ -191,12 +200,11 @@ public class ActivityPayment extends AppCompatActivity implements ITaskDoneListe
 
     @Override
     public void taskDone(boolean status) {
-        if(status)
-        {
+        if (status) {
+            progress.dismiss();
             startActivity(new Intent(getApplicationContext(), UserMapsActivity.class));
             finish();
-        }
-        else Toast.makeText(ActivityPayment.this, "Payment faild", Toast.LENGTH_SHORT).show();
+        } else Toast.makeText(ActivityPayment.this, "Payment faild", Toast.LENGTH_SHORT).show();
     }
 
 
