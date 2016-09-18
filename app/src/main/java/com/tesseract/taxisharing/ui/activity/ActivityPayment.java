@@ -23,12 +23,14 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.tesseract.taxisharing.R;
 import com.tesseract.taxisharing.model.TripHistory;
+import com.tesseract.taxisharing.ui.dependency.ITaskDoneListener;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class ActivityPayment extends AppCompatActivity {
+public class ActivityPayment extends AppCompatActivity implements ITaskDoneListener{
 
+    ITaskDoneListener iTaskDoneListener;
     View layoutMCash;
     CardView cardViewTripDetails;
 
@@ -52,6 +54,7 @@ public class ActivityPayment extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment);
+        iTaskDoneListener=this;
         getPaymentData();
         layoutMCash = findViewById(R.id.layout_mcash_payment);
         cardViewTripDetails = (CardView) findViewById(R.id.layout_source_destination_payment);
@@ -119,13 +122,7 @@ public class ActivityPayment extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (isNotEmpty(popEtAmount)) {
-                    if (requestPayment(popEtAmount.getText().toString())) {
-                        Toast.makeText(ActivityPayment.this, "Payment Successful", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(getApplicationContext(), UserMapsActivity.class));
-                        finish();
-                    } else {
-                        Toast.makeText(ActivityPayment.this, "Payment Failed", Toast.LENGTH_SHORT).show();
-                    }
+                    requestPayment(popEtAmount.getText().toString());
 
                 }
             }
@@ -144,30 +141,39 @@ public class ActivityPayment extends AppCompatActivity {
 
     boolean ret = false;
 
-    public boolean requestPayment(String StrAmount) {
+    public boolean requestPayment(String strAmount) {
         String url = "http://team-tesseract.xyz/taxishare/insert_user_trip_history.php?loaction_from=" + strFrom
                 + "&location_to=" + strTo
                 + "&time=" + strTime
                 + "&person=" + strPerson
                 + "&share=" + strShare
-                + "&amount=" + StrAmount
+                + "&amount=" + strAmount
                 + "&driver_name=" + strDriver
                 + "&user_email=" + strPersonEmail
+                + "&driver_email=" + strDriverEmail
                 + "&user_name=" + strUserName;
+
+
+        url=url.replaceAll(" ","%20");
+        Log.d("*****",url);
 
 
         StringRequest sr = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        Toast.makeText(ActivityPayment.this, response, Toast.LENGTH_SHORT).show();
+                        Log.d("*****",response);
 
-                        if (response.equals("1")) ret = true;
-                        else ret = false;
+                        if (response.equals("0")) ret = false;
+                        else iTaskDoneListener.taskDone(true);
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
 
+                Toast.makeText(ActivityPayment.this, "EEEEEEEEEEEEEEEEEEEEEEEEE", Toast.LENGTH_SHORT).show();
+                ret=false;
             }
         }) {
             @Override
@@ -183,4 +189,18 @@ public class ActivityPayment extends AppCompatActivity {
 
         return ret;
     }
+
+    @Override
+    public void taskDone(boolean status) {
+        if(status)
+        {
+            startActivity(new Intent(getApplicationContext(), UserMapsActivity.class));
+            finish();
+
+        }
+        else Toast.makeText(ActivityPayment.this, "Payment faild", Toast.LENGTH_SHORT).show();
+    }
+
+
 }
+

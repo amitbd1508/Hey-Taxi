@@ -167,6 +167,7 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
         initializeview();
         firebaseInitialization();
 
+
         // made change 9/17
         lvAdapter = new ArrayAdapter<String>(this,
                 R.layout.item_search, R.id.tv_search_text, searchResult);
@@ -286,12 +287,14 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
         startTracking();
 
 
+
         //map settings
         mMap.getUiSettings().setZoomControlsEnabled(SET_ZOOM_CONTROL_ENABLED);
         mMap.getUiSettings().setZoomGesturesEnabled(SET_ZOOM_GESTURES_ENABLED);
         mMap.getUiSettings().setAllGesturesEnabled(SET_ZOOM_ALL_GESTURES_ENABLED);
 
 
+        singleUpdateInMapFromFireBase();
         //Listener
         contactDriver.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -317,29 +320,8 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
 
         });
 
-        driverref.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
 
-                mMap.clear();
-                for (DataSnapshot child : dataSnapshot.getChildren()) {
-                    DriverLocation pr = child.getValue(DriverLocation.class);
-                    mMap.addMarker(new MarkerOptions()
-                            .position(new LatLng(Double.parseDouble(pr.getLatitude()), Double.parseDouble(pr.getLongitude())))
-                            .title(pr.getName())
-                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.taxi_cab)
-                            ));
-
-
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-        driverref.addValueEventListener(new ValueEventListener() {
+        /*driverref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -361,7 +343,7 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
             public void onCancelled(DatabaseError databaseError) {
 
             }
-        });
+        });*/
         reqref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -501,6 +483,31 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
         });
     }
 
+    void singleUpdateInMapFromFireBase()
+    {
+        driverref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                mMap.clear();
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    DriverLocation pr = child.getValue(DriverLocation.class);
+                    mMap.addMarker(new MarkerOptions()
+                            .position(new LatLng(Double.parseDouble(pr.getLatitude()), Double.parseDouble(pr.getLongitude())))
+                            .title(pr.getName())
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.taxi_cab)
+                            ));
+
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
     private void initalizeTracker() {
 
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
@@ -549,6 +556,7 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
                 currentLongitude = location.getLongitude();
                 updateLocation(location);
                 updateLocationInMap(location);
+
                 //setLocationInMapFromFireBase();
 
             }
