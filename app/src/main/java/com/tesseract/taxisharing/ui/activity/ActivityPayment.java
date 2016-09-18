@@ -69,7 +69,7 @@ public class ActivityPayment extends AppCompatActivity implements ITaskDoneListe
         } else {
 
             tvFrom.setText(strFrom);
-            tvFrom.setText(strTo);
+            tvTo.setText(strTo);
             tvDriverName.setText(strDriver);
             tvCarName.setText(strCarName);
             layoutMCash.setOnClickListener(new View.OnClickListener() {
@@ -123,7 +123,6 @@ public class ActivityPayment extends AppCompatActivity implements ITaskDoneListe
             public void onClick(View v) {
                 if (isNotEmpty(popEtAmount)) {
                     requestPayment(popEtAmount.getText().toString());
-
                 }
             }
         });
@@ -196,7 +195,6 @@ public class ActivityPayment extends AppCompatActivity implements ITaskDoneListe
         {
             startActivity(new Intent(getApplicationContext(), UserMapsActivity.class));
             finish();
-
         }
         else Toast.makeText(ActivityPayment.this, "Payment faild", Toast.LENGTH_SHORT).show();
     }

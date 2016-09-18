@@ -145,6 +145,7 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
 
 
     String strEmail;
+    String strDriverName;
     String strFullName;
     String strSex;
     String strDriverEmail;
@@ -180,7 +181,7 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
                 TripHistory.getInstance().strTo = destination;
                 TripHistory.getInstance().strPerson = rbPerson.getLeftPinValue() + "";
                 TripHistory.getInstance().strPersonEmail = strEmail;
-                TripHistory.getInstance().strDriver = destination;
+                TripHistory.getInstance().strDriver = strDriverName;
                 TripHistory.getInstance().strDriverEmail = strDriverEmail;
                 TripHistory.getInstance().strCarName = "Alian Primo";
                 TripHistory.getInstance().strTime = App.dateTimeNow();
@@ -287,7 +288,6 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
         startTracking();
 
 
-
         //map settings
         mMap.getUiSettings().setZoomControlsEnabled(SET_ZOOM_CONTROL_ENABLED);
         mMap.getUiSettings().setZoomGesturesEnabled(SET_ZOOM_GESTURES_ENABLED);
@@ -320,30 +320,6 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
 
         });
 
-
-        /*driverref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                mMap.clear();
-                for (DataSnapshot child : dataSnapshot.getChildren()) {
-                    DriverLocation pr = child.getValue(DriverLocation.class);
-                    mMap.addMarker(new MarkerOptions()
-                            .position(new LatLng(Double.parseDouble(pr.getLatitude()), Double.parseDouble(pr.getLongitude())))
-                            .title(pr.getName())
-                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.taxi_cab)
-                            ));
-
-
-                }
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });*/
         reqref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -356,6 +332,7 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
                         tvCarName.setText("Alion Premio");
                         tvDriverName.setText(pr.getDriverEmail());
                         strDriverEmail = pr.getDriverEmail();
+                        strDriverName = pr.getName();
                         layout_response_from_driver.setVisibility(View.VISIBLE);
                         layout_source_destination.setVisibility(View.GONE);
 
@@ -483,8 +460,7 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
         });
     }
 
-    void singleUpdateInMapFromFireBase()
-    {
+    void singleUpdateInMapFromFireBase() {
         driverref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -508,6 +484,7 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
             }
         });
     }
+
     private void initalizeTracker() {
 
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
