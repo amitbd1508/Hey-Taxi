@@ -86,7 +86,7 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
         ref = db.getReference(App.userlocations);
         //view initialization
         btnGoogleSignIn = (View) findViewById(R.id.google_login);
-        btnFacebookSignIn = (View) findViewById(R.id.facebook_login);
+
 
 
         etFirstName = (EditText) findViewById(R.id.et_register_first_name);
@@ -112,6 +112,7 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
                     userLication.setLongitude(App.dlon);
                     userLication.setUsername(strFullName);
                     userLication.setSex(strSex);
+
                     //firebase user creation
                     ref.push().setValue(userLication);
 
@@ -215,9 +216,6 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString(App.heyTaxiUserLogIn, "Yes");
         editor.putString(App.heyTaxiUserEmail, strEmai);
-        editor.putString(App.heyTaxiUserFName, strFullName);
-        editor.putString(App.heyTaxiUserSex, strSex);
-        editor.putString(App.heyTaxiUserImage, strImageLink);
         editor.commit();
     }
 

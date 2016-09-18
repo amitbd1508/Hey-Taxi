@@ -39,6 +39,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.appyvet.rangebar.RangeBar;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -68,6 +74,8 @@ import com.tesseract.taxisharing.model.UserLocation;
 import com.tesseract.taxisharing.ui.dependency.DirectionsJSONParser;
 import com.tesseract.taxisharing.util.App;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -149,7 +157,82 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
     String destination;
     static double currentLatitude = 21.0, currentLongitude = 90.0;
     static double destinationLatitude = 21.0, destinationLongitude = 90.0;
+    List<DriverLocation>driverPosition;
 
+
+    void singleUpdateInMapFromFireBase() {
+        driverref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    DriverLocation pr = child.getValue(DriverLocation.class);
+                    driverPosition.add(pr);
+
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void setLocationInMapFromFireBase() {
+
+        driverref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                driverPosition.clear();
+                //Log.d("location", dataSnapshot.getValue().toString());
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    DriverLocation pr = child.getValue(DriverLocation.class);
+
+                    driverPosition.add(pr);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    private void updateLocation(final Location location) {
+
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                //Log.d("location", dataSnapshot.getValue().toString());
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    UserLocation pr = child.getValue(UserLocation.class);
+
+
+                    if (pr.getEmail().equals(strEmail)) {
+                        pr.setLatitude(String.valueOf(location.getLatitude()));
+                        pr.setLongitude(String.valueOf(location.getLongitude()));
+                        pr.setTime(DateFormat.getTimeInstance().format(new Date()));
+                        child.getRef().setValue(pr);
+
+                    }
+                    Log.d(TAG, pr.getEmail() + "=" + strEmail);
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -160,9 +243,24 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
         //initalize view
         initializeview();
         firebaseInitialization();
+        driverPosition=new ArrayList<DriverLocation>();
 
 
         // made change 9/17
+        listAdaptarAndButtonConfirm();
+
+
+        //code here
+        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+        Drawer();
+
+
+    }
+
+    private void listAdaptarAndButtonConfirm() {
         lvAdapter = new ArrayAdapter<String>(this,
                 R.layout.item_search, R.id.tv_search_text, searchResult);
         lvSearchList.setAdapter(lvAdapter);
@@ -184,42 +282,68 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
                 } else {
                     SingleToneTripHistory.getInstance().strShare = "no";
                 }
+                layout_response_from_driver.setVisibility(View.GONE);
 
 
                 startActivity(new Intent(getApplicationContext(), ActivityPayment.class));
 
             }
         });
-
-
-        //code here
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
-        Drawer();
-
-
     }
 
 
     private void getDatafromSharedPreferences() {
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        strEmail = preferences.getString(App.heyTaxiUserEmail, "No");
-        strFullName = preferences.getString(App.heyTaxiUserFName, "No");
-        strSex = preferences.getString(App.heyTaxiUserSex, "No");
-        strImage = preferences.getString(App.heyTaxiUserImage, "No");
+        strEmail = preferences.getString(App.heyTaxiUserEmail, "ex@ex.com");
+
+        String url = "http://team-tesseract.xyz/taxishare/get_user_by_email.php?user_email="+strEmail;
+
+        StringRequest sr = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        try {
+                            JSONArray jsonArray = new JSONArray(response);
+                            for (int i = 0; i < 1; i++) {
+                                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                strFullName=jsonObject.getString("user_fullname");
+                                strImage=jsonObject.getString("user_image_link");
+                                strSex=jsonObject.getString("user_sex");
+                                App.account=jsonObject.getString("account");
+
+
+                            }
+
+                        } catch (JSONException e) {
+
+                        }
+
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        RequestQueue rq = Volley.newRequestQueue(this);
+        rq.add(sr);
+
     }
 
     public void Drawer() {
 
+
+        getDatafromSharedPreferences();
         AccountHeader headerResult = new AccountHeaderBuilder()
                 .withActivity(this)
                 .withHeaderBackground(R.drawable.header)
                 .addProfiles(
                         new ProfileDrawerItem().withName(strFullName).withEmail(strEmail).
-                                withIcon(getResources().getDrawable(R.drawable.hamudi))
+                                withIcon(getResources().getDrawable(R.drawable.amit))
                 )
                 .build();
 
@@ -280,6 +404,7 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
         setTrakerSettings();
         initalizeTracker();
         startTracking();
+        layout_response_from_driver.setVisibility(View.GONE);
 
 
         //map settings
@@ -290,6 +415,32 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
 
         singleUpdateInMapFromFireBase();
         //Listener
+        reqref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    TaxiRequest pr = child.getValue(TaxiRequest.class);
+                    if (pr.getEmail().equals(strEmail) && pr.getStatus().equals(App.TAXI_DRIVER_REQUST)) {
+                        if (progressDialog != null)
+                            progressDialog.dismiss();
+                        //getdata from driver database and set
+                        tvCarName.setText("Alion Premio");
+                        tvDriverName.setText(pr.getDriverEmail());
+                        strDriverEmail = pr.getDriverEmail();
+                        strDriverName = pr.getName();
+                        layout_response_from_driver.setVisibility(View.VISIBLE);
+                        layout_source_destination.setVisibility(View.GONE);
+                        Log.d(TAG,"requst recived");
+
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
         contactDriver.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -314,31 +465,7 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
 
         });
 
-        reqref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot child : dataSnapshot.getChildren()) {
-                    TaxiRequest pr = child.getValue(TaxiRequest.class);
-                    if (pr.getEmail().equals(strEmail) && pr.getStatus().equals(App.TAXI_DRIVER_REQUST)) {
-                        if (progressDialog != null)
-                            progressDialog.dismiss();
-                        //getdata from driver database and set
-                        tvCarName.setText("Alion Premio");
-                        tvDriverName.setText(pr.getDriverEmail());
-                        strDriverEmail = pr.getDriverEmail();
-                        strDriverName = pr.getName();
-                        layout_response_from_driver.setVisibility(View.VISIBLE);
-                        layout_source_destination.setVisibility(View.GONE);
 
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
 
         sendRequst.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -367,6 +494,7 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
                 progressDialog.setMessage("Waiting for driver response.....");
                 progressDialog.setIndeterminate(true);
                 progressDialog.show();
+                layout_response_from_driver.setVisibility(View.GONE);
 
             }
         });
@@ -388,8 +516,8 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
                 mMap.addMarker(new MarkerOptions()
                         .position(mlatLng)
                         .title(tvTo.getText().toString())
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.man)
-                        ));
+
+                        );
 
 
             }
@@ -454,30 +582,6 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
         });
     }
 
-    void singleUpdateInMapFromFireBase() {
-        driverref.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                mMap.clear();
-                for (DataSnapshot child : dataSnapshot.getChildren()) {
-                    DriverLocation pr = child.getValue(DriverLocation.class);
-                    mMap.addMarker(new MarkerOptions()
-                            .position(new LatLng(Double.parseDouble(pr.getLatitude()), Double.parseDouble(pr.getLongitude())))
-                            .title(pr.getName())
-                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.taxi_cab)
-                            ));
-
-
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
 
     private void initalizeTracker() {
 
@@ -519,7 +623,7 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
             public void onLocationFound(Location location) {
                 // Do some stuff when a new location has been found.
 
-                mMap.clear();
+
 
                 Log.d(TAG, "Location :" + location.describeContents() + location.getSpeed() + "\n" + location.getAltitude() + "\n" + location.getLatitude() + "\n" + location.getLongitude() + "\n" + location.getProvider() + "\n" + location.getAccuracy());
 
@@ -528,7 +632,7 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
                 updateLocation(location);
                 updateLocationInMap(location);
 
-                //setLocationInMapFromFireBase();
+                setLocationInMapFromFireBase();
 
             }
 
@@ -542,6 +646,23 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
 
 
     private void updateLocationInMap(Location location) {
+
+
+        mMap.clear();
+        for(int i=0;i<driverPosition.size();i++)
+        {
+
+
+            mMap.addMarker(new MarkerOptions()
+                            .position(new LatLng(Double.parseDouble(driverPosition.get(1).getLatitude()),Double.parseDouble(driverPosition.get(i).getLongitude())))
+                            .title(driverPosition.get(i).getName())
+                            .snippet("Last update: "+driverPosition.get(i).getTime())
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.taxi_cab))
+
+                    //reference : http://stackoverflow.com/questions/14811579/how-to-create-a-custom-shaped-bitmap-marker-with-android-map-api-v2
+            );
+            Log.d("Diver Position","Enter");
+        }
         LatLng newlocation = new LatLng(location.getLatitude(), location.getLongitude());
         mMap.addMarker(new MarkerOptions()
                         .position(newlocation)
@@ -560,61 +681,7 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
     }
 
 
-    /*private void setLocationInMapFromFireBase() {
 
-        driverref.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                //Log.d("location", dataSnapshot.getValue().toString());
-                for (DataSnapshot child : dataSnapshot.getChildren()) {
-                    DriverLocation pr = child.getValue(DriverLocation.class);
-                    LatLng latLng = new LatLng(Double.parseDouble(pr.getLatitude()), Double.parseDouble(pr.getLongitude()));
-                    mMap.addMarker(new MarkerOptions()
-                            .position(latLng)
-                            .title(markerName)
-                            .snippet("Last update" + userLocation.getTime())
-                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.taxi_cab)
-                            ));
-                }
-                mMap.clear();
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }*/
-
-    private void updateLocation(final Location location) {
-
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                //Log.d("location", dataSnapshot.getValue().toString());
-                for (DataSnapshot child : dataSnapshot.getChildren()) {
-                    UserLocation pr = child.getValue(UserLocation.class);
-
-
-                    if (pr.getEmail().equals(strEmail)) {
-                        pr.setLatitude(String.valueOf(location.getLatitude()));
-                        pr.setLongitude(String.valueOf(location.getLongitude()));
-                        pr.setTime(DateFormat.getTimeInstance().format(new Date()));
-                        child.getRef().setValue(pr);
-
-                    }
-                    Log.d(TAG, pr.getEmail() + "=" + strEmail);
-
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
 
 
     private void setTrakerSettings() {
@@ -622,7 +689,7 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
                 .setUseGPS(true)
                 .setUseNetwork(true)
                 .setUsePassive(true)
-                .setTimeBetweenUpdates(1000)
+                .setTimeBetweenUpdates(5000)
                 .setMetersBetweenUpdates(1);
     }
 
@@ -641,6 +708,7 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
                 return;
             }
             tracker.startListening();
+            Log.d(TAG,"Tracker started");
         }
 
     }

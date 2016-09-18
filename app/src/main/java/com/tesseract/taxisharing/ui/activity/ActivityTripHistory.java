@@ -67,6 +67,7 @@ public class ActivityTripHistory extends AppCompatActivity {
                                 tripHistory.setAmount(jsonObject.getString("amount"));
                                 tripHistory.setPerson(jsonObject.getString("person"));
                                 tripHistory.setShared(jsonObject.getString("share"));
+                                tripHistories.add(tripHistory);
                                 adapter.notifyDataSetChanged();
                             }
 

@@ -4,13 +4,13 @@ package com.tesseract.taxisharing.model;
  * Created by BlackFlag on 9/11/2016.
  */
 public class User {
-    private String fullname;
-    private String username;
-    private String password;
-    private String phone;
-    private String sex;
-    private String image_link;
-    private String email;
+    public String fullname;
+    public String username;
+    public String password;
+    public String phone;
+    public String sex;
+    public String image_link;
+    public String email;
 
     public User() {
     }

@@ -92,7 +92,11 @@
         <activity
             android:name=".ui.activity.ActivityLostAndFount"
             android:label="Lost And Found" />
-        <activity android:name=".ui.activity.ActivityTripHistory"></activity>
+        <activity
+            android:name=".ui.activity.ActivityTripHistory"
+            android:label="Trip History">
+
+        </activity>
     </application>
 
 </manifest>

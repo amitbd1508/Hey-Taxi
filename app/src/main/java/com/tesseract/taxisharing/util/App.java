@@ -23,6 +23,8 @@ public class App {
     public final static String TAXI_DRIVER_REQUST="driver_say_yes";
 
 
+    public static String account="100";
+
     public final static String userlocations="userlocations";
     public final static String taxirequest="taxirequest";
     public final static String taxidriverlocation="taxidriverlocation";

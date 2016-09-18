@@ -132,7 +132,7 @@ public class ActivityPayment extends AppCompatActivity implements ITaskDoneListe
                 if (isNotEmpty(popEtAmount)) {
                     requestPayment(popEtAmount.getText().toString());
                     progress.show();
-                    Toast.makeText(ActivityPayment.this, "requestPayment", Toast.LENGTH_SHORT).show();
+
                 }
             }
         });
@@ -151,6 +151,7 @@ public class ActivityPayment extends AppCompatActivity implements ITaskDoneListe
     boolean ret = false;
 
     public boolean requestPayment(String strAmount) {
+        Log.d("+++","fffffffffffffffffffffffffffffffffff");
         String url = "http://team-tesseract.xyz/taxishare/insert_user_trip_history.php?loaction_from=" + strFrom
                 + "&location_to=" + strTo
                 + "&time=" + strTime
@@ -181,7 +182,7 @@ public class ActivityPayment extends AppCompatActivity implements ITaskDoneListe
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                Toast.makeText(ActivityPayment.this, "EEEEEEEEEEEEEEEEEEEEEEEEE", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(ActivityPayment.this, "EEEEEEEEEEEEEEEEEEEEEEEEE", Toast.LENGTH_SHORT).show();
                 ret = false;
             }
         }) {
@@ -203,7 +204,7 @@ public class ActivityPayment extends AppCompatActivity implements ITaskDoneListe
     public void taskDone(boolean status) {
         if (status) {
             progress.dismiss();
-            startActivity(new Intent(getApplicationContext(), UserMapsActivity.class));
+
             finish();
         } else Toast.makeText(ActivityPayment.this, "Payment faild", Toast.LENGTH_SHORT).show();
     }

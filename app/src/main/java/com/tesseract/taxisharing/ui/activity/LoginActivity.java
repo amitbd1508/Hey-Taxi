@@ -50,16 +50,10 @@ public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
     private static final int RC_SIGN_IN = 9001;
 
-    private GoogleApiClient mGoogleApiClient;
-
     EditText etEmail, etPassword;
 
     String strEmail;
     String strPassword;
-    String strFullName;
-    String strSex;
-    String strRating;
-    String strImage;
 
     boolean ret = false;
 
@@ -80,9 +74,6 @@ public class LoginActivity extends AppCompatActivity {
                     SharedPreferences.Editor editor = preferences.edit();
                     editor.putString(App.heyTaxiUserLogIn, "Yes");
                     editor.putString(App.heyTaxiUserEmail, strEmail);
-                    editor.putString(App.heyTaxiUserFName, strFullName);
-                    editor.putString(App.heyTaxiUserSex, strSex);
-                    editor.putString(App.heyTaxiUserImage, strImage);
                     editor.commit();
 
                     startActivity(new Intent(getApplicationContext(), UserMapsActivity.class));
@@ -107,26 +98,12 @@ public class LoginActivity extends AppCompatActivity {
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-                            if (response != null) ret = true;
+                            if (response != null && response=="1") ret = true;
                             else ret = false;
-                            Toast.makeText(LoginActivity.this, response, Toast.LENGTH_SHORT).show();
-                            try {
-                                JSONArray jsonArray = new JSONArray(response);
-                                JSONObject jsonObject = jsonArray.getJSONObject(0);
-                                strFullName = jsonObject.getString("user_fullname");
-                                strEmail = jsonObject.getString("user_email");
-                                strSex = jsonObject.getString("user_sex");
-                                strImage = jsonObject.getString("user_image_link");
-                            } catch (JSONException e) {
-                                ret=false;
-                            }
-
-
                         }
                     }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(LoginActivity.this, "" + error, Toast.LENGTH_SHORT).show();
                     ret=false;
                 }
             }) {

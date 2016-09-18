@@ -61,7 +61,7 @@
         android:inputType="number" />
 
     <EditText
-        android:id="@+id/et_settings_nid"
+        android:id="@+id/et_settings_personalid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="personal id"
@@ -74,16 +74,23 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="save" />
+        android:background="#2962ff"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="#ffffff"
+        android:text="save changes" />
 
     <android.support.v4.widget.Space
         android:layout_width="match_parent"
         android:layout_height="36dp" />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Places"
+        android:text="Account"
+        android:textAlignment="center"
+        android:id="@+id/account"
+        android:textColor="#dd2c00"
         android:textSize="20sp" />
 
     <View
