@@ -35,9 +35,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,7 +47,6 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -63,18 +60,14 @@ import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
-import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import com.tesseract.taxisharing.R;
 import com.tesseract.taxisharing.model.DriverLocation;
 import com.tesseract.taxisharing.model.TaxiRequest;
-import com.tesseract.taxisharing.model.TripHistory;
+import com.tesseract.taxisharing.model.SingleToneTripHistory;
 import com.tesseract.taxisharing.model.UserLocation;
 import com.tesseract.taxisharing.ui.dependency.DirectionsJSONParser;
-import com.tesseract.taxisharing.ui.dependency.JSONParser;
 import com.tesseract.taxisharing.util.App;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -177,19 +170,19 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
             @Override
             public void onClick(View v) {
                 // save driver data and go to payment
-                TripHistory.getInstance().strFrom = source;
-                TripHistory.getInstance().strTo = destination;
-                TripHistory.getInstance().strPerson = rbPerson.getLeftPinValue() + "";
-                TripHistory.getInstance().strPersonEmail = strEmail;
-                TripHistory.getInstance().strDriver = strDriverName;
-                TripHistory.getInstance().strDriverEmail = strDriverEmail;
-                TripHistory.getInstance().strCarName = "Alian Primo";
-                TripHistory.getInstance().strTime = App.dateTimeNow();
-                TripHistory.getInstance().strUserName = strFullName;
+                SingleToneTripHistory.getInstance().strFrom = source;
+                SingleToneTripHistory.getInstance().strTo = destination;
+                SingleToneTripHistory.getInstance().strPerson = rbPerson.getLeftPinValue() + "";
+                SingleToneTripHistory.getInstance().strPersonEmail = strEmail;
+                SingleToneTripHistory.getInstance().strDriver = strDriverName;
+                SingleToneTripHistory.getInstance().strDriverEmail = strDriverEmail;
+                SingleToneTripHistory.getInstance().strCarName = "Alian Primo";
+                SingleToneTripHistory.getInstance().strTime = App.dateTimeNow();
+                SingleToneTripHistory.getInstance().strUserName = strFullName;
                 if (cbShareRide.isChecked()) {
-                    TripHistory.getInstance().strShare = "yes";
+                    SingleToneTripHistory.getInstance().strShare = "yes";
                 } else {
-                    TripHistory.getInstance().strShare = "no";
+                    SingleToneTripHistory.getInstance().strShare = "no";
                 }
 
 
@@ -238,6 +231,7 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
                         new PrimaryDrawerItem().withName("Payment").withIdentifier(1),
                         new PrimaryDrawerItem().withName("mCredit").withIdentifier(2),
                         new PrimaryDrawerItem().withName("Profile settings").withIdentifier(4),
+                        new PrimaryDrawerItem().withName("Trip History").withIdentifier(0),
                         new PrimaryDrawerItem().withName("Lost and found").withIdentifier(3)
 
                 )
@@ -245,7 +239,7 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                         if (drawerItem.equals(0)) {
-
+                            startActivity(new Intent(UserMapsActivity.this, ActivityTripHistory.class));
                         } else if (drawerItem.equals(1)) {
                             startActivity(new Intent(UserMapsActivity.this, ActivityPayment.class));
                         } else if (drawerItem.equals(2)) {

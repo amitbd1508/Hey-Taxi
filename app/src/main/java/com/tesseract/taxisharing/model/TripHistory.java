@@ -1,32 +1,74 @@
 package com.tesseract.taxisharing.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created by hhson on 9/18/2016.
  */
 public class TripHistory {
 
-    public static TripHistory mInstance = null;
-    public String strFrom = " ";
-    public String strTo = " ";
-    public String strTime = " ";
-    public String strShare = " ";
-    public String strPerson = " ";
-    public String strPersonEmail = " ";
-    public String strDriver = " ";
-    public String strDriverEmail = " ";
-    public String strCarName = " ";
-    public String strUserName = " ";
+    String locationFrom;
+    String locationTo;
+    String tripTime;
+    String shared;
+    String driverName;
+    String amount;
+    String person;
 
-    protected TripHistory() {
+    public TripHistory() {
     }
 
-    public static synchronized TripHistory getInstance() {
-        if (null == mInstance) {
-            mInstance = new TripHistory();
-        }
-        return mInstance;
+    public String getLocationFrom() {
+        return locationFrom;
+    }
+
+    public void setLocationFrom(String locationFrom) {
+        this.locationFrom = locationFrom;
+    }
+
+    public String getLocationTo() {
+        return locationTo;
+    }
+
+    public void setLocationTo(String locationTo) {
+        this.locationTo = locationTo;
+    }
+
+    public String getTripTime() {
+        return tripTime;
+    }
+
+    public void setTripTime(String tripTime) {
+        this.tripTime = tripTime;
+    }
+
+    public String getShared() {
+        return shared;
+    }
+
+    public void setShared(String shared) {
+        this.shared = shared;
+    }
+
+    public String getDriverName() {
+        return driverName;
+    }
+
+    public void setDriverName(String driverName) {
+        this.driverName = driverName;
+    }
+
+    public String getAmount() {
+        return amount;
+    }
+
+    public void setAmount(String amount) {
+        this.amount = amount;
+    }
+
+    public String getPerson() {
+        return person;
+    }
+
+    public void setPerson(String person) {
+        this.person = person;
     }
 }

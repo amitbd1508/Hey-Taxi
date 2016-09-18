@@ -23,7 +23,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.tesseract.taxisharing.R;
-import com.tesseract.taxisharing.model.TripHistory;
+import com.tesseract.taxisharing.model.SingleToneTripHistory;
 import com.tesseract.taxisharing.ui.dependency.ITaskDoneListener;
 
 import java.util.HashMap;
@@ -72,7 +72,7 @@ public class ActivityPayment extends AppCompatActivity implements ITaskDoneListe
         tvDriverName = (TextView) findViewById(R.id.tvDriverName_payment);
         tvCarName = (TextView) findViewById(R.id.tvCarName_payment);
 
-        if (TripHistory.getInstance().strFrom.equals(" ")) {
+        if (SingleToneTripHistory.getInstance().strFrom.equals(" ")) {
             cardViewTripDetails.setVisibility(View.GONE);
         } else {
 
@@ -92,16 +92,16 @@ public class ActivityPayment extends AppCompatActivity implements ITaskDoneListe
     }
 
     private void getPaymentData() {
-        strFrom = TripHistory.getInstance().strFrom;
-        strTo = TripHistory.getInstance().strTo;
-        strShare = TripHistory.getInstance().strShare;
-        strPerson = TripHistory.getInstance().strPerson;
-        strPersonEmail = TripHistory.getInstance().strPersonEmail;
-        strDriver = TripHistory.getInstance().strDriver;
-        strDriverEmail = TripHistory.getInstance().strDriverEmail;
-        strCarName = TripHistory.getInstance().strCarName;
-        strTime = TripHistory.getInstance().strTime;
-        strUserName = TripHistory.getInstance().strUserName;
+        strFrom = SingleToneTripHistory.getInstance().strFrom;
+        strTo = SingleToneTripHistory.getInstance().strTo;
+        strShare = SingleToneTripHistory.getInstance().strShare;
+        strPerson = SingleToneTripHistory.getInstance().strPerson;
+        strPersonEmail = SingleToneTripHistory.getInstance().strPersonEmail;
+        strDriver = SingleToneTripHistory.getInstance().strDriver;
+        strDriverEmail = SingleToneTripHistory.getInstance().strDriverEmail;
+        strCarName = SingleToneTripHistory.getInstance().strCarName;
+        strTime = SingleToneTripHistory.getInstance().strTime;
+        strUserName = SingleToneTripHistory.getInstance().strUserName;
     }
 
     public void showDialog() {
