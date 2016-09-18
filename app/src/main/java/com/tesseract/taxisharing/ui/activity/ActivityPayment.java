@@ -132,6 +132,7 @@ public class ActivityPayment extends AppCompatActivity implements ITaskDoneListe
                 if (isNotEmpty(popEtAmount)) {
                     requestPayment(popEtAmount.getText().toString());
                     progress.show();
+                    Toast.makeText(ActivityPayment.this, "requestPayment", Toast.LENGTH_SHORT).show();
                 }
             }
         });
