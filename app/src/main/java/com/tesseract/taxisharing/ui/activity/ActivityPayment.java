@@ -23,8 +23,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.tesseract.taxisharing.R;
-import com.tesseract.taxisharing.model.SingleToneTripHistory;
 import com.tesseract.taxisharing.ui.dependency.ITaskDoneListener;
+import com.tesseract.taxisharing.util.App;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -59,6 +59,8 @@ public class ActivityPayment extends AppCompatActivity implements ITaskDoneListe
         iTaskDoneListener = this;
         getPaymentData();
 
+
+
         progress = new ProgressDialog(this);
         progress.setMessage("Loading Data ..");
         progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -72,9 +74,18 @@ public class ActivityPayment extends AppCompatActivity implements ITaskDoneListe
         tvDriverName = (TextView) findViewById(R.id.tvDriverName_payment);
         tvCarName = (TextView) findViewById(R.id.tvCarName_payment);
 
-        if (SingleToneTripHistory.getInstance().strFrom.equals(" ")) {
-            cardViewTripDetails.setVisibility(View.GONE);
-        } else {
+
+        if(!App.payment.isReqest)
+        {
+            findViewById(R.id.iv_user_maps_car_image).setVisibility(View.GONE);
+            findViewById(R.id.iv_user_maps_man_image).setVisibility(View.GONE);
+            findViewById(R.id.layoutpayment ).setVisibility(View.GONE);
+            Toast.makeText( getApplicationContext(),"You have No Panding Payment", Toast.LENGTH_SHORT).show();
+            tvFrom.setText("You Have NO Panding Payment");
+            tvTo.setText("Go Back For Trip Requst");
+
+        }
+       else {
 
             tvFrom.setText(strFrom);
             tvTo.setText(strTo);
@@ -89,19 +100,20 @@ public class ActivityPayment extends AppCompatActivity implements ITaskDoneListe
         }
 
 
+
     }
 
     private void getPaymentData() {
-        strFrom = SingleToneTripHistory.getInstance().strFrom;
-        strTo = SingleToneTripHistory.getInstance().strTo;
-        strShare = SingleToneTripHistory.getInstance().strShare;
-        strPerson = SingleToneTripHistory.getInstance().strPerson;
-        strPersonEmail = SingleToneTripHistory.getInstance().strPersonEmail;
-        strDriver = SingleToneTripHistory.getInstance().strDriver;
-        strDriverEmail = SingleToneTripHistory.getInstance().strDriverEmail;
-        strCarName = SingleToneTripHistory.getInstance().strCarName;
-        strTime = SingleToneTripHistory.getInstance().strTime;
-        strUserName = SingleToneTripHistory.getInstance().strUserName;
+        strFrom = App.payment.strFrom;
+        strTo = App.payment.strTo;
+        strShare = App.payment.strShare;
+        strPerson = App.payment.strPerson;
+        strPersonEmail = App.payment.strPersonEmail;
+        strDriver = App.payment.strDriver;
+        strDriverEmail = App.payment.strDriverEmail;
+        strCarName = App.payment.strCarName;
+        strTime = App.payment.strTime;
+        strUserName = App.payment.strUserName;
     }
 
     public void showDialog() {
@@ -129,6 +141,7 @@ public class ActivityPayment extends AppCompatActivity implements ITaskDoneListe
         popBtnOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 if (isNotEmpty(popEtAmount)) {
                     requestPayment(popEtAmount.getText().toString());
                     progress.show();
@@ -204,6 +217,9 @@ public class ActivityPayment extends AppCompatActivity implements ITaskDoneListe
     public void taskDone(boolean status) {
         if (status) {
             progress.dismiss();
+
+            App.payment.init();
+            App.payment.isReqest=false;
 
             finish();
         } else Toast.makeText(ActivityPayment.this, "Payment faild", Toast.LENGTH_SHORT).show();

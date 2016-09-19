@@ -67,8 +67,8 @@
                         android:padding="10dp">
 
                         <ImageView
-                            android:id="@+id/iv_user_maps_driver_image"
                             android:layout_width="30dp"
+                            android:id="@+id/iv_user_maps_man_image"
                             android:layout_height="30dp"
                             android:src="@drawable/man" />
 
@@ -76,7 +76,7 @@
                             android:id="@+id/tvDriverName_payment"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Sonet"
+                            android:text=""
                             android:textSize="14sp" />
 
                         <android.support.v4.widget.Space
@@ -94,7 +94,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10dp"
-                            android:text="Maruti Suju"
+                            android:text=""
                             android:textSize="14sp" />
                     </LinearLayout>
 
@@ -106,6 +106,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
+            android:id="@+id/layoutpayment"
             android:padding="10dp">
 
             <TextView

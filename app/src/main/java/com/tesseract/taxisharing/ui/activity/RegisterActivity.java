@@ -3,6 +3,7 @@ package com.tesseract.taxisharing.ui.activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.nfc.Tag;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -157,7 +158,7 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
 
         if (isNotEmpty(etFirstName) && isNotEmpty(etLastName) && isNotEmpty(etEamil) && isNotEmpty(etMobile)
                 && isNotEmpty(etNid) && isNotEmpty(etPassword)) {
-            strFullName = etFirstName.getText().toString() + "-" + etLastName.getText().toString();
+            strFullName = etFirstName.getText().toString() + " " + etLastName.getText().toString();
 
             Log.d(TAG, strFullName);
             strEmai = etEamil.getText().toString();
@@ -179,25 +180,27 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
                     + "&user_sex=" + strSex
                     + "&user_mobile=" + strMobile;
 
-            Toast.makeText(RegisterActivity.this, url, Toast.LENGTH_SHORT).show();
+            url=url.replaceAll(" ","%20");
+            //Toast.makeText(RegisterActivity.this, url, Toast.LENGTH_SHORT).show();
             Log.d(TAG, url);
             StringRequest sr = new StringRequest(Request.Method.POST, url,
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-                            Toast.makeText(RegisterActivity.this, response, Toast.LENGTH_SHORT).show();
+                            Log.e(TAG,"Register Sucssfull");
                             if (response.equals("1")) ret = true;
                             else ret = false;
                         }
                     }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(RegisterActivity.this, "" + error, Toast.LENGTH_SHORT).show();
+                    Log.e(TAG,error.getMessage());
                 }
             }) {
                 @Override
                 protected Map<String, String> getParams() throws AuthFailureError {
                     Map<String, String> map = new HashMap<String, String>();
+
 
                     return map;
                 }
@@ -215,7 +218,8 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString(App.heyTaxiUserLogIn, "Yes");
-        editor.putString(App.TAXI_DRIVER_REQUST, strEmai);
+        editor.putString(App.heyTaxiUserEmail, strEmai);
+        Log.d(TAG,strEmai);
         editor.commit();
     }
 
@@ -339,9 +343,11 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
             mProgressDialog = new ProgressDialog(this);
             mProgressDialog.setMessage(getString(R.string.loading));
             mProgressDialog.setIndeterminate(true);
+            mProgressDialog.show();
         }
 
-        mProgressDialog.show();
+
+
     }
 
     private void hideProgressDialog() {

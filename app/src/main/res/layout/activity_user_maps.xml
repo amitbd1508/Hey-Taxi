@@ -147,8 +147,8 @@
 
     <ImageButton
         android:id="@+id/btnLocationPin"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="20dp"
+        android:layout_height="15dp"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:background="@android:color/transparent"

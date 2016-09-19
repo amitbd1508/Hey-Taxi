@@ -5,7 +5,8 @@ package com.tesseract.taxisharing.model;
  */
 public class SingleToneTripHistory {
 
-    public static SingleToneTripHistory mInstance = null;
+
+    public boolean isReqest=false;
     public String strFrom = "";
     public String strTo = "";
     public String strTime = "";
@@ -17,13 +18,24 @@ public class SingleToneTripHistory {
     public String strCarName = "";
     public String strUserName = "";
 
-    protected SingleToneTripHistory() {
+    public void  init()
+    {
+        isReqest=false;
+        strFrom = "";
+        strTo = "";
+        strTime = "";
+        strShare = "";
+        strPerson = "";
+        strPersonEmail = "";
+        strDriver = "";
+        strDriverEmail = "";
+        strCarName = "";
+        strUserName = "";
+
     }
 
-    public static synchronized SingleToneTripHistory getInstance() {
-        if (null == mInstance) {
-            mInstance = new SingleToneTripHistory();
-        }
-        return mInstance;
+    public SingleToneTripHistory(){
+
     }
+
 }

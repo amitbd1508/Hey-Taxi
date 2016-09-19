@@ -36,6 +36,7 @@
         android:layout_width="match_parent"
         android:background="#1a237e"
         android:textStyle="bold"
+        android:id="@+id/submit"
         android:textSize="25sp"
         android:textColor="#ffffff"
         android:layout_height="wrap_content" />

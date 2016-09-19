@@ -68,8 +68,8 @@ import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.tesseract.taxisharing.R;
 import com.tesseract.taxisharing.model.DriverLocation;
-import com.tesseract.taxisharing.model.TaxiRequest;
 import com.tesseract.taxisharing.model.SingleToneTripHistory;
+import com.tesseract.taxisharing.model.TaxiRequest;
 import com.tesseract.taxisharing.model.UserLocation;
 import com.tesseract.taxisharing.ui.dependency.DirectionsJSONParser;
 import com.tesseract.taxisharing.util.App;
@@ -157,7 +157,7 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
     String destination;
     static double currentLatitude = 21.0, currentLongitude = 90.0;
     static double destinationLatitude = 21.0, destinationLongitude = 90.0;
-    List<DriverLocation>driverPosition;
+    List<DriverLocation> driverPosition;
 
 
     void singleUpdateInMapFromFireBase() {
@@ -165,6 +165,7 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
+                driverPosition.clear();
 
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     DriverLocation pr = child.getValue(DriverLocation.class);
@@ -233,6 +234,7 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
             }
         });
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -243,12 +245,13 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
         //initalize view
         initializeview();
         firebaseInitialization();
-        driverPosition=new ArrayList<DriverLocation>();
+        driverPosition = new ArrayList<DriverLocation>();
 
 
         // made change 9/17
         listAdaptarAndButtonConfirm();
 
+        App.payment = new SingleToneTripHistory();
 
         //code here
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -268,20 +271,12 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
             @Override
             public void onClick(View v) {
                 // save driver data and go to payment
-                SingleToneTripHistory.getInstance().strFrom = source;
-                SingleToneTripHistory.getInstance().strTo = destination;
-                SingleToneTripHistory.getInstance().strPerson = rbPerson.getLeftPinValue() + "";
-                SingleToneTripHistory.getInstance().strPersonEmail = strEmail;
-                SingleToneTripHistory.getInstance().strDriver = strDriverName;
-                SingleToneTripHistory.getInstance().strDriverEmail = strDriverEmail;
-                SingleToneTripHistory.getInstance().strCarName = "Alian Primo";
-                SingleToneTripHistory.getInstance().strTime = App.dateTimeNow();
-                SingleToneTripHistory.getInstance().strUserName = strFullName;
-                if (cbShareRide.isChecked()) {
-                    SingleToneTripHistory.getInstance().strShare = "yes";
-                } else {
-                    SingleToneTripHistory.getInstance().strShare = "no";
+                if (!App.payment.isReqest) {
+                    layout_response_from_driver.setVisibility(View.GONE);
+                    return;
                 }
+
+
                 layout_response_from_driver.setVisibility(View.GONE);
 
 
@@ -297,7 +292,7 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         strEmail = preferences.getString(App.heyTaxiUserEmail, "ex@ex.com");
 
-        String url = "http://team-tesseract.xyz/taxishare/get_user_by_email.php?user_email="+strEmail;
+        String url = "http://team-tesseract.xyz/taxishare/get_user_by_email.php?user_email=" + strEmail;
 
         StringRequest sr = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
@@ -308,10 +303,11 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
                             JSONArray jsonArray = new JSONArray(response);
                             for (int i = 0; i < 1; i++) {
                                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                strFullName=jsonObject.getString("user_fullname");
-                                strImage=jsonObject.getString("user_image_link");
-                                strSex=jsonObject.getString("user_sex");
-                                App.account=jsonObject.getString("account");
+                                strFullName = jsonObject.getString("user_fullname");
+                                strImage = jsonObject.getString("user_image_link");
+                                strSex = jsonObject.getString("user_sex");
+                                App.account = jsonObject.getString("account");
+                                App.CURRENT_USER_EMAIL=strEmail;
 
 
                             }
@@ -424,13 +420,31 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
                         if (progressDialog != null)
                             progressDialog.dismiss();
                         //getdata from driver database and set
+
+                        App.payment.init();
+                        App.payment.strFrom = source;
+                        App.payment.strTo = destination;
+                        App.payment.strPerson = rbPerson.getRightPinValue();
+                        App.payment.strPersonEmail = pr.getEmail();
+                        App.payment.strDriver = pr.getDriverName();
+                        App.payment.strDriverEmail = pr.getDriverEmail();
+                        App.payment.strCarName = pr.getCarName();
+                        App.payment.strShare = pr.getShare();
+                        App.payment.strTime = pr.getTime();
+                        App.payment.strUserName = pr.getName();
+                        App.payment.isReqest = true;
+
+                        pr.setStatus(App.TAXI_REQUST_HIRED);
+                        child.getRef().setValue(pr);
+
+
                         tvCarName.setText(pr.getCarName());
                         tvDriverName.setText(pr.getDriverName());
                         strDriverEmail = pr.getDriverEmail();
                         strDriverName = pr.getDriverName();
                         layout_response_from_driver.setVisibility(View.VISIBLE);
                         layout_source_destination.setVisibility(View.GONE);
-                        Log.d(TAG,"requst recived");
+                        Log.d(TAG, "requst recived");
 
                     }
                 }
@@ -466,7 +480,6 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
         });
 
 
-
         sendRequst.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -479,12 +492,12 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
                 taxiRequest.setDestinationLatitude(String.valueOf(destinationLatitude));
                 taxiRequest.setDestinationLongitude(String.valueOf(destinationLongitude));
                 taxiRequest.setTime(DateFormat.getTimeInstance().format(new Date()));
-                if(cbShareRide.isChecked())
+                if (cbShareRide.isChecked())
                     taxiRequest.setShare("Yes");
                 else
                     taxiRequest.setShare("No");
                 taxiRequest.setPerson(rbPerson.getRightPinValue());
-                Log.e("RightPin",rbPerson.getRightPinValue());
+                Log.e("RightPin", rbPerson.getRightPinValue());
 
                 reqref.push().setValue(taxiRequest);
                 // prgressbar start  sonet you will impliment a progress bar
@@ -513,18 +526,18 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
                 destinationLongitude = latLng.longitude;
                 Address address = getAddressFromLatLog(new LatLng(currentLatitude, currentLongitude));
                 source = address.getFeatureName() + "," + address.getSubLocality();
-                tvForm.setText("From :"+source);
+                tvForm.setText("From :" + source);
 
                 address = getAddressFromLatLog(latLng);
                 destination = address.getFeatureName() + "," + address.getSubLocality();
-                tvTo.setText("To :"+destination);
+                tvTo.setText("To :" + destination);
                 layout_source_destination.setVisibility(View.VISIBLE);
                 LatLng mlatLng = new LatLng(destinationLatitude, destinationLongitude);
                 mMap.addMarker(new MarkerOptions()
                         .position(mlatLng)
                         .title(tvTo.getText().toString())
 
-                        );
+                );
 
 
             }
@@ -631,7 +644,6 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
                 // Do some stuff when a new location has been found.
 
 
-
                 Log.d(TAG, "Location :" + location.describeContents() + location.getSpeed() + "\n" + location.getAltitude() + "\n" + location.getLatitude() + "\n" + location.getLongitude() + "\n" + location.getProvider() + "\n" + location.getAccuracy());
 
                 currentLatitude = location.getLatitude();
@@ -656,19 +668,18 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
 
 
         mMap.clear();
-        for(int i=0;i<driverPosition.size();i++)
-        {
+        for (int i = 0; i < driverPosition.size(); i++) {
 
 
             mMap.addMarker(new MarkerOptions()
-                            .position(new LatLng(Double.parseDouble(driverPosition.get(1).getLatitude()),Double.parseDouble(driverPosition.get(i).getLongitude())))
+                            .position(new LatLng(Double.parseDouble(driverPosition.get(i).getLatitude()), Double.parseDouble(driverPosition.get(i).getLongitude())))
                             .title(driverPosition.get(i).getName())
-                            .snippet("Last update: "+driverPosition.get(i).getTime())
+                            .snippet("Last update: " + driverPosition.get(i).getTime())
                             .icon(BitmapDescriptorFactory.fromResource(R.drawable.taxi_cab))
 
                     //reference : http://stackoverflow.com/questions/14811579/how-to-create-a-custom-shaped-bitmap-marker-with-android-map-api-v2
             );
-            Log.d("Diver Position","Enter");
+            Log.d("Diver Position", "Enter");
         }
         LatLng newlocation = new LatLng(location.getLatitude(), location.getLongitude());
         mMap.addMarker(new MarkerOptions()
@@ -686,9 +697,6 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
         count++;
 
     }
-
-
-
 
 
     private void setTrakerSettings() {
@@ -715,7 +723,7 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
                 return;
             }
             tracker.startListening();
-            Log.d(TAG,"Tracker started");
+            Log.d(TAG, "Tracker started");
         }
 
     }

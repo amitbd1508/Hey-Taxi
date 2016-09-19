@@ -1,5 +1,7 @@
 package com.tesseract.taxisharing.util;
 
+import com.tesseract.taxisharing.model.SingleToneTripHistory;
+
 import java.text.DateFormat;
 import java.util.Date;
 
@@ -7,7 +9,7 @@ import java.util.Date;
  * Created by BlackFlag on 9/16/2016.
  */
 public class App {
-    public  final static String CURRENT_USER = "amit";
+    public  static String CURRENT_USER_EMAIL= "amit";
     public  final static String ACCOUNT = "user";
 
     public final static String TAXI_REQUST_YES="yes";
@@ -18,12 +20,13 @@ public class App {
     public final static String heyTaxiUserLogIn="heyTaxiUserLogIn";
     public final static String heyTaxiUserEmail="heyTaxiUserEmail";
     public final static String heyTaxiUserFName="heyTaxiUserFName";
-    public final static String heyTaxiUserSex="heyTaxiUserSex";
-    public final static String heyTaxiUserImage="heyTaxiUserImage";
+
     public final static String TAXI_DRIVER_REQUST="driver_say_yes";
 
 
     public static String account="100";
+
+    public  static SingleToneTripHistory payment;
 
     public final static String userlocations="userlocations";
     public final static String taxirequest="taxirequest";
