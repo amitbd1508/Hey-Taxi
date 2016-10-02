@@ -30,7 +30,6 @@
                 android:layout_weight="1" />
 
 
-
         </LinearLayout>
 
         <LinearLayout
@@ -174,10 +173,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:background="#1e88e5"
+                android:text="SUBMIT"
                 android:textColor="#ffffff"
                 android:textSize="19sp"
-                android:textStyle="bold"
-                android:text="SUBMIT" />
+                android:textStyle="bold" />
         </LinearLayout>
 
     </RelativeLayout>

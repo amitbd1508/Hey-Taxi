@@ -77,9 +77,9 @@
                     android:layout_height="wrap_content"
                     android:lines="1"
 
-                    android:textColor="#000000"
-                    android:textAlignment="center"
                     android:text="From: Dhaka"
+                    android:textAlignment="center"
+                    android:textColor="#000000"
                     android:textSize="17dp" />
 
 
@@ -88,9 +88,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:lines="1"
-                    android:textColor="#000000"
-                    android:textAlignment="center"
                     android:text="To: Khulna"
+                    android:textAlignment="center"
+                    android:textColor="#000000"
                     android:textSize="17dp" />
             </LinearLayout>
 
@@ -101,8 +101,8 @@
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_marginTop="15dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
                     android:text="Person : " />
 
                 <com.appyvet.rangebar.RangeBar
@@ -111,8 +111,8 @@
                     android:layout_height="65dp"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
-                    custom:tickEnd="4"
                     custom:rangeBar="false"
+                    custom:tickEnd="4"
                     custom:tickInterval="1"
                     custom:tickStart="1" />
             </LinearLayout>
@@ -127,12 +127,12 @@
             <Button
                 android:id="@+id/btnRequest"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:background="#6200ea"
+                android:text="Request"
                 android:textColor="#ffffff"
                 android:textSize="20dp"
-                android:textStyle="bold"
-                android:layout_height="wrap_content"
-                android:text="Request" />
+                android:textStyle="bold" />
         </LinearLayout>
     </android.support.v7.widget.CardView>
 

@@ -98,13 +98,13 @@ public class LoginActivity extends AppCompatActivity {
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-                            if (response != null && response=="1") ret = true;
+                            if (response != null && response == "1") ret = true;
                             else ret = false;
                         }
                     }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    ret=false;
+                    ret = false;
                 }
             }) {
                 @Override

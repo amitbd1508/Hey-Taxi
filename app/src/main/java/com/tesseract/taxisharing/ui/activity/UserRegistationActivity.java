@@ -19,15 +19,15 @@ public class UserRegistationActivity extends AppCompatActivity {
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         String name = preferences.getString(App.heyTaxiUserLogIn, "No");
-        if(name.equals("Yes")){
-            startActivity(new Intent(getApplicationContext(),UserMapsActivity.class));
+        if (name.equals("Yes")) {
+            startActivity(new Intent(getApplicationContext(), UserMapsActivity.class));
             finish();
         }
 
         findViewById(R.id.login).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(),LoginActivity.class));
+                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                 finish();
             }
         });
@@ -35,11 +35,10 @@ public class UserRegistationActivity extends AppCompatActivity {
         findViewById(R.id.register).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(),RegisterActivity.class));
+                startActivity(new Intent(getApplicationContext(), RegisterActivity.class));
                 finish();
             }
         });
-
 
 
     }

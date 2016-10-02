@@ -23,21 +23,22 @@ import org.json.JSONObject;
 
 public class ActivityLostAndFount extends AppCompatActivity {
 
-    EditText title,descriptin;
-    public  final static String TAG="ActivityLostAndFount";
+    EditText title, descriptin;
+    public final static String TAG = "ActivityLostAndFount";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lost_and_fount);
-        title= (EditText) findViewById(R.id.title);
-        descriptin= (EditText) findViewById(R.id.description);
+        title = (EditText) findViewById(R.id.title);
+        descriptin = (EditText) findViewById(R.id.description);
 
 
         findViewById(R.id.submit).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                String url = "http://team-tesseract.xyz/taxishare/extras/inset_loast_found.php?user_email="+App.CURRENT_USER_EMAIL+"&title="+title.getText().toString()+"&description="+descriptin.getText().toString();
+                String url = "http://team-tesseract.xyz/taxishare/extras/inset_loast_found.php?user_email=" + App.CURRENT_USER_EMAIL + "&title=" + title.getText().toString() + "&description=" + descriptin.getText().toString();
 
 
                 url = url.replaceAll(" ", "%20");

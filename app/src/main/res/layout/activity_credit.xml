@@ -54,10 +54,10 @@
                     android:src="@drawable/ic_my_credit" />
 
                 <TextView
+                    android:id="@+id/mcredit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
-                    android:id="@+id/mcredit"
                     android:text="My mCredit  : 140"
                     android:textColor="#ffffff"
                     android:textSize="20sp" />

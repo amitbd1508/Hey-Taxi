@@ -89,7 +89,6 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
         btnGoogleSignIn = (View) findViewById(R.id.google_login);
 
 
-
         etFirstName = (EditText) findViewById(R.id.et_register_first_name);
         etLastName = (EditText) findViewById(R.id.et_register_last_name);
         etEamil = (EditText) findViewById(R.id.et_register_email);
@@ -180,21 +179,21 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
                     + "&user_sex=" + strSex
                     + "&user_mobile=" + strMobile;
 
-            url=url.replaceAll(" ","%20");
+            url = url.replaceAll(" ", "%20");
             //Toast.makeText(RegisterActivity.this, url, Toast.LENGTH_SHORT).show();
             Log.d(TAG, url);
             StringRequest sr = new StringRequest(Request.Method.POST, url,
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-                            Log.e(TAG,"Register Sucssfull");
+                            Log.e(TAG, "Register Sucssfull");
                             if (response.equals("1")) ret = true;
                             else ret = false;
                         }
                     }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Log.e(TAG,error.getMessage());
+                    Log.e(TAG, error.getMessage());
                 }
             }) {
                 @Override
@@ -219,7 +218,7 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString(App.heyTaxiUserLogIn, "Yes");
         editor.putString(App.heyTaxiUserEmail, strEmai);
-        Log.d(TAG,strEmai);
+        Log.d(TAG, strEmai);
         editor.commit();
     }
 
@@ -345,7 +344,6 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
             mProgressDialog.setIndeterminate(true);
             mProgressDialog.show();
         }
-
 
 
     }

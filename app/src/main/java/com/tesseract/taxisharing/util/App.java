@@ -1,6 +1,6 @@
 package com.tesseract.taxisharing.util;
 
-import com.tesseract.taxisharing.model.SingleToneTripHistory;
+import com.tesseract.taxisharing.model.DatabseTripHistory;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -26,7 +26,7 @@ public class App {
 
     public static String account="100";
 
-    public  static SingleToneTripHistory payment;
+    public  static DatabseTripHistory payment;
 
     public final static String userlocations="userlocations";
     public final static String taxirequest="taxirequest";

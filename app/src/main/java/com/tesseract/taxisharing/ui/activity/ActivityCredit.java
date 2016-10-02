@@ -13,7 +13,7 @@ public class ActivityCredit extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_credit);
-        TextView mcr=(TextView)findViewById(R.id.mcredit);
-        mcr.setText("My mCredit  : "+App.account);
+        TextView mcr = (TextView) findViewById(R.id.mcredit);
+        mcr.setText("My mCredit  : " + App.account);
     }
 }

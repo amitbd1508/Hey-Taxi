@@ -68,7 +68,7 @@ import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.tesseract.taxisharing.R;
 import com.tesseract.taxisharing.model.DriverLocation;
-import com.tesseract.taxisharing.model.SingleToneTripHistory;
+import com.tesseract.taxisharing.model.DatabseTripHistory;
 import com.tesseract.taxisharing.model.TaxiRequest;
 import com.tesseract.taxisharing.model.UserLocation;
 import com.tesseract.taxisharing.ui.dependency.DirectionsJSONParser;
@@ -251,7 +251,7 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
         // made change 9/17
         listAdaptarAndButtonConfirm();
 
-        App.payment = new SingleToneTripHistory();
+        App.payment = new DatabseTripHistory();
 
         //code here
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -307,7 +307,7 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
                                 strImage = jsonObject.getString("user_image_link");
                                 strSex = jsonObject.getString("user_sex");
                                 App.account = jsonObject.getString("account");
-                                App.CURRENT_USER_EMAIL=strEmail;
+                                App.CURRENT_USER_EMAIL = strEmail;
 
 
                             }

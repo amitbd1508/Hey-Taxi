@@ -75,21 +75,21 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#2962ff"
-        android:textSize="20sp"
-        android:textStyle="bold"
+        android:text="save changes"
         android:textColor="#ffffff"
-        android:text="save changes" />
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
     <android.support.v4.widget.Space
         android:layout_width="match_parent"
         android:layout_height="36dp" />
 
     <TextView
+        android:id="@+id/account"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Account"
         android:textAlignment="center"
-        android:id="@+id/account"
         android:textColor="#dd2c00"
         android:textSize="20sp" />
 

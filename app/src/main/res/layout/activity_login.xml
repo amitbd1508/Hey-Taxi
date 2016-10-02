@@ -7,62 +7,62 @@
     android:gravity="center"
     android:orientation="vertical"
     tools:context=".ui.activity.LoginActivity">
+
     <ImageView
-        android:scaleType="centerCrop"
-        android:src="@drawable/back_reg"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/back_reg" />
 
-        <LinearLayout
-            android:layout_margin="5dp"
-            android:layout_centerInParent="true"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+
+        android:layout_margin="5dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+
+        <EditText
+            android:id="@+id/etEmail"
             android:layout_width="match_parent"
-
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:orientation="vertical"
-            android:padding="10dp">
+            android:layout_marginBottom="10dp"
+            android:background="#e2ffffff"
+            android:drawableLeft="@android:drawable/ic_dialog_email"
+            android:drawableTint="#2089e5"
+            android:gravity="center"
+            android:hint="Email"
+            android:padding="10dp"
+            android:textSize="25sp" />
 
+        <EditText
+            android:id="@+id/etPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="#e2ffffff"
+            android:drawableLeft="@android:drawable/ic_lock_idle_lock"
+            android:drawableTint="#2089e5"
+            android:gravity="center"
+            android:hint="Password "
+            android:padding="10dp"
+            android:textSize="25sp" />
 
-            <EditText
-                android:drawableTint="#2089e5"
-                android:drawableLeft="@android:drawable/ic_dialog_email"
-                android:padding="10dp"
-                android:background="#e2ffffff"
-                android:id="@+id/etEmail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:gravity="center"
-                android:hint="Email"
-                android:textSize="25sp" />
+        <Button
+            android:id="@+id/btnLogin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="#1e88e5"
+            android:text="log in"
+            android:textColor="#ffffff"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
-            <EditText
-                android:drawableTint="#2089e5"
-                android:drawableLeft="@android:drawable/ic_lock_idle_lock"
-                android:padding="10dp"
-                android:background="#e2ffffff"
-                android:id="@+id/etPassword"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:gravity="center"
-                android:hint="Password "
-                android:textSize="25sp" />
-
-            <Button
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:textColor="#ffffff"
-                android:background="#1e88e5"
-                android:id="@+id/btnLogin"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="log in" />
-
-        </LinearLayout>
-
+    </LinearLayout>
 
 
 </RelativeLayout>

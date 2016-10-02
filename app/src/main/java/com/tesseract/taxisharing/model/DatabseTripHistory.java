@@ -3,10 +3,10 @@ package com.tesseract.taxisharing.model;
 /**
  * Created by hhson on 9/18/2016.
  */
-public class SingleToneTripHistory {
+public class DatabseTripHistory {
 
 
-    public boolean isReqest=false;
+    public boolean isReqest = false;
     public String strFrom = "";
     public String strTo = "";
     public String strTime = "";
@@ -18,9 +18,8 @@ public class SingleToneTripHistory {
     public String strCarName = "";
     public String strUserName = "";
 
-    public void  init()
-    {
-        isReqest=false;
+    public void init() {
+        isReqest = false;
         strFrom = "";
         strTo = "";
         strTime = "";
@@ -34,7 +33,7 @@ public class SingleToneTripHistory {
 
     }
 
-    public SingleToneTripHistory(){
+    public DatabseTripHistory() {
 
     }
 

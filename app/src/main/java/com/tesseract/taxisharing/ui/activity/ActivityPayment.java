@@ -60,7 +60,6 @@ public class ActivityPayment extends AppCompatActivity implements ITaskDoneListe
         getPaymentData();
 
 
-
         progress = new ProgressDialog(this);
         progress.setMessage("Loading Data ..");
         progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -75,17 +74,15 @@ public class ActivityPayment extends AppCompatActivity implements ITaskDoneListe
         tvCarName = (TextView) findViewById(R.id.tvCarName_payment);
 
 
-        if(!App.payment.isReqest)
-        {
+        if (!App.payment.isReqest) {
             findViewById(R.id.iv_user_maps_car_image).setVisibility(View.GONE);
             findViewById(R.id.iv_user_maps_man_image).setVisibility(View.GONE);
-            findViewById(R.id.layoutpayment ).setVisibility(View.GONE);
-            Toast.makeText( getApplicationContext(),"You have No Panding Payment", Toast.LENGTH_SHORT).show();
+            findViewById(R.id.layoutpayment).setVisibility(View.GONE);
+            Toast.makeText(getApplicationContext(), "You have No Panding Payment", Toast.LENGTH_SHORT).show();
             tvFrom.setText("You Have NO Panding Payment");
             tvTo.setText("Go Back For Trip Requst");
 
-        }
-       else {
+        } else {
 
             tvFrom.setText(strFrom);
             tvTo.setText(strTo);
@@ -98,7 +95,6 @@ public class ActivityPayment extends AppCompatActivity implements ITaskDoneListe
                 }
             });
         }
-
 
 
     }
@@ -164,7 +160,7 @@ public class ActivityPayment extends AppCompatActivity implements ITaskDoneListe
     boolean ret = false;
 
     public boolean requestPayment(String strAmount) {
-        Log.d("+++","fffffffffffffffffffffffffffffffffff");
+        Log.d("+++", "fffffffffffffffffffffffffffffffffff");
         String url = "http://team-tesseract.xyz/taxishare/insert_user_trip_history.php?loaction_from=" + strFrom
                 + "&location_to=" + strTo
                 + "&time=" + strTime
@@ -219,7 +215,7 @@ public class ActivityPayment extends AppCompatActivity implements ITaskDoneListe
             progress.dismiss();
 
             App.payment.init();
-            App.payment.isReqest=false;
+            App.payment.isReqest = false;
 
             finish();
         } else Toast.makeText(ActivityPayment.this, "Payment faild", Toast.LENGTH_SHORT).show();
