@@ -58,11 +58,11 @@
         <activity
             android:name=".ui.activity.UserRegistationActivity"
             android:theme="@style/AppThemeNoActionBar">
-            <intent-filter>
+            <!--<intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter>-->
         </activity>
         <activity android:name=".ui.activity.RegisterActivity" />
         <!--
@@ -94,8 +94,14 @@
             android:label="Lost And Found" />
         <activity
             android:name=".ui.activity.ActivityTripHistory"
-            android:label="Trip History">
-
+            android:label="Trip History"></activity>
+        <activity
+            android:name=".ui.activity.OverBridgeLocationActivity"
+            android:label="@string/title_activity_over_bridge_location">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 

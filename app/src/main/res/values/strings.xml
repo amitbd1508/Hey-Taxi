@@ -42,5 +42,6 @@
     <string name="server_client_id">294229320834-1clkivrfvskqjqlueqivvjqc3e1hnvs1.apps.googleusercontent.com</string>
     <string name="signed_in_fmt">Signed in as: %s</string>
     <string name="title_activity_user_maps">Your Map</string>
+    <string name="title_activity_over_bridge_location">Map</string>
 
 </resources>

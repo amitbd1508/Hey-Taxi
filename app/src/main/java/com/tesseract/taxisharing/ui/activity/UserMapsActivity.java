@@ -155,7 +155,7 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
     RangeBar rbPerson;
     CheckBox cbShareRide;
     String destination;
-    static double currentLatitude = 21.0, currentLongitude = 90.0;
+    public static double currentLatitude = 21.0, currentLongitude = 90.0;
     static double destinationLatitude = 21.0, destinationLongitude = 90.0;
     List<DriverLocation> driverPosition;
 

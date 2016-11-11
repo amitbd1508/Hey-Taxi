@@ -31,6 +31,7 @@ public class App {
     public final static String userlocations="userlocations";
     public final static String taxirequest="taxirequest";
     public final static String taxidriverlocation="taxidriverlocation";
+    public final static String BridgeLocation="BridgeLocation";
 
 
 
