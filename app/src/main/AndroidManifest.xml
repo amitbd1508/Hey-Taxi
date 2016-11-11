@@ -22,6 +22,7 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
 
     <application
         android:allowBackup="true"
@@ -58,11 +59,14 @@
         <activity
             android:name=".ui.activity.UserRegistationActivity"
             android:theme="@style/AppThemeNoActionBar">
-            <!--<intent-filter>
+
+            <!--
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
+            </intent-filter>
+            -->
         </activity>
         <activity android:name=".ui.activity.RegisterActivity" />
         <!--
@@ -94,15 +98,32 @@
             android:label="Lost And Found" />
         <activity
             android:name=".ui.activity.ActivityTripHistory"
-            android:label="Trip History"></activity>
+            android:label="Trip History" />
         <activity
             android:name=".ui.activity.OverBridgeLocationActivity"
-            android:label="@string/title_activity_over_bridge_location">
+            android:label="@string/title_activity_over_bridge_location"></activity>
+        <activity android:name=".ui.activity.MenueActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.activity.SettingsActivity" />
+        <activity android:name=".ui.activity.EmergencyActivity" />
+        <activity android:name=".ui.activity.AwarnessActivity" />
+
+        <receiver android:name=".ui.dependency.MyReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.SCREEN_OFF" />
+                <action android:name="android.intent.action.SCREEN_ON" />
+                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
+                <action android:name="android.intent.action.ACTION_SHUTDOWN" />
+            </intent-filter>
+        </receiver>
+
+        <activity android:name=".ui.activity.LostAndFoundActivitySC"></activity>
     </application>
 
 </manifest>

@@ -9,6 +9,7 @@ import java.util.Date;
  * Created by BlackFlag on 9/16/2016.
  */
 public class App {
+
     public  static String CURRENT_USER_EMAIL= "amit";
     public  final static String ACCOUNT = "user";
 
@@ -32,11 +33,14 @@ public class App {
     public final static String taxirequest="taxirequest";
     public final static String taxidriverlocation="taxidriverlocation";
     public final static String BridgeLocation="BridgeLocation";
+    public final static Double myLocationLat=23.8152351;
+    public final static Double myLocationLon=90.4284807;
 
 
 
     public final static String dLat="21.0";
     public final static String dlon="90.0";
+    public static String LostAndFound="LostAndFound";
 
     public static String dateTimeNow()
     {

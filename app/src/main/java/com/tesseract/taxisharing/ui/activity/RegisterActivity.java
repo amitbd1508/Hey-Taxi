@@ -51,11 +51,11 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
 
     //view declaretion
     View btnGoogleSignIn, btnFacebookSignIn;
-    ImageView ivUserImage;
+   // ImageView ivUserImage;
     User user;
 
-    EditText etFirstName;
-    EditText etLastName;
+    EditText etFullName;
+   // EditText etLastName;
     EditText etEamil;
     EditText etMobile;
     EditText etPassword;
@@ -82,24 +82,24 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
+        setContentView(R.layout.activity_reg_sch);
         db = FirebaseDatabase.getInstance();
         ref = db.getReference(App.userlocations);
         //view initialization
-        btnGoogleSignIn = (View) findViewById(R.id.google_login);
+        btnGoogleSignIn = findViewById(R.id.google_login_reg);
 
 
-        etFirstName = (EditText) findViewById(R.id.et_register_first_name);
-        etLastName = (EditText) findViewById(R.id.et_register_last_name);
-        etEamil = (EditText) findViewById(R.id.et_register_email);
-        etMobile = (EditText) findViewById(R.id.et_register_mobile);
-        etPassword = (EditText) findViewById(R.id.et_register_password);
-        etNid = (EditText) findViewById(R.id.et_register_nid);
-        ivUserImage = (ImageView) findViewById(R.id.iv_register_profile_pic);
-        rgSex = (RadioGroup) findViewById(R.id.rg_register_sex);
+        etFullName = (EditText) findViewById(R.id.et_register_first_name);
+        //etLastName = (EditText) findViewById(R.id.et_register_last_name);
+        etEamil = (EditText) findViewById(R.id.et_reg_email);
+       // etMobile = (EditText) findViewById(R.id.et_register_mobile);
+        etPassword = (EditText) findViewById(R.id.et_reg_password);
+        etNid = (EditText) findViewById(R.id.et_reg_nid);
+       // ivUserImage = (ImageView) findViewById(R.id.iv_register_profile_pic);
+        rgSex = (RadioGroup) findViewById(R.id.rg_register_sex_sc);
 
 
-        findViewById(R.id.btn_register_submit).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.btn_reg_submit).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //do here login check
@@ -155,9 +155,9 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
     public boolean registerRequest() {
 
 
-        if (isNotEmpty(etFirstName) && isNotEmpty(etLastName) && isNotEmpty(etEamil) && isNotEmpty(etMobile)
+        if (isNotEmpty(etFullName)  && isNotEmpty(etEamil) && isNotEmpty(etMobile)
                 && isNotEmpty(etNid) && isNotEmpty(etPassword)) {
-            strFullName = etFirstName.getText().toString() + " " + etLastName.getText().toString();
+            strFullName = etFullName.getText().toString();
 
             Log.d(TAG, strFullName);
             strEmai = etEamil.getText().toString();
@@ -277,12 +277,12 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
             user.setUsername(acct.getId());
 
 
-            Picasso.with(getApplicationContext())
+            /*Picasso.with(getApplicationContext())
                     .load(acct.getPhotoUrl())
-                    .into(ivUserImage);
+                    .into(ivUserImage);*/
             etEamil.setText(acct.getEmail());
-            etFirstName.setText(acct.getGivenName());
-            etLastName.setText(acct.getFamilyName());
+            etFullName.setText(acct.getGivenName() + "  " + acct.getFamilyName());
+            //etLastName.setText(acct.getFamilyName());
 
 
         } else {

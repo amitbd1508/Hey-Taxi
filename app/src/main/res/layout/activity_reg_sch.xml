@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:background="@drawable/background_reg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        tools:context="com.tesseractbd.smartcity.ui.RegistrationActivity">
+
+        <LinearLayout
+            android:id="@+id/layout_language"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/holo_green_dark"
+                android:padding="5dp"
+                android:text="English"
+                android:textColor="@color/md_white_1000" />
+
+            <View
+                android:layout_width="3dp"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="বাংলা " />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/iv_reg_logo"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_below="@+id/layout_language"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="10dp" />
+
+        <LinearLayout
+            android:id="@+id/layout_register"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/iv_reg_logo"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+
+
+           <!-- <LinearLayout
+                android:id="@+id/layout_gplus_login"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#be0202"
+                android:gravity="center"
+                android:padding="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Login With Google"
+                    android:textColor="@android:color/white"
+                    android:textSize="15sp" />
+            </LinearLayout>-->
+            <com.google.android.gms.common.SignInButton
+                android:id="@+id/google_login_reg"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+            <LinearLayout
+
+                android:gravity="center"
+                android:layout_marginTop="36dp"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <EditText
+                    android:padding="10dp"
+                    android:background="@drawable/edit_test_sq"
+                    android:id="@+id/et_reg_full_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="10dp"
+                    android:hint="Full Name" />
+
+                <EditText
+                    android:layout_marginTop="10dp"
+                    android:padding="10dp"
+                    android:background="@drawable/edit_test_sq"
+                    android:id="@+id/et_reg_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@android:drawable/sym_action_email"
+                    android:drawablePadding="10dp"
+                    android:drawableTint="#000000"
+                    android:hint="Email" />
+
+                <EditText
+                    android:layout_marginTop="10dp"
+                    android:padding="10dp"
+                    android:background="@drawable/edit_test_sq"
+                    android:id="@+id/et_reg_nid"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@android:drawable/sym_action_email"
+                    android:drawablePadding="10dp"
+                    android:drawableTint="#000000"
+                    android:hint="NID" />
+
+                <EditText
+                    android:layout_marginTop="10dp"
+                    android:padding="10dp"
+                    android:background="@drawable/edit_test_sq"
+                    android:id="@+id/et_reg_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@android:drawable/ic_secure"
+                    android:drawablePadding="10dp"
+                    android:hint="Password" />
+
+                <RadioGroup
+                    android:id="@+id/rg_register_sex_sc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:background="#e2ffffff"
+                    android:padding="10dp">
+
+                    <RadioButton
+                        android:id="@+id/rb_register_sex_male_sc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Male" />
+
+                    <RadioButton
+                        android:id="@+id/rb_register_sex_female_sc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Female" />
+                </RadioGroup>
+
+                <RelativeLayout
+
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/edit_test_sq"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerInParent="true"
+                        android:text="Disibality Mode"
+                        android:textSize="20sp" />
+
+                    <Switch
+                        android:id="@+id/sw_disiblity_mode"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true" />
+                </RelativeLayout>
+
+                <Button
+                    android:id="@+id/btn_reg_submit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="sumbmit" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp">
+
+                <TextView
+                    android:id="@+id/tv_reg_login"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Login" />
+
+                <TextView
+                    android:id="@+id/tv_reg_need_help"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:text="Conditions" />
+            </RelativeLayout>
+        </LinearLayout>
+    </RelativeLayout>
+
+</ScrollView>
