@@ -76,7 +76,6 @@ public class TripHistoryAdapter extends RecyclerView.Adapter<TripHistoryAdapter.
         TextView driverName;
         TextView amount;
         TextView person;
-
         CardView container;
 
         public ViewHolder(View itemView) {

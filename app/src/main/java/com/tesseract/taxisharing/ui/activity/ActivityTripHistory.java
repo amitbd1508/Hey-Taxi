@@ -75,7 +75,6 @@ public class ActivityTripHistory extends AppCompatActivity {
 
                         }
 
-
                     }
                 }, new Response.ErrorListener() {
             @Override
