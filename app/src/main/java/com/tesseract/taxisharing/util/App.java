@@ -41,6 +41,9 @@ public class App {
     public final static String dLat="21.0";
     public final static String dlon="90.0";
     public static String LostAndFound="LostAndFound";
+    public static String register="userresister";
+    public static String disibilityYes="YES";
+    public static String disibilityNO="NO";
 
     public static String dateTimeNow()
     {

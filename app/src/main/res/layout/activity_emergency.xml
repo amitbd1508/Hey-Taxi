@@ -25,6 +25,7 @@
                 android:layout_weight="1">
 
                 <LinearLayout
+                    android:onClick="makeCall"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
@@ -53,7 +54,7 @@
                 android:layout_weight="1">
 
                 <LinearLayout
-
+                    android:onClick="makeCall"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
@@ -62,7 +63,8 @@
                     <ImageView
                         android:src="@drawable/ic_fire"
                         android:layout_width="50dp"
-                        android:layout_height="50dp" />
+                        android:layout_height="50dp"
+                        android:id="@+id/imageView" />
 
                     <TextView
 
@@ -90,6 +92,7 @@
                 android:layout_weight="1">
 
                 <LinearLayout
+                    android:onClick="makeCall"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"

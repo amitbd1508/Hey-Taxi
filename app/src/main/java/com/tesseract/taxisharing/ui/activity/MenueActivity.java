@@ -21,6 +21,8 @@ public class MenueActivity extends AppCompatActivity {
         filter.addAction(Intent.ACTION_SCREEN_OFF);
         MyReceiver mReceiver = new MyReceiver (this);
         registerReceiver(mReceiver, filter);
+
+
     }
 
     public void onFindVehicle(View view) {
@@ -28,6 +30,7 @@ public class MenueActivity extends AppCompatActivity {
     }
 
     public void OnLiveTraffic(View view) {
+        startActivity(new Intent(getApplicationContext(),UserMapsActivity.class));
     }
 
     public void onEmergency(View view) {
@@ -36,7 +39,7 @@ public class MenueActivity extends AppCompatActivity {
     }
 
     public void onOverBridge(View view) {
-        startActivity(new Intent(this,OverBridgeLocation.class));
+        startActivity(new Intent(this,OverBridgeLocationActivity.class));
     }
 
     public void OnLAF(View view) {
@@ -46,9 +49,11 @@ public class MenueActivity extends AppCompatActivity {
     }
 
     public void onAwarness(View view) {
+        startActivity(new Intent(getApplicationContext(),AwarnessActivity.class));
     }
 
     public void onComplain(View view) {
+        startActivity(new Intent(getApplicationContext(),ComplineActivity.class));
     }
 
     public void OnSettings(View view) {

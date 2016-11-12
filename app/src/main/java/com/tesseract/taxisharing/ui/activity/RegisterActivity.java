@@ -38,6 +38,7 @@ import com.squareup.picasso.Picasso;
 import com.tesseract.taxisharing.R;
 import com.tesseract.taxisharing.model.User;
 import com.tesseract.taxisharing.model.UserLocation;
+import com.tesseract.taxisharing.model.UserSC;
 import com.tesseract.taxisharing.util.App;
 
 import java.util.HashMap;
@@ -49,6 +50,7 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
     private static final String TAG = "RegisterActivity";
     private static final int RC_SIGN_IN = 9001;
 
+
     //view declaretion
     View btnGoogleSignIn, btnFacebookSignIn;
    // ImageView ivUserImage;
@@ -57,14 +59,14 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
     EditText etFullName;
    // EditText etLastName;
     EditText etEamil;
-    EditText etMobile;
+
     EditText etPassword;
     EditText etNid;
     RadioGroup rgSex;
 
     String strFullName;
     String strEmai;
-    String strMobile;
+
     String strSex;
     String strNid;
     String strPassword;
@@ -77,7 +79,8 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
 
     FirebaseDatabase db;
     DatabaseReference ref;
-
+    FirebaseDatabase regdb;
+    DatabaseReference regref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,11 +88,14 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
         setContentView(R.layout.activity_reg_sch);
         db = FirebaseDatabase.getInstance();
         ref = db.getReference(App.userlocations);
+
+        regdb = FirebaseDatabase.getInstance();
+        regref = db.getReference(App.register);
         //view initialization
         btnGoogleSignIn = findViewById(R.id.google_login_reg);
 
 
-        etFullName = (EditText) findViewById(R.id.et_register_first_name);
+        etFullName = (EditText) findViewById(R.id.et_reg_full_name);
         //etLastName = (EditText) findViewById(R.id.et_register_last_name);
         etEamil = (EditText) findViewById(R.id.et_reg_email);
        // etMobile = (EditText) findViewById(R.id.et_register_mobile);
@@ -118,7 +124,7 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
 
                     // store to share preference
                     saveUserData();
-                    startActivity(new Intent(getApplicationContext(), UserMapsActivity.class));
+                    startActivity(new Intent(getApplicationContext(), MenueActivity.class));
                     finish();
                 } else {
                     Toast.makeText(RegisterActivity.this, "Fill All fields", Toast.LENGTH_SHORT).show();
@@ -155,60 +161,39 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
     public boolean registerRequest() {
 
 
-        if (isNotEmpty(etFullName)  && isNotEmpty(etEamil) && isNotEmpty(etMobile)
+        if (isNotEmpty(etFullName) && isNotEmpty(etEamil)
                 && isNotEmpty(etNid) && isNotEmpty(etPassword)) {
             strFullName = etFullName.getText().toString();
 
             Log.d(TAG, strFullName);
             strEmai = etEamil.getText().toString();
-            strMobile = etMobile.getText().toString();
-            if (rgSex.getCheckedRadioButtonId() == R.id.rb_register_sex_male) {
+
+            if (rgSex.getCheckedRadioButtonId() == R.id.rb_register_sex_male_sc) {
                 strSex = "Male";
-            } else if (rgSex.getCheckedRadioButtonId() == R.id.rb_register_sex_female) {
+            } else if (rgSex.getCheckedRadioButtonId() == R.id.rb_register_sex_female_sc) {
                 strSex = "Female";
             }
             strNid = etNid.getText().toString();
             strPassword = etPassword.getText().toString();
-            strImageLink = "https://github.com/mikepenz/MaterialDrawer/blob/develop/app/src/main/res/drawable/profile3.jpg";
+            UserSC userSC=new UserSC();
+            userSC.email=strEmai;
+            userSC.fullName=strFullName;
+            userSC.gender=strSex;
+            userSC.nid=strNid;
+            userSC.password=strPassword;
+            if(findViewById(R.id.sw_disiblity_mode).isEnabled())
+            {
+                userSC.disibalestatus=App.disibilityYes;
+            }
+            else userSC.disibalestatus=App.disibilityNO;
 
-            String url = "http://team-tesseract.xyz/taxishare/insert_user.php?user_fullname=" + strFullName
-                    + "&user_personalid=" + strNid
-                    + "&user_password=" + strPassword
-                    + "&user_email=" + strEmai
-                    + "&user_image_link=" + strImageLink
-                    + "&user_sex=" + strSex
-                    + "&user_mobile=" + strMobile;
-
-            url = url.replaceAll(" ", "%20");
-            //Toast.makeText(RegisterActivity.this, url, Toast.LENGTH_SHORT).show();
-            Log.d(TAG, url);
-            StringRequest sr = new StringRequest(Request.Method.POST, url,
-                    new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            Log.e(TAG, "Register Sucssfull");
-                            if (response.equals("1")) ret = true;
-                            else ret = false;
-                        }
-                    }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.e(TAG, error.getMessage());
-                }
-            }) {
-                @Override
-                protected Map<String, String> getParams() throws AuthFailureError {
-                    Map<String, String> map = new HashMap<String, String>();
-
-
-                    return map;
-                }
-            };
-
-            RequestQueue rq = Volley.newRequestQueue(this);
-            rq.add(sr);
-
-            return true;
+            try{
+                regref.push().setValue(userSC);
+            }catch (Exception e)
+            {
+                return false;
+            }
+            return  true;
         }
         return false;
     }
@@ -281,7 +266,9 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
                     .load(acct.getPhotoUrl())
                     .into(ivUserImage);*/
             etEamil.setText(acct.getEmail());
-            etFullName.setText(acct.getGivenName() + "  " + acct.getFamilyName());
+            etFullName.setText(acct.getGivenName()+" "+acct.getFamilyName());
+
+
             //etLastName.setText(acct.getFamilyName());
 
 

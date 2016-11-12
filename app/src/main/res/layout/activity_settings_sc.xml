@@ -13,15 +13,6 @@
         android:layout_margin="16dp"
         android:orientation="vertical">
 
-        <ImageView
-            android:layout_width="90dp"
-            android:layout_height="90dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:text="Change Photo" />
 
     </LinearLayout>
     <LinearLayout
@@ -81,6 +72,16 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="#378E43"
+                android:layout_weight="1"
+                android:id="@+id/chose"
+                android:padding="10dp"
+                android:text="Save"
+                android:textColor="@android:color/white" />
         </LinearLayout>
     </LinearLayout>
 

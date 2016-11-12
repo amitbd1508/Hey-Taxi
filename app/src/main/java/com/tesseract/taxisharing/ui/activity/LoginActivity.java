@@ -33,8 +33,19 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 import com.tesseract.taxisharing.R;
+import com.tesseract.taxisharing.model.LOF;
+import com.tesseract.taxisharing.model.OverBridgeLocation;
+import com.tesseract.taxisharing.model.UserSC;
 import com.tesseract.taxisharing.util.App;
 
 import org.json.JSONArray;
@@ -50,10 +61,13 @@ public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
     private static final int RC_SIGN_IN = 9001;
 
+    FirebaseDatabase db;
+    DatabaseReference ref;
     EditText etEmail, etPassword;
 
     String strEmail;
     String strPassword;
+
 
     boolean ret = false;
 
@@ -62,6 +76,8 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        db = FirebaseDatabase.getInstance();
+        ref = db.getReference(App.register);
 
         etEmail = (EditText) findViewById(R.id.etEmail);
         etPassword = (EditText) findViewById(R.id.etPassword);
@@ -76,7 +92,7 @@ public class LoginActivity extends AppCompatActivity {
                     editor.putString(App.heyTaxiUserEmail, strEmail);
                     editor.commit();
 
-                    startActivity(new Intent(getApplicationContext(), UserMapsActivity.class));
+                    startActivity(new Intent(getApplicationContext(), MenueActivity.class));
                     finish();
                 }
             }
@@ -86,43 +102,38 @@ public class LoginActivity extends AppCompatActivity {
 
     public boolean loginSucessfull() {
 
-        ret = false;
+        //ret = false;
         if (isNotEmpty(etEmail) && isNotEmpty(etPassword)) {
             strEmail = etEmail.getText().toString();
             strPassword = etPassword.getText().toString();
-
-            String url = "http://team-tesseract.xyz/taxishare/login_check.php";
-
-            Log.d(TAG, url);
-            StringRequest sr = new StringRequest(Request.Method.POST, url,
-                    new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            if (response != null && response == "1") ret = true;
-                            else ret = false;
+            ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for (DataSnapshot child : dataSnapshot.getChildren()) {
+                        UserSC pr = child.getValue(UserSC.class);
+                        Log.i("++__",pr.password+etPassword.getText().toString()+" "+pr.email+etEmail.getText().toString());
+                        if (pr.password.toString().equals(etPassword.getText().toString()) && pr.email.toString().equals(etEmail.getText().toString()))
+                        {
+                            ret=true;
+                            Log.i("++__","sdgfdfgd");
+                            break;
                         }
-                    }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    ret = false;
+
+                    }
+
                 }
-            }) {
+
                 @Override
-                protected Map<String, String> getParams() throws AuthFailureError {
-                    Map<String, String> map = new HashMap<String, String>();
-                    map.put("user_email", strEmail);
-                    map.put("user_password", strPassword);
-
-                    return map;
+                public void onCancelled(DatabaseError databaseError) {
+                    ret=false;
+                    Log.i("++__ cancle",ret+"");
                 }
-            };
 
-            RequestQueue rq = Volley.newRequestQueue(this);
-            rq.add(sr);
-
-            return true;
+            });
+            /*Log.i("++__ final return",ret+"");
+            return ret;*/
         }
-        return false;
+        return ret;
     }
 
     private boolean isNotEmpty(EditText etText) {

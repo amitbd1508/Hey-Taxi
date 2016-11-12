@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        android:src="@drawable/back_reg" />
+        android:src="@drawable/background_reg" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -45,18 +45,20 @@
             android:layout_marginBottom="10dp"
             android:background="#e2ffffff"
             android:drawableLeft="@android:drawable/ic_lock_idle_lock"
-            android:drawableTint="#2089e5"
+            android:drawableTint="#000000"
             android:gravity="center"
             android:hint="Password "
             android:padding="10dp"
             android:textSize="25sp" />
 
         <Button
+            android:layout_marginLeft="36dp"
+            android:layout_marginRight="36dp"
             android:id="@+id/btnLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:background="#1e88e5"
+            android:background="#18988A"
             android:text="log in"
             android:textColor="#ffffff"
             android:textSize="20sp"

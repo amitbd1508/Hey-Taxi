@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <android.support.v7.widget.CardView
+                app:cardElevation="6dp"
+                android:layout_margin="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:orientation="vertical"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:textColor="@android:color/black"
+                        android:textStyle="bold"
+                        android:text="1.General provision for punishment of offence"
+                        android:padding="10dp"
+                        android:textAlignment="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <View
+                        android:background="#434343"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"/>
+                    <TextView
+                        android:textColor="@android:color/black"
+                        android:text="Whoever contravenes any provision of this Ordinance or of any rules or regulations made thereunder shall, if no other penalty is provided for the offence, be punishable with fine which may extend to two hundred taka, or, if having been previously convicted of any offence under this Ordinance he is again convicted of an offence under this Ordinance, with fine which may extend to four hundred taka."
+                        android:padding="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+            <android.support.v7.widget.CardView
+                app:cardElevation="6dp"
+                android:layout_margin="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:orientation="vertical"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:textColor="@android:color/black"
+                        android:textStyle="bold"
+                        android:text="2.Driving without licence "
+                        android:padding="10dp"
+                        android:textAlignment="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <View
+                        android:background="#434343"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"/>
+                    <TextView
+                        android:textColor="@android:color/black"
+                        android:text="Whoever drives a motor vehicle or public service vehicle or
+whoever causes or allows a motor vehicle or public service vehicle to be driven in
+contravention of the provisions of sub-section (1) of section 3 shall be punishable with
+imprisonment which may extend to four months, or with fine which may extend to four
+months, or with fine which may extend to five hundred taka, or with both.
+"
+                        android:padding="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+            <android.support.v7.widget.CardView
+                app:cardElevation="6dp"
+                android:layout_margin="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:orientation="vertical"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:textColor="@android:color/black"
+                        android:textStyle="bold"
+                        android:text="3.Fitting and using of prohibited horns or other sound producing device"
+                        android:padding="10dp"
+                        android:textAlignment="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <View
+                        android:background="#434343"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"/>
+                    <TextView
+                        android:textColor="@android:color/black"
+                        android:text="Whoever
+uses or being the owner or person in charge of motor vehicle fits, causes or allows fitting of
+any horns or any sound producing devices prohibited by any competent authority having
+jurisdiction over the area or prohibited under the provision of this Ordinance or any rules or
+regulations mage thereunder or uses horn or any sound producing device where its use is
+prohibited shall be punishable with fine which may extend to one hundred taka.
+"
+                        android:padding="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

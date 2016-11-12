@@ -160,6 +160,8 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
     List<DriverLocation> driverPosition;
 
 
+    LatLng jam1=new LatLng(23.797774,90.423501);
+    LatLng jam2=new LatLng(23.817278,90.421083);
     void singleUpdateInMapFromFireBase() {
         driverref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -350,9 +352,7 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
                 .addDrawerItems(
                         new PrimaryDrawerItem().withName("Payment").withIdentifier(1),
                         new PrimaryDrawerItem().withName("mCredit").withIdentifier(2),
-                        new PrimaryDrawerItem().withName("Profile settings").withIdentifier(4),
-                        new PrimaryDrawerItem().withName("Trip History").withIdentifier(0),
-                        new PrimaryDrawerItem().withName("Lost and found").withIdentifier(3)
+                        new PrimaryDrawerItem().withName("Trip History").withIdentifier(0)
 
                 )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
@@ -365,10 +365,7 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
                         } else if (drawerItem.equals(2)) {
                             startActivity(new Intent(UserMapsActivity.this, ActivityCredit.class));
 
-                        } else if (drawerItem.equals(3)) {
-                            startActivity(new Intent(UserMapsActivity.this, ActivityLostAndFount.class));
-
-                        } else if (drawerItem.equals(4)) {
+                        }  else if (drawerItem.equals(4)) {
                             startActivity(new Intent(UserMapsActivity.this, ActivitySettings.class));
                         }
 
@@ -400,6 +397,10 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
         setTrakerSettings();
         initalizeTracker();
         startTracking();
+
+
+
+
         layout_response_from_driver.setVisibility(View.GONE);
 
 
@@ -668,6 +669,18 @@ public class UserMapsActivity extends FragmentActivity implements OnMapReadyCall
 
 
         mMap.clear();
+        mMap.addMarker(new MarkerOptions()
+                .position(jam1)
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.jam))
+                .title("Havy Jam")
+
+        );
+        mMap.addMarker(new MarkerOptions()
+                .position(jam2)
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.jam))
+                .title("Havy Jam")
+
+        );
         for (int i = 0; i < driverPosition.size(); i++) {
 
 

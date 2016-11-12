@@ -61,6 +61,8 @@ public class LostAndFoundAdapter extends RecyclerView.Adapter<LostAndFoundAdapte
         holder.tvStatus.setText(lofs.get(position).getType().toUpperCase());
         holder.tvPhone.setText(lofs.get(position).getPhone());
         holder.tvDescription.setText(lofs.get(position).getDescription());
+        holder.tvLocation.setText(lofs.get(position).getLocation());
+        holder.TVtime.setText(lofs.get(position).getTime());
 
 
     }
@@ -77,6 +79,7 @@ public class LostAndFoundAdapter extends RecyclerView.Adapter<LostAndFoundAdapte
         TextView tvDescription;
         TextView tvPhone;
         TextView tvStatus;
+        TextView TVtime;
 
 
 
@@ -91,6 +94,7 @@ public class LostAndFoundAdapter extends RecyclerView.Adapter<LostAndFoundAdapte
             tvPhone= (TextView) itemView.findViewById(R.id.tv_lof_contract);
             tvStatus= (TextView) itemView.findViewById(R.id.tv_lof_category);
             tvTitle= (TextView) itemView.findViewById(R.id.tv_lof_title);
+            TVtime= (TextView) itemView.findViewById(R.id.tv_lof_time);
 
 
 
